@@ -8,6 +8,12 @@ body {
     height: auto;
     width: 100%;
 }
+.logo-container {
+    height: 280px;
+    width: 100%;
+    background: url(../images/logo.png) no-repeat center -80px;
+    background-size: 730px;
+}
 .main-container {
     width: 600px;
     height: auto;
@@ -16,12 +22,7 @@ body {
     border-radius: 6px;
     padding: 0 0 35px 0;
 }
-.logo-container {
-    height: 300px;
-    width: 100%;
-    background: url(../images/logo.png) no-repeat center -45px;
-    background-size: 730px;
-}
+
 .switch-button {
     width: 100%;
     height: auto;
@@ -35,6 +36,7 @@ body {
    font-size: 35px;
    padding: 35px;
    background-color: transparent;
+   border-radius: 5px;
 }
 .form-container {
     height: 70%;
@@ -116,8 +118,14 @@ input::placeholder {
 }
 .button-container a {
     display: block;
-   
     font-size: 23px;
     color: #6a646c;
+}
+/* 切换表单时的样式 */
+.active {
+    display: block;
+}
+.active {
+    
 }
 
