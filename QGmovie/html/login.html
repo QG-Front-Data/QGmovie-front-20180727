@@ -17,28 +17,49 @@
 <body>
     <!-- <登陆注册功能> -->
     <div class="root">
-        <div class="logo-container">
-            <img src="../images/logo.png">
-        </div>
+        <div class="logo-container"></div>
         <div class="main-container">
             <div class="switch-button">
-                <span>登陆</span><span>注册</span>
+                <button>登陆</button><button>注册</button>
             </div>
             <div class="form-container">
-                <div class="login-container">
-                    <div><input type="text" name="" id="login-account"></div>
-                    <input type="text" name="" id="login-password">
-                    <input type="button" name="" id="login-button">
+                <div class="login-container" style="display: none;">
+                    <div class="input-container">
+                        <span class="account-icon"></span>
+                        <input type="text" name="userAccount" id="login-account" placeholder="账号">
+                    </div>
+                    <div class="input-container">
+                        <span class="password-icon"></span>
+                        <input type="text" name="userPassword" id="login-password" placeholder="密码" autocomplete="off">
+                        <a href="javascript:">忘记密码？</a>
+                    </div>
+                    <div class="button-container">
+                        <input type="button" id="login-button" value="登陆">
+                        <a href="javascript:">游客访问</a>
+                    </div>
                 </div>
-                <div class="signin-container" style="display: none;">
-                    <input type="text" name="" id="username">
-                    <input type="text" name="" id="account">
-                    <input type="text" name="" id="password">
-                    <input type="text" name="" id="commitpassword">
-                    <input type="button" id="signin-button">
+                <div class="signin-container" >
+                    <div class="input-container">
+                        <span class="account-icon"></span>
+                        <input type="text" name="userName" id="username" placeholder="用户名">
+                    </div>
+                    <div class="input-container">
+                        <span class="account-icon"></span>
+                        <input type="text" name="userAccount" id="signin-account" placeholder="账户">
+                    </div>
+                    <div class="input-container">
+                        <span class="password-icon"></span>
+                        <input type="text" name="userPassword" id="signin-password" placeholder="密码" autocomplete="off">
+                    </div>
+                    <div class="input-container">
+                        <span class="password-icon"></span>
+                        <input type="text" name="commitPassword" id="commit-password" placeholder="确认密码" autocomplete="off">
+                    </div>
+                    <div class="button-container">
+                        <input type="button" id="signin-button" value="注册">
+                    </div>
                 </div>
             </div>
-            <div class="bottom">忘了密码？</div>
         </div>
        
     </div>
