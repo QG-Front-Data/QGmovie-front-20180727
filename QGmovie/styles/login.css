@@ -121,11 +121,9 @@ input::placeholder {
     font-size: 23px;
     color: #6a646c;
 }
-/* 切换表单时的样式 */
-.active {
-    display: block;
-}
-.active {
-    
+/* 切换表单时切换样式 */
+.button-active {
+    background-color: #d9d5d9;
+    color: rgba(27, 0, 33, .5);
 }
 

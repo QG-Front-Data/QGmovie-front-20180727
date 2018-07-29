@@ -39,3 +39,10 @@ button {
     outline: none;
     cursor:pointer;             
 }
+/*显示和隐藏*/
+.active {
+    display: block;
+}
+.hide {
+    display: none;
+}
