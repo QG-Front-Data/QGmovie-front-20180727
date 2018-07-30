@@ -41,7 +41,7 @@ function RegExpTest(pattern, text) {
 }
 
 /**
- * 这是一个兼容性的监听事件。只需要直接用这个对象的方法就行
+ * 这是一个兼容性的监听事件。只需要直接用这个对象的方法就行。惰性加载函数，所以控制台输出只能是当前浏览器支持的监听事件
  * @function EventUtil.addHandler 全局的添加事件的方法。
  * @function EventUtil.removeHandler 全局的删除事件的方法。
  * @param {Object} element 添加事件的对象
@@ -57,11 +57,11 @@ var EventUtil = {
             }
         } else if (element.attachEvent) {
             return function () {
-                element.attachEvent("on" + type, handler);
+                arguments[0].attachEvent("on" + arguments[1], arguments[2]);
             }
         } else {
             return function () {
-                element["on" + type] = handler;
+                arguments[0]["on" + arguments[1]] = arguments[2];
             }
         }
     })(window),
@@ -69,39 +69,61 @@ var EventUtil = {
     removeHandler: (function(element, type, handler) {
         if (element.addEventListener) {
             return function () {
-                element.removeEventListener(type, handler, false);
+                arguments[0].removeEventListener(arguments[1], arguments[2], false);
             }
         } else if (element.attachEvent) {
             return function () {
-                element.detachEvent("on" + type, handler);
+                arguments[0].detachEvent("on" + arguments[1], arguments[2]);
             }
         } else {
             return function () {
-                element["on" + type] = null;
+                arguments[0]["on" + arguments[1]] = null;
             }
         }
     })(window)
 }; 
 
+/**
+ * 
+ * @param {*} elements 
+ * @param {*} cName 
+ */
+function addClass(elements, cName) {
+    if (!hasClass(elements, cName)) {
+        elements.className += " " + cName;
+    };
+};
 
-// var EventUtil = {
+/**
+ * 
+ * @param {*} elements 
+ * @param {*} cName 
+ */
+function removeClass(elements, cName) {
+    if (hasClass(elements, cName)) {
+        elements.className = elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), " ");
+    };
+};
 
-//     addHandler: function(element, type, handler){
-//     if (element.addEventListener){
-//     element.addEventListener(type, handler, false);
-//     } else if (element.attachEvent){
-//     element.attachEvent("on" + type, handler);
-//     } else {
-//     element["on" + type] = handler;
-//     }
-//     },
-//     removeHandler: function(element, type, handler){
-//     if (element.removeEventListener){
-//     element.removeEventListener(type, handler, false);
-//     } else if (element.detachEvent){
-//     element.detachEvent("on" + type, handler);
-//     } else {
-//     element["on" + type] = null;
-//     }
-//     }
-//    }; 
+/**
+ * 
+ * @param {*} node 
+ */
+function findElementNode(node) {
+    var nodeArray = new Array();
+    for (var i = 0; i < node.length; i++) {
+        if (node[i].nodeType == 1) {
+            nodeArray.push(node[i]);
+        }
+    }
+    return nodeArray;
+}
+
+/**
+ * 
+ * @param {*} elements 
+ * @param {*} cName 
+ */
+function hasClass(elements, cName) {
+    return !!elements.className.match(new RegExp("(\\s|^)" + cName + "(\\s|$)"));
+};
