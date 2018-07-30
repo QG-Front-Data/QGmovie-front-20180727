@@ -166,6 +166,6 @@ input::placeholder {
     font-style: normal;
 }
 .password-type b {
-    color: red;
+    font-size: 18px;
 }
 /*根据强度改变b的颜色*/
