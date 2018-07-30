@@ -20,10 +20,10 @@
         <div class="logo-container"></div>
         <div class="main-container">
             <div class="switch-button">
-                <button>登陆</button><button>注册</button>
+                <button>登陆</button><button class="button-active">注册</button>
             </div>
             <div class="form-container">
-                <div class="login-container" style="display: none;">
+                <div class="login-container active">
                     <div class="input-container">
                         <span class="account-icon"></span>
                         <input type="text" name="userAccount" id="login-account" placeholder="账号">
@@ -38,18 +38,21 @@
                         <a href="javascript:">游客访问</a>
                     </div>
                 </div>
-                <div class="signin-container" >
+                <div class="signin-container hide">
                     <div class="input-container">
-                        <span class="account-icon"></span>
-                        <input type="text" name="userName" id="username" placeholder="用户名">
+                         <span class="email-icon"></span>
+                        <input type="text" name="userAccount" id="signin-account" placeholder="账户">
                     </div>
                     <div class="input-container">
-                        <span class="account-icon"></span>
-                        <input type="text" name="userAccount" id="signin-account" placeholder="账户">
+                        <span class="username-icon"></span>
+                        <input type="text" name="userName" id="username" placeholder="用户名">
                     </div>
                     <div class="input-container">
                         <span class="password-icon"></span>
                         <input type="text" name="userPassword" id="signin-password" placeholder="密码" autocomplete="off">
+                    </div>
+                    <div class="password-type">
+                        <span id="password-weak"></span><span id="password-mid"></span><span id="password-strong"></span><i>密码强度</i><b>弱</b>
                     </div>
                     <div class="input-container">
                         <span class="password-icon"></span>
@@ -66,5 +69,20 @@
 
     <!-- < 网页私有的js文件 > -->
     <script src="../scripts/login.js"></script>
+    <script>
+        var login = document.getElementsByClassName('login-container')[0];
+            signin = document.getElementsByClassName('signin-container')[0];
+            button = document.getElementsByClassName('switch-button')[0].getElementsByTagName('button');
+            
+        button[1].onclick = function() {
+            button[0].classList.add('button-active');
+            button[1].classList.remove('button-active');
+        }
+        button[0].onclick = function() {
+            button[1].classList.add('button-active');
+            button[0].classList.remove('button-active');
+        }
+        
+    </script>
 </body>
 </html>
