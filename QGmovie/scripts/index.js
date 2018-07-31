@@ -11,13 +11,33 @@
 })();
 var header = document.getElementsByClassName('header')[0];
 
-document.onmousewheel = function() {
+(function() {
+    document.onscroll = function() {
     
-    if (window.scrollY == 300) { 
-        header.style.position = 'fixed';
-        alert();   
+        if (window.scrollY >= 300) { 
+            addClass(header, 'sticky-header');
+            console.log(window.scrollY);
+        } else {
+            removeClass(header, 'sticky-header');
+        }
     }
-}
+})();
+
+
+/**
+ * 二级菜单
+ */
+var userHead = document.getElementsByClassName('user-head-container')[0];
+    secondMenu = document.getElementsByClassName('second-menu')[0];
+(function() {
+    userHead.onmouseover = function() {
+        addClass(header, 'active-header');
+        secondMenu.onmouseleave = function() {
+                removeClass(header, 'active-header');
+        }
+    };
+    
+})();
 
 /**
  * 轮播图JS

@@ -28,7 +28,7 @@ function ajaxRequest(serverAddress, method, sendData, sendDataType, contentType 
     	processData: false,
     	contentType: contentType,
         complete: callback
-    	});
+    });
 }
 
 /**

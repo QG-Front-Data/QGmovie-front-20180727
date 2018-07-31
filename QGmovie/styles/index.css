@@ -1,14 +1,38 @@
 /* 首页css */
+body {
+    
+}
 .root {
     height: 2000px;
     width: 100%;
+    
 }
+.logo-container {
+    height: 50px;
+    width: 200px;
+    background-color: #fff;
+    position: absolute;
+    top: 15px;
+    left: 68px;
+    background: url(../images/hlogo.png) no-repeat center;
+    background-size: contain;
+}
+
 .header {
-    height: 100px;
+    height: 80px;
     width: 100%;
-    background-color: #666;
+    background-color: #000;
     position: relative;
     text-align: center;
+    transition: opacity .5s;
+    z-index: 5;
+}
+
+/* 粘性顶部栏 */
+
+.sticky-header {
+    position: fixed;
+    top: 0;   
 }
 
 /* 搜索栏 */
@@ -21,10 +45,10 @@
 }
 #search-input {
     background-color: #fff;
-    width: 380px;
+    width: 340px;
     height: 35px;
     border-radius: 5px;
-    margin: 30px auto;
+    margin: 22px auto;
     font-size: 20px;
     padding: 2px 15px;
 }
@@ -36,6 +60,118 @@
     background-size: contain; 
     margin-left: 3px;
 }
+
+/* 点击头像 */
+
+.active-header .user-head-container {
+    transform: translateY(60px) scale(1.5);
+}
+
+.active-header .second-menu {
+    transform: translateY(90px);
+    opacity: 1;
+}
+
+/* 头像以及二级菜单 */
+
+.user-head-container {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 0;
+    right: 80px;
+    z-index: 5;
+    transition: transform .5s;
+}
+
+#user-head {
+    height: 60px;
+    width: 60px;
+    margin: 10px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+#head-pic {
+    height: 100%;
+    width: 100%;
+}
+.second-menu {
+    height: auto;
+    width: 420px;
+    padding: 0px;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    right: 20px;
+    z-index: 4;
+    border-radius: 5px;
+    text-align: left;
+    transition: transform .5s, opacity .5s;
+    opacity: 0;
+}
+
+.second-menu-top {
+    height: 150px;
+    width: 100%;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+    background: url(../images/menubg.jpg) no-repeat center;
+}
+.second-menu h1 {
+    font-size: 20px;
+    width: 80%;
+    padding: 30px;
+}
+
+/* 二级菜单用户名 */
+
+.second-menu span {
+    font-size: 16px;
+    padding-left: 10px;
+} 
+.second-menu ul {
+    height: auto;
+    text-align: center;
+}
+.second-menu li {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    background-color: #2196f3;
+    display: inline-block;
+    margin: 30px 25px 50px 25px;
+    position: relative;
+    cursor: pointer;
+   
+   
+}  
+.second-menu li a {
+    font-size: 14px;
+    width: auto;
+    position: absolute;
+    bottom: -30px;
+    left: 15px;
+    border: none;
+    color: #000;
+}
+
+/* 退出登陆 */
+
+#logout {
+    border-top: 1px solid #000;
+    display: block;
+    width: auto;
+    margin: 0 auto;
+    text-align: center;
+    color: #000;
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+
 
 /* 轮播图 */
 
@@ -157,4 +293,16 @@
 }
 .dotted-active {
     background-color: #fff;
+}
+/* 返回顶部 */
+.toTop-button {
+    position: fixed;
+    right: 50px;
+    bottom: 20px;
+    height: 50px;
+    width: 50px;
+    background: url(../images/back.png) no-repeat center;
+    background-size: contain;
+}
+
 }
