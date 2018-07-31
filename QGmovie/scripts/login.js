@@ -34,44 +34,53 @@ function loginModel() {
                 for (i = 0; i < 2; i++) {
                     jsonObj[loginInput[i].name] = loginInput[i].value;
                 }
-                /* 发送请求 */
-                ajaxRequest('http://ip:8080/qgmovie/login', 
-                            'post', 
-                            JSON.stringify(jsonObj), 
-                            'json', 
-                            'application/json', 
-                            function(xhr, status) {
-                                switch(status) {
-                                    /* 根据返回的状态码执行下一步 */ 
-                                    case 0: {
-                                        submitResultMessage('操作失败');
-                                        break;
-                                    }
+                console.log(JSON.stringify(jsonObj));
 
-                                    case 1: {
-                                        submitResultMessage('登陆成功');
-                                        window.location.href = 'http://ip:8080/qgmovie/';
-                                        break;
+                            $.ajax({
+                                url: 'http://192.168.1.104:8080/TomcatTest/login',
+                                type: 'post',
+                                data: JSON.stringify(jsonObj),
+                                dataType: 'json',
+                                processData: false,
+                                //contentType: 'application/json',
+                                success:function(xhr) {
+                                    switch(xhr.state) {
+                                        /* 根据返回的状态码执行下一步 */ 
+                                        case '0': {
+                                            submitResultMessage('操作失败');
+                                            break;
+                                        }
+    
+                                        case '1': {
+                                            submitResultMessage('登陆成功');
+                                            window.location.href = 'http://192.168.1.112:8080/qgmovie/';
+                                            break;
+                                        }
+    
+                                        case '3': {
+                                            submitResultMessage('登录失败，请检查账号和密码是否正确');
+                                            break;
+                                        }
+    
+                                        case '4': {
+                                            submitResultMessage('请勿重复登录');
+                                            break;
+                                        }
+    
                                     }
-
-                                    case 3: {
-                                        submitResultMessage('登录失败，请检查账号和密码是否正确');
-                                        break;
-                                    }
-
-                                    case 4: {
-                                        submitResultMessage('请勿重复登录');
-                                        break;
-                                    }
-
+                                },
+                                error: function() {
+                                    submitResultMessage('请求失败');
                                 }
-                            }, 
-                            function() {
-                                submitResultMessage('请求失败');
-                            })
+                                });
+
+
+
 
                 break;
             }
+
+
 
             case switchButton[1]: {
                 addClass(switchButton[0], 'button-active');
@@ -271,41 +280,44 @@ function registerModel() {
             jsonObj[signInput[i].name] = signInput[i].value;
         }
 
-        /* 发送请求 */
-        ajaxRequest('http://ip:8080/qgmovie/resigter', 
-                    'post', 
-                    JSON.stringify(jsonObj), 
-                    'json', 
-                    'application/json', 
-                    function(xhr, status) {
-                        /* 回调函数 */
-                        switch(status) {
-                            case 0:{
-                                submitResultMessage('操作失败');
-                            }
 
-                            case 1: {
-                                /* 注册成功 */
-                                submitResultMessage('注册成功');
-                                window.reload();
-                                break;
-                            }
+        $.ajax({
+            url: 'http://192.168.1.115:8080/qgmovie/register',
+            type: 'post',
+            data: JSON.stringify(jsonObj),
+            dataType: 'json',
+            processData: false,
+            //contentType: 'application/json',
+            success:function(xhr) {
+                /* 回调函数 */
+                switch(xhr.state) {
+                    case '0':{
+                        submitResultMessage('操作失败');
+                    }
 
-                            case 2: {
-                                /* 账户已经存在 */
-                                submitResultMessage('用户名已经存在');
-                                break;
-                            }
+                    case '1': {
+                        /* 注册成功 */
+                        submitResultMessage('注册成功');
+                        window.reload();
+                        break;
+                    }
 
-                            case 3: {
-                                submitResultMessage('邮箱已经被注册了');
-                            }
-                        }
-                    },
-                    function() {
-                        submitResultMessage('请求失败');
-                    });
+                    case '2': {
+                        /* 账户已经存在 */
+                        submitResultMessage('用户名已经存在');
+                        break;
+                    }
 
+                    case '3': {
+                        submitResultMessage('邮箱已经被注册了');
+                    }
+                }
+            },
+            error: function(xhr) {
+                console.log(xhr.status);
+                submitResultMessage('请求失败');
+            }
+            });
     }
 
     /**
@@ -327,10 +339,14 @@ function registerModel() {
                 } 
                 password.value = str;
 
-                if (password.value.length > 6||password.value.length == 0) {
+                if (password.value.length >= 6||password.value.length == 0) {
                     promptMessage(2, 'none', '');
                 } else {
                     promptMessage(2, 'block', '密码长度过短');
+                }
+
+                if (password.value === commitpassword.value) {
+                    promptMessage(3, 'none', '');
                 }
 
                 passwordStrength();
