@@ -1,1 +1,124 @@
 /* 首页css */
+.root {
+    height: 2000px;
+    width: 100%;
+}
+.slider-container {
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+}
+.slider {
+    position: relative;
+    height: 580px;
+    width: 100%;
+    transition: transform 1s;
+    will-change: transform;
+}
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.slide-0 {
+    background: url(../images/01.jpg) no-repeat center 0;
+    background-size: cover;
+    left: 0;
+}
+.slide-1 {
+    background: url(../images/02.jpg) no-repeat center 0;
+    background-size: cover;
+    left: 100%;
+}
+.slide-2 {
+    background: url(../images/03.jpg) no-repeat center 0;
+    background-size: cover;
+    left: 200%;
+}
+.slide-3 {
+    background: url(../images/04.jpg) no-repeat center 0;
+    background-size: cover;
+    left: 300%;
+}
+.slide-overlay {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    transition: transform .5s .5s, opacity .2s .5s;
+    transform: translate3d(-20%, 0, 0);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+.slide-overlay-path {
+    opacity: .8;
+}
+
+
+/* 激活状态 */
+
+.slide-active .slide-overlay {
+    transform: translateX(0);
+    opacity: .8;
+}
+.slide-active .slide-text {
+    transform: translateY(180px);
+    opacity: 1;
+}
+
+/* 简介文字 */
+
+.slide-text {
+    height: auto;
+    width: 500px;
+    position: absolute;
+    transition: transform .5s .8s, opacity .5s .8s, -webkit-transform .5s .8s;
+    will-change: opacity, transform;
+    z-index: 3;
+    font-size: 20px;
+    top: 200px;
+    left: 10%;
+    opacity: 0;
+    color: #fff;
+}
+
+/* 左右切换栏 */
+
+.silder-control {
+    position: absolute;
+    width: 10%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
+    opacity: .8;
+}
+.left {
+    left: 0;
+}
+.right {
+    right: 0;
+}
+
+/* 小圆点 */
+
+.dotted-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+.dotted {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    margin: 0 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 1s;
+}
+.dotted-active {
+    background-color: #fff;
+}
