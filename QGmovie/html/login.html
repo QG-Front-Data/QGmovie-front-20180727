@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn-hans">
+<html>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -76,7 +76,70 @@
         </div>
        
     </div>
-    <!-- < 登陆注册功能的js文件 > -->
+
+    <!-- < 网页私有的js文件 > -->
     <script src="../scripts/login.js"></script>
+    <!-- <script>
+        var login = document.getElementsByClassName('login-container')[0];
+            signin = document.getElementsByClassName('signin-container')[0];
+            button = document.getElementsByClassName('switch-button')[0].getElementsByTagName('button');
+            
+        button[1].onclick = function() {
+            button[0].classList.add('button-active');
+            button[1].classList.remove('button-active');
+        }
+        button[0].onclick = function() {
+            button[1].classList.add('button-active');
+            button[0].classList.remove('button-active');
+        }
+
+
+    /* IE9 input placeholder */
+    var textarea = document.getElementsByTagName("textarea")[0];
+
+    textarea.onclick = function () {
+        this.innerText = (this.innerText == "Your Message" ? "" : this.innerText);
+    };
+    textarea.onblur = function () {
+        this.innerText = (this.innerText == "" ? "Your Massage" : "");
+    };
+
+    var input = document.getElementsByTagName("input");
+
+    for (i = 0; i < input.length; i++) {
+        input[i].onclick = function () {
+            this.value = (this.value == this.defaultValue ? "" : this.value);
+        };
+        input[i].onblur = function () {
+            this.value = (this.value == "" ? this.defaultValue : "");
+        };
+    }
+    
+        //封装类函数
+        function hasClass(elements, cName) {
+            return !!elements.className.match(new RegExp("(\\s|^)" + cName + "(\\s|$)"));
+        };
+        function addClass(elements, cName) {
+            if (!hasClass(elements, cName)) {
+                elements.className += " " + cName;
+            };
+        };
+        function removeClass(elements, cName) {
+            if (hasClass(elements, cName)) {
+                elements.className = elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), " ");
+            };
+        };
+        //查询元素节点
+        function findElementNode(node) {
+            var nodeArray = new Array();
+            for (var i = 0; i < node.length; i++) {
+                if (node[i].nodeType == 1) {
+                    nodeArray.push(node[i]);
+                }
+            }
+            return nodeArray;
+        }
+        
+    </script> -->
 </body>
 </html>

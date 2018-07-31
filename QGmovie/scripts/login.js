@@ -88,7 +88,10 @@ function loginModel() {
 
             /* 浮出层消失的事件 */
             case floatingButton: {
-                floatingLayer.style.display = 'none';
+                removeClass($('.main-floating-layer div')[0], 'floating-active');
+                setTimeout(function() {
+                    floatingLayer.style.display = 'none';
+                }, 400);            
                 break;
             }
         }
@@ -406,10 +409,6 @@ function registerModel() {
                 break;
             }
 
-            case floatingButton: {
-                floatingLayer.style.display = 'none';
-                break;
-            }
         }
     }
 
@@ -447,4 +446,7 @@ function submitResultMessage(message) {
     $('.main-floating-layer')[0].style.display = 'block';
     submitResult = $('.main-floating-layer span')[0];
     submitResult.innerText = message;
+    setTimeout(function() {
+        addClass($('.main-floating-layer div')[0], 'floating-active');
+    }, 100);
 }
