@@ -3,8 +3,26 @@
  */
 
 /**
+ * 粘性顶部栏
+ */
+
+(function() {
+    
+})();
+var header = document.getElementsByClassName('header')[0];
+
+document.onmousewheel = function() {
+    
+    if (window.scrollY == 300) { 
+        header.style.position = 'fixed';
+        alert();   
+    }
+}
+
+/**
  * 轮播图JS
  * @author czf
+ * Date: 2018-07-30
  */
 
 var slider = document.getElementsByClassName('slider')[0],
@@ -104,3 +122,4 @@ function autoPlay() {
     }
     activeAnimate();
 }
+

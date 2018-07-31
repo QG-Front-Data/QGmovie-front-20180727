@@ -3,6 +3,42 @@
     height: 2000px;
     width: 100%;
 }
+.header {
+    height: 100px;
+    width: 100%;
+    background-color: #666;
+    position: relative;
+    text-align: center;
+}
+
+/* 搜索栏 */
+
+.search-bar {
+    display: inline-block;
+    height: auto;
+    width: auto;
+    
+}
+#search-input {
+    background-color: #fff;
+    width: 380px;
+    height: 35px;
+    border-radius: 5px;
+    margin: 30px auto;
+    font-size: 20px;
+    padding: 2px 15px;
+}
+#search-button {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    background: url(../images/search.png) no-repeat 3px 0px;
+    background-size: contain; 
+    margin-left: 3px;
+}
+
+/* 轮播图 */
+
 .slider-container {
     width: 100%;
     height: auto;
