@@ -90,7 +90,7 @@ var EventUtil = {
 }; 
 
 /**
- * 
+ * 为元素添加一个CSS类
  * @param {*} elements 
  * @param {*} cName 
  */
@@ -101,7 +101,7 @@ function addClass(elements, cName) {
 };
 
 /**
- * 
+ * 移除元素的一个CSS类 
  * @param {*} elements 
  * @param {*} cName 
  */
@@ -109,10 +109,10 @@ function removeClass(elements, cName) {
     if (hasClass(elements, cName)) {
         elements.className = elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), " ");
     };
-};
+}
 
 /**
- * 
+ * 查找元素节点函数
  * @param {*} node 
  */
 function findElementNode(node) {
@@ -126,10 +126,23 @@ function findElementNode(node) {
 }
 
 /**
- * 
+ * 检查元素是否有某个CSS类
  * @param {*} elements 
  * @param {*} cName 
  */
 function hasClass(elements, cName) {
     return !!elements.className.match(new RegExp("(\\s|^)" + cName + "(\\s|$)"));
-};
+}
+
+/**
+ * 切换元素的类型
+ * @param {*} elements 
+ * @param {*} cName 
+ */
+function toogleClass(elements, cName) {
+    if (hasClass(elements, cName)) {
+        removeClass(elements, cName);
+    } else {
+        addClass(elements, cName);
+    }
+}
