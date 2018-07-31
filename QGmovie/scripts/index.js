@@ -1,43 +1,90 @@
 /**
  * 首页的JS文件
  */
+var header = document.getElementsByClassName('header')[0]; //顶部栏
 
 /**
  * 粘性顶部栏
  */
 
 (function() {
-    
-})();
-var header = document.getElementsByClassName('header')[0];
-
-(function() {
     document.onscroll = function() {
-    
-        if (window.scrollY >= 300) { 
+        if (document.documentElement.scrollTop >= 300) { 
             addClass(header, 'sticky-header');
-            console.log(window.scrollY);
         } else {
             removeClass(header, 'sticky-header');
         }
     }
 })();
 
+/**
+ * 返回顶部
+ */
+
+var backToTopButton = document.getElementsByClassName('toTop-button')[0]; 
+
+/**
+ * 采用懒加载检测requestAnimationFrame兼容性
+ * @param {*} fun 
+ * @param {*} time 
+ */
+var requestAnimation = function(fun, time) {
+    if (window.requestAnimationFrame) {
+        return requestAnimationFrame(fun);
+    } else {
+        return setTimeout(fun, time);
+    }
+}
+
+function backToTop() {
+    var sHeight = document.documentElement.scrollTop;
+    
+    var top = function() {
+        sHeight = sHeight + (0 - sHeight) / 8;
+
+        if (sHeight < 1) {
+            document.documentElement.scrollTop = 0;
+            return;
+        }
+        document.documentElement.scrollTop = sHeight;
+        requestAnimation(top);
+    }
+    top();
+}
+
+backToTopButton.onclick = function() {
+    backToTop();
+};
+
+/**
+ * 改变搜索栏样式
+ */
+var searchBar = document.getElementById('search-input');
+(function() {
+    searchBar.onclick = function() {
+        addClass(this, 'active-search');
+    }
+    searchBar.onblur = function() {
+        removeClass(this, 'active-search');
+    }
+})();
 
 /**
  * 二级菜单
  */
-var userHead = document.getElementsByClassName('user-head-container')[0];
-    secondMenu = document.getElementsByClassName('second-menu')[0];
+
 (function() {
+    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
+        secondMenu = document.getElementsByClassName('second-menu')[0]; //二级菜单
+
     userHead.onmouseover = function() {
         addClass(header, 'active-header');
         secondMenu.onmouseleave = function() {
-                removeClass(header, 'active-header');
+            removeClass(header, 'active-header');
         }
     };
-    
 })();
+
 
 /**
  * 轮播图JS
@@ -57,11 +104,11 @@ function activeAnimate() {
     showDotted();
     animate(index);
     timer = setTimeout(autoPlay, 4000);
-}
+ }
 
-/**
- * 点击小圆点切换
- */
+ /**
+  * 点击小圆点切换
+  */
 
 (function clickDotted() {
     for (var i = 0; i < dotted.length; i++) {
@@ -80,9 +127,9 @@ function activeAnimate() {
 
 function showDotted() {
     for (var i = 0; i < dotted.length; i++) {
-        dotted[i].classList.remove('dotted-active');
+        removeClass(dotted[i], 'dotted-active');
     }
-    dotted[index].classList.add('dotted-active');
+    addClass(dotted[index], 'dotted-active');
 }
 
 /**
@@ -100,9 +147,9 @@ function animate(index) {
     slider.style.transform = 'translateX(' + left[index] + ')';
     setTimeout(function () {
         for (var i = 0; i < slide.length; i++) {
-            slide[i].classList.remove('slide-active');
+            removeClass(slide[i], 'slide-active');
         }
-        slide[index].classList.add('slide-active');
+        addClass(slide[index], 'slide-active');
     }, 500);
 }
 
