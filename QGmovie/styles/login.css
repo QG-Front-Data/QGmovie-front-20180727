@@ -1,7 +1,9 @@
+/* 登陆注册css */
+
 body {
     background: url(../images/bg.jpg) no-repeat fixed;
     background-size: cover;
-    height: 1300px;
+    height: auto;
     font-family: "MicrosoftYaHeiLight";
     font-size: 20px;
     color: #171317;
@@ -54,6 +56,9 @@ body {
 .login-container .input-container {
     margin: 50px auto;
 }
+
+/* 图标css */
+
 .input-container span {
     display: inline-block;
     height: 16px;
@@ -104,7 +109,9 @@ input::placeholder {
     text-decoration: underline;
     font-size: 12px;
 }
+
 /* 登陆注册按钮 */
+
 .button-container {
     width: auto;
     height: auto; 
@@ -129,7 +136,9 @@ input::placeholder {
     display: block;
     color: #6a646c;
 }
+
 /* 切换表单时切换按钮样式 */
+
 .button-active {
     background-color: #d9d5d9 !important;
     color: rgba(27, 0, 33, .5);
@@ -164,7 +173,9 @@ input::placeholder {
     font-size: 16px;
     color: rgba(0, 0, 0, 0);
 }
-/*根据强度改变b的颜色*/
+
+/* 根据强度改变b的颜色 */
+
 .prompt {
     display: none;
     position: absolute;
