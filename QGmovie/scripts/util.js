@@ -148,3 +148,18 @@ function toogleClass(elements, cName) {
         addClass(elements, cName);
     }
 }
+
+/**
+ * 采用懒加载检测requestAnimationFrame兼容性
+ * DATE 20180801
+ * @author czf
+ * @param {*} fun 
+ * @param {*} time 
+ */
+var requestAnimation = function (fun, time) {
+    if (window.requestAnimationFrame) {
+        return requestAnimationFrame(fun);
+    } else {
+        return setTimeout(fun, time);
+    }
+}
