@@ -2,17 +2,23 @@
 
 }
 .root {
-
+    height: 2000px;
 }
 .header {
     height: 80px;
     width: 100%;
     background-color: #232325;
-    position: relative;
+    position: fixed;
     text-align: center;
     transition: opacity .5s;
     z-index: 5;
+    top: 0;
+}   
+#header-logo {
+    line-height: 80px;
+    opacity: 0;
 }
+
 /* 点击头像 */
 
 .active-header .user-head-container {
@@ -125,15 +131,16 @@
 /* 搜索栏 */
 
 .search-container {
-    height: 500px;
+    height: auto;
     width: 100%;
-    background-color: #;
+    
 }
 .search-bg {
     height: 130px;
     width: 100%;
     background: url(../images/searchbg.png) no-repeat;
     background-size: 100%;
+    margin-top: 80px;
 }
 .search-logo {
     height: auto;
@@ -141,8 +148,12 @@
     text-align: center;
 }
 .search-logo img {
+    position: relative;
     margin: 50px 0 97px 0;
-
+    transition: transform .5s;
+}
+.search-logo img:hover {
+    transform: translateY(-300px);
 }
 .search-bar {
     width: 100%;
