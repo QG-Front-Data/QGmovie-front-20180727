@@ -22,7 +22,7 @@ function inputLimit(input, number) {
  * @param {Function} successCallback 请求成功后的执行函数。两个函数的第一个参数都是请求对象，第二个参数都是状态码
  * @param {Function} errorCallback 请求失败时候的执行函数。
  */
-function ajaxRequest(serverAddress, method, sendData, sendDataType, contentType , successCallback, errorCallback) {
+function ajaxRequest(serverAddress, method, sendData, sendDataType, contentTypes , successCallback, errorCallback) {
     $.ajax({
     	url: serverAddress,
     	type: method,
@@ -30,15 +30,12 @@ function ajaxRequest(serverAddress, method, sendData, sendDataType, contentType 
         dataType: sendDataType,
     	processData: false,
     	contentType: contentType,
-<<<<<<< HEAD
-        complete: callback
-    });
-=======
+        complete: callback,
+    	//contentType: contentTypes,
         success: successCallback,
         error: errorCallback
     	});
->>>>>>> d6f6f90ebf712c752d15695748d639694052c6a6
-}
+};
 
 /**
  * 当测试结果不为空，则返回true，当测试结果为空的时候，则返回false。

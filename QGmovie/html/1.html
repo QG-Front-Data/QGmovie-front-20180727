@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- < 引入初始化样式 > -->
+    <link rel="stylesheet" href="../styles/reset.css" />
+    <!-- < 引入样式表 > -->
+    <!-- < 引入JQ > -->
+    <script src="../scripts/jquery-3.3.1.min.js"></script>
+    <!-- < 封装好的工具类 > -->
+    <script src="../scripts/util.js"></script>
+    <style>
+    .recommend-container {
+        background-color: '#F5EEF5'
+    }
+    .recommend-container>div {
+        position: relative;
+        margin-top: 40px;
+        width: 1313px;
+        height: 350px;
+        margin: 0 auto;
+    }
+    .recommend-container span {
+        display: block;
+    }
+    .recommend-head {
+        width: 1320px;
+        height: 80px;
+        margin: 0 auto;
+    }
+    .recommend-head>img {
+        float: left;
+        width: 30px;
+        height: 30px;
+        margin: 20px 30px;
+    }
+    .recommend-head>span {
+        margin-top: 21px;
+        font-size: 20px;
+        float: left;
+    }
+    .movie-item-container {
+        position: relative;
+        width: 1312.5px;
+        height: 232.4px;
+        overflow: hidden;
+        margin: 0 auto;
+    }
+    .movie-item-container>ul {
+        position: absolute;
+        width: 2000px;
+    }
+    .movie-item-container li {
+        cursor: pointer;
+        float: left;
+        margin-left: 30px;
+        width: 130.3px;
+        height: 182.4px;
+        background-color: peachpuff;
+    }
+    .movie-bottom {
+        margin-top: 15px;
+        width: 100%;
+        font-size: 13px;
+        text-align: center;
+    }
+    .movie-bottom span {
+        float: left;
+        width: 100px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
+    .movie-bottom b {
+        display: block;
+        float: left;
+        width: 30px;
+        color: orange;
+    }
+    .movie-image {
+        position: relative;
+        height: 182.4px;
+        width: 100%;
+        background-size: 100%;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    .arrows {
+        position: absolute;
+        cursor: pointer;
+        width: 30px;
+        height: 182.4px;
+        top: 80px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 40%;
+        border-radius: 4px;
+    }
+    .arrows:hover {
+        background-color: rgba(0, 0, 0, .1);
+    }
+    .left-arrows {
+        background-image: url(../images/leftarrow.png);
+        left: -30px;
+    }
+    .right-arrows {
+        background-image: url(../images/rightarrow.png);
+        right: -30px;
+    }
+    </style>
+
+</head>
+<body>
+    <div class="recommend-container">
+        <div class="hot-movie">
+            <div class="recommend-head">
+                <img src="../images/hot-movie.png">
+                <span>影院热映</span>
+            </div>
+            <div class="movie-item-container">
+            <ul >
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+            </ul>
+            </div>
+            <span class="arrows left-arrows" ></span>
+            <span class="arrows right-arrows" ></span>
+        </div>
+        <div class="new-movie">
+            <div class="recommend-head">
+                <img src="../images/new-movie.png">
+                <span>新片速递</span>
+            </div>
+            <div class="movie-item-container">
+            <ul >
+            </ul>
+            </div>
+            <span class="arrows left-arrows" ></span>
+            <span class="arrows right-arrows" ></span>
+        </div>
+        <div class="high-commit-movie">
+            <div class="recommend-head">
+                <img src="../images/hight-commit.png">
+                <span>高评好片</span>
+            </div>
+            <div class="movie-item-container">
+            <ul >
+            </ul>
+            </div>
+            <span class="arrows left-arrows" ></span>
+            <span class="arrows right-arrows" ></span>
+        </div>
+        <div class="person-recommend-movie">
+            <div class="recommend-head">
+                <img src="../images/person-recommend.png">
+                <span>个人推荐</span>
+            </div>
+            <div class="movie-item-container">
+            <ul >
+            </ul>
+            </div>
+            <span class="arrows left-arrows" ></span>
+            <span class="arrows right-arrows" ></span>
+        </div>
+    </div>
+    <script>
+
+        
+    function movieMove($clickTarget) {
+        if ($clickTarget.hasClass('left-arrows') === true) {
+            if (!$clickTarget.parent().children(':eq(1)').children('ul').is(':animated')) {
+                    $clickTarget.parent().children(':eq(1)').children('ul').animate({
+                    left: '+=1312.5px',
+                }, 500);
+            }
+        } else {
+            if (!$clickTarget.parent('div').children(':eq(1)').children('ul').is(':animated')) {
+                    $clickTarget.parent('div').children(':eq(1)').children('ul').animate({
+                    left: '-=1312.5px',
+                }, 500);
+            }
+        }
+    }
+
+    $('.arrows').click(function(event) {
+        movieMove($(event.target));
+    });
+    
+    function recommendInit(recommendArea, json) {
+        recommendArea.innerHTML += '<li movie-id='+ json.movieID +'><div class="movie-image" style="background-image: url(' + json.picture + ')" ></div><div class="movie-bottom"><span>' + json.moviename + '</span><b>' + json.score + '</b></div></li>'
+    }
+
+    
+
+
+
+
+    </script>
+</body>
+</html>
