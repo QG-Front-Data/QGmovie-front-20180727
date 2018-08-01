@@ -14,13 +14,19 @@
     <!-- < 封装好的工具类 > -->
     <script src="../scripts/util.js"></script>
     <style>
+    .recommend-rank-contianer {
+        background-color: '#F5EEF5';
+        width: 90%;
+        margin: 0 auto;
+    }
     .recommend-container {
-        background-color: '#F5EEF5'
+        float: left;
+        width:75%;
     }
     .recommend-container>div {
         position: relative;
         margin-top: 40px;
-        width: 1313px;
+        width: 991.9px;
         height: 350px;
         margin: 0 auto;
     }
@@ -28,9 +34,8 @@
         display: block;
     }
     .recommend-head {
-        width: 1320px;
+        width: 991.9px;
         height: 80px;
-        margin: 0 auto;
     }
     .recommend-head>img {
         float: left;
@@ -45,13 +50,13 @@
     }
     .movie-item-container {
         position: relative;
-        width: 1312.5px;
+        width: 991.9px;
         height: 232.4px;
         overflow: hidden;
-        margin: 0 auto;
     }
     .movie-item-container>ul {
         position: absolute;
+        left: 0;
         width: 2000px;
     }
     .movie-item-container li {
@@ -111,10 +116,25 @@
         background-image: url(../images/rightarrow.png);
         right: -30px;
     }
+    .rank-container {
+        float: left;
+        margin: 100px auto;
+        width: 25%;
+        height: 500px;
+    }
+    .rank-container ul {
+        width: 120px;
+        margin: 0 auto;
+    }
+    .rank-container li {
+        width: 117.3px;
+        height: 164.1px;
+    }
     </style>
 
 </head>
 <body>
+    <div class="recommend-rank-contianer">
     <div class="recommend-container">
         <div class="hot-movie">
             <div class="recommend-head">
@@ -123,6 +143,50 @@
             </div>
             <div class="movie-item-container">
             <ul >
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
+                <li>
+                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
+                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
+                </li>
                 <li>
                     <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
                     <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
@@ -169,6 +233,16 @@
             <span class="arrows right-arrows" ></span>
         </div>
     </div>
+    <div class="rank-container">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    </div>
     <script>
 
         
@@ -176,15 +250,38 @@
         if ($clickTarget.hasClass('left-arrows') === true) {
             if (!$clickTarget.parent().children(':eq(1)').children('ul').is(':animated')) {
                     $clickTarget.parent().children(':eq(1)').children('ul').animate({
-                    left: '+=1312.5px',
-                }, 500);
+                    left: '+=961.8px',
+                }, 500, function() {
+                    arrowsVisibility($clickTarget)
+                    });
             }
         } else {
             if (!$clickTarget.parent('div').children(':eq(1)').children('ul').is(':animated')) {
                     $clickTarget.parent('div').children(':eq(1)').children('ul').animate({
-                    left: '-=1312.5px',
-                }, 500);
+                    left: '-=961.8px',
+                }, 500, function() {
+                    arrowsVisibility($clickTarget)
+                    });
             }
+        }
+
+    }
+
+    function arrowsVisibility($arrow) {
+        if ($arrow.parent('div').children(':eq(1)').children('ul').css('left') == '0px') {
+            $arrow.css('display', 'none');
+        } else {
+            if ($arrow.hasClass('left-arrows') == true) {
+                $arrow.next().css('display', 'block');
+            }
+        }
+
+        if ($arrow.parent('div').children(':eq(1)').children('ul').css('left') == '-3847.2px') {
+            $arrow.css('display', 'none');
+        } else {
+            if ($arrow.hasClass('right-arrows') == true) {
+                $arrow.prev().css('display', 'block');
+            } 
         }
     }
 
@@ -192,11 +289,15 @@
         movieMove($(event.target));
     });
     
-    function recommendInit(recommendArea, json) {
+    function createLi(recommendArea, json) {
         recommendArea.innerHTML += '<li movie-id='+ json.movieID +'><div class="movie-image" style="background-image: url(' + json.picture + ')" ></div><div class="movie-bottom"><span>' + json.moviename + '</span><b>' + json.score + '</b></div></li>'
     }
 
-    
+    function recommendInit() {
+        $.ajax({
+
+        })
+    }
 
 
 
