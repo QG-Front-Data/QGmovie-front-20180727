@@ -34,12 +34,11 @@ function loginModel() {
                 for (i = 0; i < 2; i++) {
                     jsonObj[loginInput[i].name] = loginInput[i].value;
                 }
-                console.log(JSON.stringify(jsonObj));
 
-                            $.ajax({
-                                url: 'http://192.168.1.104:8080/TomcatTest/login',
-                                type: 'post',
-                                data: JSON.stringify(jsonObj),
+                $.ajax({
+                    url: 'http://192.168.1.119:8080/qgmovie/login',
+                    type: 'post',
+                    data: JSON.stringify(jsonObj),
                                 dataType: 'json',
                                 processData: false,
                                 //contentType: 'application/json',
@@ -53,7 +52,7 @@ function loginModel() {
     
                                         case '1': {
                                             submitResultMessage('登陆成功');
-                                            window.location.href = 'http://192.168.1.112:8080/qgmovie/';
+                                            window.location.href = 'index.html';
                                             break;
                                         }
     
@@ -69,18 +68,13 @@ function loginModel() {
     
                                     }
                                 },
-                                error: function() {
+                                error: function() { 
                                     submitResultMessage('请求失败');
                                 }
                                 });
 
-
-
-
                 break;
             }
-
-
 
             case switchButton[1]: {
                 addClass(switchButton[0], 'button-active');
@@ -102,6 +96,10 @@ function loginModel() {
                     floatingLayer.style.display = 'none';
                 }, 400);            
                 break;
+            }
+
+            case $('.button-container a')[0]: {
+                window.location.href = 'index.html';
             }
         }
     }
@@ -282,7 +280,7 @@ function registerModel() {
 
 
         $.ajax({
-            url: 'http://192.168.1.115:8080/qgmovie/register',
+            url: 'http://192.168.1.119:8080/qgmovie/register',
             type: 'post',
             data: JSON.stringify(jsonObj),
             dataType: 'json',
@@ -298,7 +296,7 @@ function registerModel() {
                     case '1': {
                         /* 注册成功 */
                         submitResultMessage('注册成功');
-                        window.reload();
+                        window.location.reload(true);
                         break;
                     }
 
@@ -314,7 +312,6 @@ function registerModel() {
                 }
             },
             error: function(xhr) {
-                console.log(xhr.status);
                 submitResultMessage('请求失败');
             }
             });

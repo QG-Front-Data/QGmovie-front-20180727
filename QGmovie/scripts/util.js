@@ -18,7 +18,7 @@ function inputLimit(input, number) {
  * @param {String} method 请求方式
  * @param {String} sendData 要发送的数据
  * @param {String} sendDataType 数据类型
- * @param {String} contentType 请求头
+ * @param {String} contentTypes 请求头
  * @param {Function} successCallback 请求成功后的执行函数。两个函数的第一个参数都是请求对象，第二个参数都是状态码
  * @param {Function} errorCallback 请求失败时候的执行函数。
  */
@@ -29,8 +29,6 @@ function ajaxRequest(serverAddress, method, sendData, sendDataType, contentTypes
         data: sendData,
         dataType: sendDataType,
     	processData: false,
-    	contentType: contentType,
-        complete: callback,
     	//contentType: contentTypes,
         success: successCallback,
         error: errorCallback
@@ -147,4 +145,20 @@ function toogleClass(elements, cName) {
     } else {
         addClass(elements, cName);
     }
+}
+
+/**
+ * 函数节流，提高体验
+ */
+function throttle(method, context) {
+    clearTimeout(method.tId);
+    method.tId = setTimeout(function() {
+        method.call(context);
+    }, 100);
+}
+
+function searchCommit() {
+    var key = $('#search-input')[0].value;
+
+    window.location.href = 'search.html?key=' + key;
 }
