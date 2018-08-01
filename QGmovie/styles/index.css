@@ -67,12 +67,13 @@ body {
     height: 35px;
     border-radius: 5px;
     margin: 22px auto;
-    font-size: 20px;
+    font-size: 18px;
     padding: 2px 15px;
     
 }
 #search-input::placeholder {
     color: #eee;
+    font-size: 16px;
 }
 .active-search {
     background-color: #fff !important;
@@ -90,7 +91,7 @@ body {
 /* 点击头像 */
 
 .active-header .user-head-container {
-    transform: translateY(60px) scale(1.5);
+    transform: translateY(50px) scale(1.5);
 }
 
 .active-header .second-menu {
@@ -105,15 +106,15 @@ body {
     height: auto;
     width: auto;
     top: 0;
-    right: 80px;
+    right: 64px;
     z-index: 5;
     transition: transform .5s;
 }
 
 #user-head {
-    height: 60px;
-    width: 60px;
-    margin: 10px auto;
+    height: 55px;
+    width: 55px;
+    margin: 15px auto;
     border-radius: 50%;
     overflow: hidden;
     cursor: pointer;
@@ -126,7 +127,7 @@ body {
 }
 .second-menu {
     height: auto;
-    width: 420px;
+    width: 400px;
     padding: 0px;
     background-color: #fff;
     position: absolute;
@@ -139,61 +140,61 @@ body {
 }
 
 .second-menu-top {
-    height: 150px;
+    height: 140px;
     width: 100%;
     color: #fff;
     border-radius: 5px 5px 0 0;
     background: url(../images/menubg.jpg) no-repeat center;
 }
 .second-menu h1 {
-    font-size: 20px;
+    font-size: 22px;
     width: 80%;
     padding: 30px;
+    
 }
 
 /* 二级菜单用户名 */
 
 .second-menu span {
     font-size: 16px;
-    padding-left: 10px;
+    padding-left: 13px;
+    letter-spacing: 5px;
 } 
 .second-menu ul {
     height: auto;
-    text-align: center;
+    text-align: left;
+    margin: 15px 0;
 }
 .second-menu li {
-    height: 80px;
-    width: 80px;
-    border-radius: 50%;
-    background-color: #2196f3;
+    height: auto;
+    width: auto;
     display: inline-block;
-    margin: 30px 25px 50px 25px;
+    margin: 20px 10px 20px 30px;
     position: relative;
     cursor: pointer;
-   
-   
 }  
+.second-menu img {
+    height: 20px;
+    width: 20px;
+}
 .second-menu li a {
     font-size: 14px;
-    width: auto;
-    position: absolute;
-    bottom: -30px;
-    left: 15px;
     border: none;
     color: #000;
+    margin-left: 2px;
 }
 
 /* 退出登陆 */
 
 #logout {
-    border-top: 1px solid #000;
     display: block;
-    width: 400px;
+    width: 100%;
     margin: 0 auto;
     text-align: center;
     color: #000;
     font-size: 14px;
     padding: 10px 0;
+    background-color: #f4f5f7;
 }
 
 /* 轮播图 */

@@ -1,0 +1,163 @@
+.body {
+
+}
+.root {
+
+}
+.header {
+    height: 80px;
+    width: 100%;
+    background-color: #232325;
+    position: relative;
+    text-align: center;
+    transition: opacity .5s;
+    z-index: 5;
+}
+/* 点击头像 */
+
+.active-header .user-head-container {
+    transform: translateY(50px) scale(1.5);
+}
+
+.active-header .second-menu {
+    transform: translateY(90px);
+    opacity: 1;
+}
+
+/* 头像以及二级菜单 */
+
+.user-head-container {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 0;
+    right: 64px;
+    z-index: 5;
+    transition: transform .5s;
+}
+
+#user-head {
+    height: 55px;
+    width: 55px;
+    margin: 15px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+#head-pic {
+    height: 100%;
+    width: 100%;
+}
+.second-menu {
+    height: auto;
+    width: 400px;
+    padding: 0px;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    right: 20px;
+    border-radius: 5px;
+    text-align: left;
+    transition: transform .5s, opacity .5s;
+    opacity: 0; 
+}
+
+.second-menu-top {
+    height: 140px;
+    width: 100%;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+    background: url(../images/menubg.jpg) no-repeat center;
+}
+.second-menu h1 {
+    font-size: 22px;
+    width: 80%;
+    padding: 30px;
+    
+}
+
+/* 二级菜单用户名 */
+
+.second-menu span {
+    font-size: 16px;
+    padding-left: 13px;
+    letter-spacing: 5px;
+} 
+.second-menu ul {
+    height: auto;
+    text-align: left;
+    margin: 15px 0;
+}
+.second-menu li {
+    height: auto;
+    width: auto;
+    display: inline-block;
+    margin: 20px 10px 20px 30px;
+    position: relative;
+    cursor: pointer;
+}  
+.second-menu img {
+    height: 20px;
+    width: 20px;
+}
+.second-menu li a {
+    font-size: 14px;
+    border: none;
+    color: #000;
+    margin-left: 2px;
+}
+
+/* 退出登陆 */
+
+#logout {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    color: #000;
+    font-size: 14px;
+    padding: 10px 0;
+    background-color: #f4f5f7;
+}
+
+/* 搜索栏 */
+
+.search-container {
+    height: 500px;
+    width: 100%;
+    background-color: #;
+}
+.search-bg {
+    height: 130px;
+    width: 100%;
+    background: url(../images/searchbg.png) no-repeat;
+    background-size: 100%;
+}
+.search-logo {
+    height: auto;
+    width: 100%;
+    text-align: center;
+}
+.search-logo img {
+    margin: 50px 0 97px 0;
+
+}
+.search-bar {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    text-align: center;
+}
+.search-bar input {
+    width: 50%;
+    height: 50px;
+    border-bottom: 2px solid #000;
+    padding: 0;
+    font-size: 20px;
+    text-align: center;
+}
+.search-bar button {
+    background: transparent;
+}
