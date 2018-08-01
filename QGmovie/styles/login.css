@@ -13,9 +13,9 @@ body {
     width: 100%;
 }
 .logo-container {
-    height: 280px;
+    height: 180px;
     width: 100%;
-    background: url(../images/logo.png) no-repeat center -80px;
+    background: url(../images/logo.png) no-repeat center;
     background-size: 730px;
 }
 .main-container {
@@ -85,9 +85,6 @@ body {
     background-size: 37px;
     cursor: pointer;
 }
-/* .password-icon:hover {
-    background-image: url(../images/password2.png) ;
-} */
 input { 
     background-color: transparent;
     font-size: 16px;
@@ -204,4 +201,47 @@ input::placeholder {
     margin-top: 5px;
     background-image: url(../images/alert.png);
     background-size: 100%;
+}
+.main-floating-layer {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+}
+.main-floating-layer div {
+    position: absolute;
+    width: 400px;
+    height: 200px;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-200px) translateY(-100px);
+    border-radius: 10px;
+    background-color: white;
+    transition: all .5s ease;
+    opacity: 0;
+}
+.floating-active {
+    opacity: 1!important;
+}
+.main-floating-layer span {
+    display: block;
+    text-align: center;
+    width: 100%;
+    margin-top: 70px;
+}
+.main-floating-layer button {
+    display: block;
+    width: 180px;
+    height: 40px;
+    margin: 40px auto;
+    border-radius: 10px;
+    background-color: transparent;
+    transition: background-color 1s, color 1s;
+    border: 2px solid #af05aa;
+}
+.main-floating-layer button:hover {
+    background-color: #af05aa;
+    color: #fff;
 }

@@ -8,18 +8,29 @@ function loginModel() {
         loginPassword = $('#login-password')[0],
         loginButton = $('#login-button')[0],
         loginInput = $('.login-container input'),
+        floatingLayer = $('.main-floating-layer')[0],
+        floatingButton = $('.main-floating-layer div button')[0],
         switchButton = $('.switch-button')[0].getElementsByTagName('button'),
-        filterPattern = /^[\u4E00-\u9FA5|￥……&*（）——|【】‘；：”“’。，、？]$/,     // 用于过滤掉输入密码
-        /* JSON对象 */
-        jsonObj = {},
-        i,
-        str;
+        filterPattern = new RegExp('^[\\u4E00-\\u9FA5|￥……&*（）——|【】‘；：”“’。，、？]$');     // 用于过滤掉输入密码
 
     /* 这是登录模块的鼠标点击事件 */
     function loginClick(event) {
         switch (event.target) {
             case loginButton : {
-                /*  */
+                /* JSON对象 */
+                var jsonObj = {},
+                    i;
+
+                if (loginAccount.value.length == 0) {
+                    submitResultMessage('请输入账号');
+                    return;
+                }
+                if (loginPassword.value.length == 0) {
+                    submitResultMessage('请输入密码');
+                    return;
+                }
+                
+                /* 数据用json封装起来 */
                 for (i = 0; i < 2; i++) {
                     jsonObj[loginInput[i].name] = loginInput[i].value;
                 }
@@ -32,9 +43,33 @@ function loginModel() {
                             function(xhr, status) {
                                 switch(status) {
                                     /* 根据返回的状态码执行下一步 */ 
-                                    
+                                    case 0: {
+                                        submitResultMessage('操作失败');
+                                        break;
+                                    }
+
+                                    case 1: {
+                                        submitResultMessage('登陆成功');
+                                        window.location.href = 'http://ip:8080/qgmovie/';
+                                        break;
+                                    }
+
+                                    case 3: {
+                                        submitResultMessage('登录失败，请检查账号和密码是否正确');
+                                        break;
+                                    }
+
+                                    case 4: {
+                                        submitResultMessage('请勿重复登录');
+                                        break;
+                                    }
+
                                 }
+                            }, 
+                            function() {
+                                submitResultMessage('请求失败');
                             })
+
                 break;
             }
 
@@ -50,6 +85,15 @@ function loginModel() {
                 changePasswordView($('.password-icon:eq(0)').parent());
                 break;
             }
+
+            /* 浮出层消失的事件 */
+            case floatingButton: {
+                removeClass($('.main-floating-layer div')[0], 'floating-active');
+                setTimeout(function() {
+                    floatingLayer.style.display = 'none';
+                }, 400);            
+                break;
+            }
         }
     }
 
@@ -62,6 +106,9 @@ function loginModel() {
             }
 
             case loginPassword : {
+                var str,
+                    i;
+
                 loginPassword.value = inputLimit(loginPassword, 18);
 
                 str = '';
@@ -69,6 +116,7 @@ function loginModel() {
                     str = str + loginPassword.value.substr(i, 1).replace(filterPattern, ''); 
                 } 
                 loginPassword.value = str;
+
                 break;
             }
         }
@@ -97,17 +145,17 @@ function registerModel() {
         passwordStrengthIntro = passwordType.getElementsByTagName('i')[0],
         strengthColor = passwordType.getElementsByTagName('span'),
         switchButton = $('.switch-button')[0].getElementsByTagName('button'),
-        weakPattern1 = /^[0-9]*$/,    // 密码是纯数字
-        weakPattern2 = /^[a-zA-Z]+$/,    // 密码是纯英文
-        weakPattern3 = /^[~!@#$%^&\s*\(\)\{\}\[\]"'|\\:;<,>.?\/`\-\=\_\+]+$/,    // 密码是纯字符
-        mediumPattern1 = /^(?!\d+$)(?![a-zA-Z]+$)[a-zA-Z\d]+$/,     // 密码是数字+字母
-        mediumPattern2 = /^(?![a-zA-Z]+$)(?![~!@#$%^&\s*\(\)\{\}\[\]"'|\\:;<,>.?\/`\-\=\_\+]+$)[a-zA-Z~!@#$%^&\s*\(\)\{\}\[\]"'|\\:;<,>.?\/`\-\=\_\+]+$/,   // 密码是字母+特殊字符
-        mediumPattern3 = /^(?!\d+$)(?![~!@#$%^&\s*\(\)\{\}\[\]"'|\\:;<,>.?\/`\-\=\_\+]+$)[\d~!@#$%^&\s*\(\)\{\}\[\]"'|\\:;<,>.?\/`\-\=\_\+]+$/,       // 密码是数字+特殊字符
-        strongPattern = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&\s*\(\)\{\}\[\]"'|\\:;<,>.?\/`\-\=\_\+])[\da-zA-Z~!@#$%^&\s*\(\)\{\}\[\]"'|\\:;<,>.?\/~`\-\=\_\+]+$/,  // 密码是数字+字母+特殊字符
-        emailPattern = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
-        filterPattern = /^[\u4E00-\u9FA5|￥……&*（）——|【】‘；：”“’。，、？]$/,     // 用于过滤掉输入密码
-        i,
-        str;
+        floatingLayer = $('.main-floating-layer')[0],
+        floatingButton = $('.main-floating-layer div button')[0],
+        weakPattern1 = new RegExp('^[0-9]*$'),    // 密码是纯数字
+        weakPattern2 = new RegExp('^[a-zA-Z]+$'),    // 密码是纯英文
+        weakPattern3 = new RegExp('^[~!@#$%^&\\s*\\(\\)\\{\\}\\[\\]\"\'|\\\\:;<,>.?\\/`\\-\\=\\_\\+]+$'),    // 密码是纯字符
+        mediumPattern1 = new RegExp('^(?!\\d+$)(?![a-zA-Z]+$)[a-zA-Z\\d]+$'),     // 密码是数字+字母
+        mediumPattern2 = new RegExp('^(?![a-zA-Z]+$)(?![~!@#$%^&\\s*\\(\\)\\{\\}\\[\\]\"\'|\\\\:;<,>.?\\/`\\-\\=\\_\\+]+$)[a-zA-Z~!@#$%^&\\s*\\(\\)\\{\\}\\[\\]\"\'|\\\\:;<,>.?\\/`\\-\\=\\_\\+]+$'),   // 密码是字母+特殊字符
+        mediumPattern3 = new RegExp('^(?!\\d+$)(?![~!@#$%^&\\s*\\(\\)\\{\\}\\[\\]\"\'|\\\\:;<,>.?\\/`\\-\\=\\_\\+]+$)[\\d~!@#$%^&\\s*\\(\\)\\{\\}\\[\\]\"\'|\\\\:;<,>.?\\/`\\-\\=\\_\\+]+$'),       // 密码是数字+特殊字符
+        strongPattern = new RegExp('^(?=.*\\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&\\s*\\(\\)\\{\\}\\[\\]\"\'|\\\\:;<,>.?\\/`\\-\\=\\_\\+])[\\da-zA-Z~!@#$%^&\\s*\\(\\)\\{\\}\\[\\]\"\'|\\\\:;<,>.?\\/`\\-\\=\\_\\+]+$'),  // 密码是数字+字母+特殊字符
+        emailPattern = new RegExp('^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'),
+        filterPattern = new RegExp('^[\\u4E00-\\u9FA5|￥……&*（）——|【】‘；：”“’。，、？]$');     // 用于过滤掉输入密码
 
     /**
      * 判断密码强度的函数
@@ -179,7 +227,9 @@ function registerModel() {
      * @param {Object} jsonObj 将表单信息进行封装为json对象
      */
     function signinSubmit() {
-        var jsonObj = {};
+        var jsonObj = {},
+            i;
+
         switch(true) {
             case (account.value.length == 0): {
                 promptMessage(0, 'block', '请输入邮箱地址');
@@ -198,7 +248,7 @@ function registerModel() {
                 return;
             }
 
-            case (password.value.length < 6): {
+            case (password.value.length <= 6): {
                 password.focus();
                 return;
             }
@@ -230,20 +280,30 @@ function registerModel() {
                     function(xhr, status) {
                         /* 回调函数 */
                         switch(status) {
+                            case 0:{
+                                submitResultMessage('操作失败');
+                            }
+
                             case 1: {
                                 /* 注册成功 */
+                                submitResultMessage('注册成功');
+                                window.reload();
                                 break;
                             }
 
                             case 2: {
                                 /* 账户已经存在 */
+                                submitResultMessage('用户名已经存在');
                                 break;
                             }
 
-                            default: {
-                                /* 无法连接网络 */
+                            case 3: {
+                                submitResultMessage('邮箱已经被注册了');
                             }
                         }
+                    },
+                    function() {
+                        submitResultMessage('请求失败');
                     });
 
     }
@@ -253,6 +313,9 @@ function registerModel() {
      * @param {*} event 事件对象
      */
     function signinInput(event) {
+        var str,
+            i;
+
         switch(event.target) {
             case password: {
                 password.value = inputLimit(password, 18);
@@ -345,6 +408,7 @@ function registerModel() {
                 changePasswordView($('.signin-container .password-icon:eq(1)').parent());
                 break;
             }
+
         }
     }
 
@@ -372,4 +436,17 @@ function changePasswordView($dom) {
         $span.css('background-image', 'url(../images/password1.png)');
         $input.attr('type', 'password');
     }
+}
+
+/**
+ * 修改浮出层的样式，在浮出层显示信息
+ * @param {String} message 
+ */
+function submitResultMessage(message) {
+    $('.main-floating-layer')[0].style.display = 'block';
+    submitResult = $('.main-floating-layer span')[0];
+    submitResult.innerText = message;
+    setTimeout(function() {
+        addClass($('.main-floating-layer div')[0], 'floating-active');
+    }, 100);
 }
