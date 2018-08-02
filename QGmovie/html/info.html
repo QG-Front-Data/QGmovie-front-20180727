@@ -28,9 +28,11 @@
     <div class="main-container">
         <div class="user-container">
             <div class="user-head-container">
-                <img src="">
+                <img src="" id="user-pic">
             </div>
+           
         </div>
+        <div class="introdution-container"><input type="text" id="introdution" value="请用一句话介绍你自己"></div>
         <ul class="info-ul">
            <li><a href="javascript:">个人信息</a></li>
            <li><a href="javascript:">我的评论</a></li>
@@ -38,16 +40,24 @@
            <li><a href="javascript:">我的收藏</a></li>
         </ul>
         <div class="ajax-container">
-            <ul class="user-ul">
-                <li><label for="">*昵称</label> <input type="text" value="用户名"><img src="" alt=""></li>
-                <li><label for="">性别</label> <input type="text" value="男"></li>
-                <li><label for="">生日</label> <input type="text"></li>
-                <li><label for="">邮箱</label> <input type="text"></li>
-                <li><label for="">QQ</label> <input type="text" placeholder="填写"></li>
-                <li><label for="">学历</label> <input type="text" placeholder="填写"></li>
-                <li><label for="">职业</label> <input type="text" placeholder="填写"></li>
+            <ul class="user-ul show">
+                <li><label for="">用户名</label><input type="text" value="用户名"><img src="../images/edit.png" class="can-edit-user"></li>
+                <li><label for="">性别</label><input type="text" value="男"><img src="../images/edit.png" class="can-edit-user"></li>
+                <li><label for="">生日</label><input type="text" id="birthday"><img src="../images/edit.png" class="can-edit-user"></li>
+                <li><label for="">QQ</label><input type="text" placeholder="填写"><img src="../images/edit.png" class="can-edit-user"></li>
+                <li><label for="">学历</label><input type="text" placeholder="填写"><img src="../images/edit.png" class="can-edit-user"></li>
+                <li><label for="">职业</label><input type="text" placeholder="填写"><img src="../images/edit.png" class="can-edit-user"></li>
+                <button class="commit-button">确认修改</button>
             </ul>
-
+            <ul class="comment-ul">
+                <div class="tips-container">你还没有评论哟</p>
+            </ul>
+            <ul class="history-ul" >
+                <div class="tips-container">浏览历史为空</p>
+            </ul>
+            <ul class="collect-ul">
+                <div class="tips-container">赶紧去收藏几部电影吧</p>
+            </ul>
         </div>
     </div>
     <!-- < 底部栏 > -->

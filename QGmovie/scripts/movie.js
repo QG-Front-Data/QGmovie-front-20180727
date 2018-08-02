@@ -1,12 +1,7 @@
 // var movieData = json.data.movie; //请求得到的数据
 //     commentData = json.data.comment;
 
-/**
- * 填充函数
- */
-function addDetail(el, detail) {
-    el.innerHTML = detail;
-}
+
 
 // /**
 //  * 填充用户名
@@ -40,18 +35,13 @@ function addDetail(el, detail) {
 //     addDetail(moviePic, movieData.picture); //电影海报
 // })();
 
-/**
- *  创建评论
- */
 
-//评论总数
-//addDetail(document.getElementById('comment-number'), json.commentNum);
+
 
 
 
 
 var commentUl = document.getElementsByClassName('comment-list-container')[0],
-    commentModel = commentUl.getElementsByTagName('li')[0], //评论模板
     commentList = commentUl.getElementsByTagName('li'),
     commentUserPic = document.getElementsByClassName('user-pic'),
     commentUserName = document.getElementsByClassName('user-name'),
@@ -99,20 +89,26 @@ var commentUl = document.getElementsByClassName('comment-list-container')[0],
                 },
             ]
         };
+
+//评论模板
+var commentModel = '<div class="comment-header">'
+                 + '<a href="javascript:" class="user-head-container"><img src="" class="user-pic"></a>'   
+                 + '<span class="user-name"></span>'          
+                 + '<i class="create-time"></i>'          
+                 + ' </div>'     
+                 + '<div class="comment-content"></div>';      
+//评论总数                    
+addDetail(document.getElementById('comment-number'), json.commentNum);
+
 (function createComment(num) {
-        //先清空再创建新的
-        for (var j = commentList.length; j > 1; j--) {
-            commentUl.removeChild(commentUl.lastElementChild);
-        }
+        createModel(commentModel, 'li', commentUl, num);
+
         for (var i = 0; i < num; i++) {
-            var newComment = commentModel.cloneNode(true);
             addDetail(commentContent[i], json.comment[i].content);
             addDetail(commentUserName[i], json.comment[i].userName); //用户名
             addDetail(commentCreatTime[i], json.comment[i].commentTime); //评论时间
             //commentUserPic[0].setAttribute('src', json.comment[i].userPic)); //设置头像
-            commentUl.appendChild(newComment);
         }
-        
 })(5);
 
 var pageButton = document.getElementsByClassName('page-button'),

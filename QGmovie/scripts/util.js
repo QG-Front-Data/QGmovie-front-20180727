@@ -163,3 +163,30 @@ var requestAnimation = function (fun, time) {
         return setTimeout(fun, time);
     }
 }
+/** 
+ * 根据模板创建函数
+ * DATE 20180802
+ * @author czf
+ * @param {*} model 模板
+ * @param {*} tag 要创建的标签名
+ * @param {*} parentNode 要追加的父节点
+ * @param {*} num  要创建的数量
+ */
+
+function createModel(model, tag, parentNode, num) {
+    for(var i = 0; i < num; i++) {
+        var newNode = document.createElement(tag);
+        newNode.innerHTML = model;
+        parentNode.appendChild(newNode);
+    }
+}
+/**
+ * 填充数据函数
+ * DATE 20180802
+ * @author czf
+ * @param {*} el 要填入数据的元素
+ * @param {*} detail 要填入的数据
+ */
+function addDetail(el, detail) {
+    el.innerHTML = detail;
+}
