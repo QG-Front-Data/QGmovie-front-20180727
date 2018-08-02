@@ -36,7 +36,7 @@ function loginModel() {
                 }
 
                 $.ajax({
-                    url: 'http://192.168.1.119:8080/qgmovie/login',
+                    url: 'http://'+ window.ip +':8080/qgmovie/login',
                     type: 'post',
                     data: JSON.stringify(jsonObj),
                                 dataType: 'json',
@@ -280,7 +280,7 @@ function registerModel() {
 
 
         $.ajax({
-            url: 'http://192.168.1.119:8080/qgmovie/register',
+            url: 'http://'+ window.ip +':8080/qgmovie/register',
             type: 'post',
             data: JSON.stringify(jsonObj),
             dataType: 'json',

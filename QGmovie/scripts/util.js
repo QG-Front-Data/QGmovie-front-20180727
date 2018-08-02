@@ -1,3 +1,7 @@
+window.ip = '192.168.1.102';
+
+
+
 /**
  * 对表单的输入字符个数进行限制，超出的话截取前number个字符作为这个表单的值
  * @func
@@ -158,7 +162,59 @@ function throttle(method, context) {
 }
 
 function searchCommit() {
-    var key = $('#search-input')[0].value;
-
+    var key = encodeURI($('#search-input')[0].value);
+    // var ncodeURI(key);
     window.location.href = 'search.html?key=' + key;
+}
+/*
+ * 采用懒加载检测requestAnimationFrame兼容性
+ * DATE 20180801
+ * @author czf
+ * @param {*} fun 
+ * @param {*} time 
+ */
+var requestAnimation = function (fun, time) {
+    if (window.requestAnimationFrame) {
+        return requestAnimationFrame(fun);
+    } else {
+        return setTimeout(fun, time);
+    }
+}
+
+/**
+ * 将图片预先缓存到网页中，需要的时候再将其读取。
+ * @param {Array} imgArray 图片的数组
+ * @param {Function} callback 回调函数
+ */
+function imgPreLoad(imgArray) {
+    var i = 0,
+        img = new Image();
+
+        function load() {
+            img.src = 'http://'+ window.ip +':8080/qgmovie/img/' + imgArray[i];
+            i++;
+            img.onload = function() {
+                if (i < imgArray.length) {
+                    load();
+                }
+            }
+        }
+        load();
+}
+ 
+/**
+ * 对图片进行懒加载
+ * @param {Object} $targetArray 图片加载对象
+ */
+function lazyLoad($targetArray) {
+    var i;
+    for (i = 0; i < $targetArray.length; i++) {
+        if ($(document).scrollTop() >= $targetArray[i].scrollTop) {
+            if ($targetArray[i].tagName == 'IMG') {
+                $targetArray[i].setAttribute('src', 'http://'+ window.ip +':8080/qgmovie/img/' + $targetArray[i].getAttribute('data-src'));
+            } else {
+                $targetArray.get(i).css('background-image', 'url('+ 'http://'+ window.ip +':8080/qgmovie/img/' +')')
+            }
+        }
+    }
 }

@@ -1,27 +1,18 @@
+var pageRequest = searchRequest;
+window.page =1;
+window.onLoadImg = 0;
+window.key = decodeURI(window.location.search).split('=')[1];
 
-var button = document.getElementById('search-button'); 
 
-/**
- * 采用懒加载检测requestAnimationFrame兼容性
- * @param {*} fun 
- * @param {*} time 
- */
-var requestAnimation = function (fun, time) {
-    if (window.requestAnimationFrame) {
-        return requestAnimationFrame(fun);
-    } else {
-        return setTimeout(fun, time);
-    }
-}
-
+var button = document.getElementById('search-button'); //搜索按钮
 function animate() {
     var sHeight = document.documentElement.scrollTop;
     
     var top = function() {
-        sHeight = sHeight + (300 - sHeight) / 4;
+        sHeight = sHeight + (250 - sHeight) / 4;
 
-        if (sHeight > 299) {
-            document.documentElement.scrollTop = 300;
+        if (sHeight > 249) {
+            document.documentElement.scrollTop = 250;
             return;
         }
         document.documentElement.scrollTop = sHeight;
@@ -40,7 +31,6 @@ function fadeIn(el) {
             el.style.opacity = 1;
             return;
         } 
-        
         el.style.opacity = opacity;
 
         requestAnimation(op);
@@ -48,12 +38,14 @@ function fadeIn(el) {
     op();
 }
 
-(function fadeOut() {
+(function () {
     var sHeight = document.documentElement.scrollTop;
     
     document.onscroll = function() {
         if (document.documentElement.scrollTop < 200) {
             hLogo.style.opacity = 0;
+        } else if (document.documentElement.scrollTop >= 300) {
+            hLogo.style.opacity = 1;
         }
     }
 })();
@@ -64,101 +56,423 @@ button.onclick = function() {
     fadeIn(hLogo);
 };
 
+var tagContainer = document.getElementsByClassName('tag-container')[0],
+        tag = document.getElementsByClassName('tag'),
+        closeTagButton = document.getElementsByClassName('close-tag');
+
 /**
- * 建立树状图
+ * 创建标签
+ *  DATE 20180801
+ * @author czf
+ * @param {*} text 标签的内容
  */
+
+function creatTag(text) {
+        span = tag[0].getElementsByTagName('span')[0];
+        //给标签赋值
+        span.innerHTML = text;
+
+    var cloneTag = tag.cloneNode(true);
+    tagContainer.appendChild(cloneTag);
+};
+
+/**
+ * 删除一个标签
+ * @param {*} node 
+ */
+
+function closeTag(node) {
+    tagContainer.removeChild(node);
+}
+
+/**
+ * 点击按钮除删一个标签
+ */
+
+(function() {
+    for (var i = 0; i < closeTagButton.length; i++) {
+        (function(i) {
+            closeTagButton[i].onclick = function() {
+                closeTag(tag[i]);
+            }
+        })(i);
+    }
+})();
+
+
+/**
+ * 分类树
+ */
+
 (function typeTree() {
-    var data = {"value":["root","根节点"], "children":[{"name":"类型", "value":["root"], "children":[{ "name":"剧情", "value":["leave"], },{ "name":"喜剧", "value":["leave"], },{ "name":"动作", "value":["leave"], },{ "name":"爱情", "value":["leave"], },{ "name":"科幻", "value":["leave"], },{ "name":"悬疑", "value":["leave"], },{ "name":"惊悚", "value":["leave"], },{ "name":"恐怖", "value":["leave"], },{ "name":"犯罪", "value":["leave"], },{ "name":"同性", "value":["leave"], },{ "name":"音乐", "value":["leave"], },{ "name":"歌舞", "value":["leave"], },{ "name":"传记", "value":["leave"], },{ "name":"历史", "value":["leave"], },{ "name":"战争", "value":["leave"], },{ "name":"西部", "value":["leave"], },{ "name":"奇幻", "value":["leave"], },{ "name":"冒险", "value":["leave"], },{ "name":"灾难", "value":["leave"], },{ "name":"武侠", "value":["leave"], },{ "name":"情色", "value":["leave"], },], }, { "name":"地区", "value":["root"], "children":[{ "name":"中国大陆", "value":["leave"] },{ "name":"美国", "value":["leave"] },{ "name":"香港", "value":["leave"] },{ "name":"台湾", "value":["leave"] },{ "name":"日本", "value":["leave"] },{ "name":"韩国", "value":["leave"] },{ "name":"英国", "value":["leave"] },{ "name":"法国", "value":["leave"] },{ "name":"德国", "value":["leave"] },{ "name":"意大利", "value":["leave"] },{ "name":"西班牙", "value":["leave"] },{ "name":"印度", "value":["leave"] },{ "name":"泰国", "value":["leave"] },{ "name":"俄罗斯", "value":["leave"] },{ "name":"伊朗", "value":["leave"] },{ "name":"加拿大", "value":["leave"] },{ "name":"澳大利亚", "value":["leave"] },{ "name":"爱尔兰", "value":["leave"] },{ "name":"瑞典", "value":["leave"] },{ "name":"巴西", "value":["leave"] },{ "name":"丹麦", "value":["leave"] }] }, { "name":"评分", "value":["root"], "children":[{ "name":"0~1", "value":["leave"] },{ "name":"1~2", "value":["leave"] },{ "name":"2~3", "value":["leave"] },{ "name":"3~4", "value":["leave"]},{"name":"4~5", "value":["leave"]}]}] },
+    var data = {
+        "value": ["root", "根节点"],
+        "children": [
+            {
+                "name": "类型", "value": ["root"],
+                "children": [
+                    { "name": "剧情", "value": ["leave1"], },
+                    { "name": "喜剧", "value": ["leave1"], },
+                    { "name": "动作", "value": ["leave1"], },
+                    { "name": "爱情", "value": ["leave1"], },
+                    { "name": "科幻", "value": ["leave1"], },
+                    { "name": "悬疑", "value": ["leave1"], },
+                    { "name": "惊悚", "value": ["leave1"], },
+                    { "name": "恐怖", "value": ["leave1"], },
+                    { "name": "犯罪", "value": ["leave1"], },
+                    { "name": "同性", "value": ["leave1"], },
+                    { "name": "音乐", "value": ["leave1"], },
+                    { "name": "歌舞", "value": ["leave1"], },
+                    { "name": "传记", "value": ["leave1"], },
+                    { "name": "历史", "value": ["leave1"], },
+                    { "name": "战争", "value": ["leave1"], },
+                    { "name": "西部", "value": ["leave1"], },
+                    { "name": "奇幻", "value": ["leave1"], },
+                    { "name": "冒险", "value": ["leave1"], },
+                    { "name": "灾难", "value": ["leave1"], },
+                    { "name": "武侠", "value": ["leave1"], },
+                    { "name": "情色", "value": ["leave1"], },
+                ],
+            },
+            {
+                "name": "评分", "value": ["root"],
+                "children": [
+                    { "name": "0~2", "value": ["leave2"] },
+                    { "name": "2~4", "value": ["leave2"] },
+                    { "name": "4~6", "value": ["leave2"] },
+                    { "name": "6~8", "value": ["leave2"] },
+                    { "name": "8~10", "value": ["leave2"] }
+                ]
+            },
+            {
+                "name": "地区", "value": ["root"],
+                "children": [
+                    { "name": "中国大陆", "value": ["leave3"] },
+                    { "name": "美国", "value": ["leave3"] },
+                    { "name": "香港", "value": ["leave3"] },
+                    { "name": "台湾", "value": ["leave3"] },
+                    { "name": "日本", "value": ["leave3"] },
+                    { "name": "韩国", "value": ["leave3"] },
+                    { "name": "英国", "value": ["leave3"] },
+                    { "name": "法国", "value": ["leave3"] },
+                    { "name": "德国", "value": ["leave3"] },
+                    { "name": "意大利", "value": ["leave3"] },
+                    { "name": "西班牙", "value": ["leave3"] },
+                    { "name": "印度", "value": ["leave3"] },
+                    { "name": "泰国", "value": ["leave3"] },
+                    { "name": "俄罗斯", "value": ["leave3"] },
+                    { "name": "伊朗", "value": ["leave3"] },
+                    { "name": "加拿大", "value": ["leave3"] },
+                    { "name": "澳大利亚", "value": ["leave3"] },
+                    { "name": "爱尔兰", "value": ["leave3"] },
+                    { "name": "瑞典", "value": ["leave3"] },
+                    { "name": "巴西", "value": ["leave3"] },
+                    { "name": "丹麦", "value": ["leave3"] }]
+            },
+        ]
+    },
         myChart = echarts.init(document.getElementsByClassName('type-tree')[0]),
         option = {
-        tooltip: {
-            trigger: 'item',
-            triggerOn: 'mousemove',
-        },
-        series:[
-            {
-                type: 'tree',
+            tooltip: {
+                trigger: 'item',
+                triggerOn: 'mousemove',
+            },
+            series: [
+                {
+                    type: 'tree',
+                    color: ['#000','#000', '#000', '#000', '#000','#000',  '#000', '#000','#000', '#000', '#000'],
+                    data: [data],
+                    left: '1%',
+                    right: '1%',
+                    top: '-15%',
 
-                data: [data],
+                    symbol: 'circle',
+                    orient: 'vertical',
+                    symbolSize: 45,
 
-                left: '2%',
-                right: '2%',
-                top: '8%',
-                bottom: '20%',
+                    /*  */
+                    
+                    //关闭跟随提示
+                    tooltip: {
+                        show: false
+                    },
 
-                symbol: 'emptyCircle',
+                    expandAndCollapse: true,
+                    
+                    initialTreeDepth: 1,
 
-                orient: 'vertical',
-                symbolSize: 50,
-                symbolColor: 'red',
-                
-                expandAndCollapse: true,
-                initialTreeDepth:1,
-
-                label: {
-                    normal: {
+                    label: {
                         position: 'inside',
                         verticalAlign: 'middle',
                         align: 'middle',
-                        fontSize: 16,
-                    }
-                },
-
-                leaves: {
-
-                    label: {
-                        normal: {
-                            position: 'inside',
-                            verticalAlign: 'middle',
-                            align: 'middle',
-                        }
+                        fontSize: 12,
+                        color: '#fff'
                     },
-                },
-                animationDurationUpdate: 750
-            }
-        ],
-    };
+                    itemStyle: {
+                        color: '#000',
+                        borderColor: '#000'
+                    },
+     
+                    animationDurationUpdate: 750
+                }
+            ],
+        };
 
     myChart.showLoading();
     myChart.setOption(option);
     myChart.hideLoading();
 
+    /**
+     * 树状图的点击事件
+     */
     myChart.on("click", function(param) {
-        if (param.value[0] === "leave") {
-            /**
-             * 进行下一步操作
-             */
+
+        /**
+         * 遍历已选择的类型，点击替换内容
+         * @param {string} type 三种类型之一
+         * @param {string} value 相应的类型值
+         */
+        function checkType(type, value) {
+            var i;
+            for (i = 0; i < $('.tag-container .tag').length; i++) {
+                if ($('.tag-container .tag span')[i].getAttribute('types') === type) {
+                    $('.tag-container .tag span')[i].innerText = value;     
+                    return;
+                }
+            }
+            $('.tag-container')[0].innerHTML += '<li class="tag" ><span types='+ type +'>'+ param.name +'</span><button class="close-tag"></button></li>';
+        }
+
+        switch(param.value[0]) {
+            case 'leave1': {
+                checkType('1', param.name);
+                break;
+            }
+
+            case 'leave2': {
+                checkType('2', param.name);
+                break;
+            }
+
+            case 'leave3': {
+                checkType('3', param.name);
+                break;
+            }
         }
     });
 })();
+
+function searchPageClick(event) {
+    if (hasClass(event.target, 'close-tag') == true) {
+        $(event.target).parent('LI').remove();
+    }
+
+    switch(event.target) {
+        case $('.search-button')[0]: {
+            searchCommit();
+            break;
+        }
+
+        case $('#search-button')[0]: {
+            treeRetract();
+        }
+        // 显示树状图
+        case $('.put-down')[0]: {
+            $('.type-tree').animate({
+                height: '500px',
+                width:'100%'
+            }, 600, function() {
+                $('.put-down').css('display', 'none');
+                $('.type-tree div').animate({
+                    width:'100%',
+                    height:'500px'
+            }, 200)})
+            break;
+        }
+
+        case $('.show-more-button a')[0]: {
+            pageMore();
+            break;
+        }
+
+        case $('.confirm-type')[0]: {
+            // 清除节点并将页数还原为1
+            cleanTags();
+            treeRetract();
+            typeRequest();
+            break;
+        }
+    }
+}
+
+/**
+ * 将树收缩起来
+ */
+function treeRetract() {
+    $('.type-tree div').animate({
+        height: '200px',
+        width:'200px'
+    }, 200, function() {
+        $('.type-tree').animate({
+            width:'0px',
+            height:'0px'
+        }, 600, function() {
+        // 将往下拉的图标显示出来
+        $('.put-down').css('display', 'block');
+        });
+    });
+    
+}
 
 /**
  * 搜索页面初始化函数
  */
 function searchRequest() {
-    // var param = window.location.search,
-    //     key = param.split('&')[0].split('=')[1],
-    //     page = param.split('&')[1].split('=')[1],
-    //     jsonObj = {};
 
-    // jsonObj.key = key;
-    // jsonObj.page = page;
     /* 添加搜索框内容 */
-    var key = 
-        jsonObj = {};
+    jsonObj = {};
 
-    jsonObj.key = key;
+    jsonObj.key = window.key;
     jsonObj.page = window.page;
-
     $.ajax({
-    	url: 'http://ip:8080/qgmovie/search/key',
+    	url: 'http://'+ window.ip +':8080/qgmovie/search/key',
     	type: 'post',
         data: JSON.stringify(jsonObj),
         dataType: 'json',
     	processData: false,
-    	//contentType: contentTypes,
-        success: successCallback,
-        error: errorCallback
+    	// contentType: 'application/json',
+        success: function(xhr) {
+            searchCreateImg(xhr);
+        },
+
+        error: function() {
+            alert('连接失败')
+        }
     	});
 }
 
+/**
+ * 根据类型发送请求函数
+ */
+function typeRequest() {
+    var i,
+        jsonObj = {};
+        jsonObj.page = window.page.toString();
+
+        // 这一步很重要，后续的加载都是靠这一步实现函数的抽象的。
+        pageRequest = typeRequest;
+
+        // 添加属性值
+        for (i = 1; i <= 3; i++) {
+            jsonObj['type' + i] = 'all';
+        }
+        jsonObj.place = 'all';
+
+    for (i = 0; i < $('.tag').length; i++) { 
+        if ($('.tag span')[i].getAttribute('types') === '3') {
+            jsonObj['place'] = $('.tag span')[i].innerText;
+            continue;
+        }
+        // 获取电影标签的值
+        jsonObj['type' + (i + 1).toString()] = $('.tag span')[i].innerText;
+    }
+
+    console.log(jsonObj);
+    $.ajax({
+    	url: 'http://'+ window.ip +':8080/qgmovie/movie/search/type',
+    	type: 'post',
+        data: JSON.stringify(jsonObj),
+        dataType: 'json',
+    	processData: false,
+    	// contentType: 'application/json',
+        success: function(xhr) {
+            searchCreateImg(xhr);
+        },
+
+        error: function() {
+            alert('连接失败')
+        }
+    	});
+}
+
+// EventUtil.addHandler($('.confirm-type')[0], 'click', typeRequest);
+
+function cleanTags() {
+    window.page = 1;
+    $('.movie-container')[0].innerHTML = '';
+}
+ 
+window.onmousewheel = mousemoveLoad;
+function mousemoveLoad(event) {
+    var height = document.body.clientHeight,
+        scrollHeight = document.body.scrollHeight,
+        len = scrollHeight - height;
+
+    // 图片懒加载
+    lazyLoad($('.movie-container li img'));
+    
+    if (($(document).scrollTop()+10 >= $(document).height()-$(window).height()) && (event.deltaY > 0) && $('.show-more-button a')[0].innerText !== '加载更多') {
+        // 当在加载模式中到底的时候
+        pageMore();
+        window.onmousewheel = null;
+        setTimeout(function() {
+            window.onmousewheel = mousemoveLoad;
+        }, 500);
+    }
+}
+
+/**
+ * 创建图标
+ * @param {Object} jsonObj 
+ */
+function searchCreateImg(xhrRsponse) {
+    var i = 0,
+        imgArray = new Array(),
+        jsonObj = xhrRsponse.data;
+        // 设定最大页数
+        window.maxPage = Math.ceil(xhrRsponse.movieNum/14);
+
+        // 当为最大页数的时候
+        if (window.maxPage == window.page) {
+            $('.show-more-button a')[0].innerText = '已经到底了'; 
+        }
+
+        for (i = 0; i < jsonObj.length; i++) {
+            imgArray[i] = jsonObj[i].picture;
+        }
+        
+        for (i = 0; i < jsonObj.length; i++) {
+            $('.movie-container')[0].innerHTML += '<li><a href="http://ip:8080/qgmovie/movie/detail?movieID='+ jsonObj[i].id +'"><img src="" data-src='+ imgArray[i] +'><p>'+ jsonObj[i].moviename +'<span>'+ jsonObj[i].score.toString().slice(0,3) +'</span></p></a></li>'
+        }
+
+        // 预加载图片
+        imgPreLoad(imgArray);
+
+        function loadImg() {
+            /**
+             * 先进行判断，是否在某一点出刷新
+             */
+            lazyLoad($('.movie-container li img'));
+        };
+        loadImg();
+
+        // 标记已经加载的图片数量,已经加载完毕，页数加一
+        window.onLoadImg +=14;
+        window.page++;
+}
+
+function pageMore() {
+    if (window.page >= window.maxPage) {
+        return;
+    }
+    $('.show-more-button a')[0].innerText = '向下滑动继续加载'; 
+    pageRequest();
+}
+
+EventUtil.addHandler($('#search-input')[0], 'keypress', function() {
+    if (event.keyCode == 13) {
+        searchCommit();
+    }
+})
+EventUtil.addHandler(document, 'click', searchPageClick);
+searchRequest();

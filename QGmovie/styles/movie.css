@@ -1,0 +1,137 @@
+.root {
+    height: 2000px;
+    background: url(../images/searchbg.jpg) no-repeat;
+    background-position: 0 -30px;
+}
+.header {
+    height: 80px;
+    width: 100%;
+    background-color: #232325;
+    text-align: center;
+}   
+#header-logo {
+    line-height: 80px;
+}
+#header-logo img {
+    width: 180px;
+}
+
+/* 主要部分 */
+.detail-container {
+    width: 100%;
+}
+.main-container {
+    height: auto;
+    width: 40%;
+    margin: 0 auto;
+    text-align: left;
+}
+/* 电影名 */
+#movie-name {
+    font-size: 40px; 
+    padding: 40px 0;
+    letter-spacing: 5px;
+    font-family: "MicroSoftYaHei-Bold";
+    color: #181317;
+    text-align: center;
+}
+.movie-container {
+    width: 100%;
+}
+.movie-pic-container { 
+    height: auto;
+    margin-right: 70px;
+    display: inline-block;
+    background-color: #000;
+    vertical-align: top;
+}
+.movie-pic-container img {
+    height: 300px;
+    width: 250px;
+}
+.movie-detail {
+    height: auto;
+    display: inline-block;
+    text-align: left;
+}
+.movie-detail li {
+    margin-bottom: 20px;
+    color: #7f6e7f;
+    font-weight: 600;
+}
+.movie-detail span {
+    color: #171317;
+}
+/* 剧情简介 */
+.descrition-container {
+    width: 100%;
+    height: auto;
+    margin-bottom: 30px;
+}
+.movie-header {
+    color: #560057;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+/* 简介 */
+#movie-descrition {
+    color: #181317;
+    font-size: 16px;
+    text-indent: 2em; 
+    letter-spacing: 1px;
+    word-break: break-all;
+}
+/* 评论模块 */
+.comment-cotainer {
+    width: 100%;
+    height: auto;
+    letter-spacing: 2px;
+}
+.comment-list-container {
+    margin: 40px 0;
+}
+.comment-list-container li {
+    height: auto;
+    width: 800px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    box-shadow: 0 3px 3px 0 #666;
+    position: relative;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+}
+.comment-header {
+    height: 30px;
+    width: 83%;
+    border-bottom: 1px solid #000;
+    margin: 0 auto;
+}
+/* 用户名 */
+.comment-header span {
+    font-size: 16px;
+    font-style: normal;
+    line-height: 30px;
+    font-weight: 600;
+}
+/* 时间 */
+.create-time {
+    font-size: 10px;
+    float: right;
+    line-height: 30px;
+}
+.user-head-container {
+    height: 70px;
+    width: 70px;
+    background-color: #000;
+    border-radius: 50%;
+    position: absolute;
+    top: -20px;
+    left: -15px;
+}
+.user-head-container img {
+    height: 100%;
+}
+.comment-content {
+    width: 83%;
+    margin: 15px auto;
+}

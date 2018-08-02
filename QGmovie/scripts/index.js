@@ -23,19 +23,6 @@ var header = document.getElementsByClassName('header')[0]; //顶部栏
 
 var backToTopButton = document.getElementsByClassName('toTop-button')[0]; 
 
-/**
- * 采用懒加载检测requestAnimationFrame兼容性
- * @param {*} fun 
- * @param {*} time 
- */
-var requestAnimation = function(fun, time) {
-    if (window.requestAnimationFrame) {
-        return requestAnimationFrame(fun);
-    } else {
-        return setTimeout(fun, time);
-    }
-}
-
 function backToTop() {
     var sHeight = document.documentElement.scrollTop;
     
@@ -255,15 +242,43 @@ function arrowsVisibility($arrow) {
 }
 
 
-
 /**
- * 创建推荐的片li
- * @param {Object} recommendArea 点击区域的对象
- * @param {Object} json json对象 
+ * 创造节点并且将节点输入进去
+ * @param {Object} recommendArea 
+ * @param {Object-Array} jsonArray 
+ * @param {Number} number 
  */
-function createLi(recommendArea, json) {
-    recommendArea.innerHTML += '<li movie-id='+ json.movieID +'><div class="movie-image" style="background-image: url(http://192.168.1.119:8080/qgmovie/img/' + json.moviePic + ')" ></div><div class="movie-bottom"><span>' + json.movieName + '</span><b>' + json.score + '</b></div></li>'
+function createLi(recommendArea, jsonArray, number) {
+    var createFram = document.createDocumentFragment(),
+        i,
+        children;
+
+        console.log(jsonArray)
+    for (i = 0; i < number; i++) {
+        children = document.createElement('li');
+        children.setAttribute('movie-id', jsonArray[i].movieID);
+        children.innerHTML = '<div class="movie-image" style="background-image: url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score + '</b></div>';
+        createFram.appendChild(children);
+    }
+    recommendArea.appendChild(createFram);
 }
+
+
+
+
+
+
+
+
+
+// /**
+//  * 创建推荐的片li
+//  * @param {Object} recommendArea 点击区域的对象
+//  * @param {Object} json json对象 
+//  */
+// function createLi(recommendArea, json) {
+//     recommendArea.innerHTML += '<li movie-id='+ json.movieID +'><div class="movie-image" style="background-image: url(http://'+ window.ip +':8080/qgmovie/img/)" ></div><div class="movie-bottom"><span>' + json.movieName + '</span><b>' + json.score + '</b></div></li>'
+// }
 
 /**
  * 创建排行榜
@@ -281,33 +296,44 @@ function createRank(rankContainer, json) {
     var i;
 
     $.ajax({
-    url: 'http://192.168.1.119:8080/qgmovie/index',
+    url: 'http://'+ window.ip +':8080/qgmovie/index',
     type: 'post',
     dataType:'json',
     processData: false,
     success: function(xhr) {
         var number,
-            i;
+            imgArray = new Array();
+
+        console.log(xhr)
 
         number = parseInt(xhr.state);
 
         if (number == 0) {
-
+            alert('出现未知错误');
         } else {
+
             if (number == 2) {
                 $('#head-pic')[0].setAttribute('src', xhr.headPic);
                 $('#username')[0].innerText = xhr.userName;     
                 userMode();
             }
 
-            for (i = 0; i < 6; i++) {
-                createLi($('.hot-movie ul')[0], xhr.hotMovies[i]);
-                createLi($('.new-movie ul')[0], xhr.newMovies[i]);
-                createLi($('.high-commit-movie ul')[0], xhr.goodMovies[i]);
-                createLi($('.person-recommend-movie ul')[0], xhr.recMovies[i]);
-                createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
+            // 图片预加载
+            for (i = 0; i < xhr.hotMovies.length; i++) {
+                imgArray[4 * i] = xhr.hotMovies[i].moviePic;
+                imgArray[4 * i + 1] = xhr.newMovies[i].moviePic;
+                imgArray[4 * i + 2] = xhr.goodMovies[i].moviePic;
+                imgArray[4 * i + 3] = xhr.recMovies[i].moviePic;
             }
-            // itemLoad(xhr);
+
+            // 图片预加载
+            imgPreLoad(imgArray);
+
+                createLi($('.hot-movie ul')[0], xhr.hotMovies, 6);
+                createLi($('.new-movie ul')[0], xhr.newMovies, 6);
+                createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 6);
+                createLi($('.person-recommend-movie ul')[0], xhr.recMovies, 6);
+                // createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
         }
     },
     error: function() {
@@ -316,35 +342,13 @@ function createRank(rankContainer, json) {
     });
 })();
 
-/**
- * 加载图片节流，减少卡顿
- */
-function itemLoad(xhr) {
-    var i = 6;
-    function load() {
-        if (i < 20) {
-            createLi($('.hot-movie ul')[0], xhr.hotMovies[i]);
-            createLi($('.new-movie ul')[0], xhr.newMovies[i]);
-            createLi($('.high-commit-movie ul')[0], xhr.goodMovies[i]);
-            createLi($('.person-recommend-movie ul')[0], xhr.recMovies[i]);
-
-            if (i <= 12) {
-                createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
-            }
-
-            i++;
-            setTimeout(load, 5);
-        }
-    }
-    setTimeout(load, 100);
-}
 
 /**
  * 注销函数
  */
 function logout() {
     $.ajax({
-    	url: 'http://192.168.1.119:8080/qgmovie/logout',
+    	url: 'http://'+ window.ip +':8080/qgmovie/logout',
     	type: 'get',
         dataType: 'json',
     	processData: false,
@@ -389,12 +393,12 @@ function mainPageClick(event) {
          * 这两个都是判断点击的是不是电影
          */
         case ($(event.target).parent()[0].tagName === 'LI'): {
-            console.log($(event.target).parent()[0].getAttribute('movie-id'));
+            pageJump(movieID)
             // pageJump(event.getAttribute('movie-id'));
             break;
         }
         case ($(event.target).parents()[1].tagName === 'LI'): {
-            console.log($(event.target).parents()[1].getAttribute('movie-id'));
+            pageJump(movieID)
             break;
         }
         /**
@@ -421,8 +425,7 @@ function mainPageClick(event) {
  * @param {string} movieID 电影的ID
  */
 function pageJump(movieID) {
-    var target = '详情页面的url+?movie=' + movieID;
+    var target = 'login.html?movie=' + movieID;
     window.location.href = target;
 }
-
 EventUtil.addHandler(document, 'click', mainPageClick);
