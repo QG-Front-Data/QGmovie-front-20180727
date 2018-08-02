@@ -1,7 +1,7 @@
 .root {
     height: auto;
     background: url(../images/searchbg.jpg) no-repeat;
-    background-position: 0 -60px;
+    background-position: 0 -130px;
     background-size: cover;
 }
 .header {
@@ -100,6 +100,34 @@
     letter-spacing: 1px;
     word-break: break-all;
 }
+.info-container {
+    width: 100%;
+    margin: 20px auto;
+    text-align: center;
+}
+.info-container li {
+    height: auto;
+    text-align: center;
+    display: inline-block;
+    margin: 30px 0;
+}
+.info-container span {
+    height: 110px;
+    width: 110px;
+    line-height: 110px;
+    border-radius: 50%;
+    background-color: #000;
+    display: inline-block;
+    margin: 10px 40px; 
+    position: relative;
+    color: #fff;
+    font-size: 20px;
+}
+.info-container p {
+    text-align: center;
+    font-size: 22px;
+}
+
 /* 评论模块 */
 .comment-cotainer {
     width: 100%;
@@ -147,6 +175,7 @@
     position: absolute;
     top: -20px;
     left: -15px;
+    overflow: hidden;
 }
 .user-head-container img {
     height: 100%;
