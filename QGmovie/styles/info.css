@@ -245,5 +245,25 @@ body {
     display: none;
 }
 
+/* 翻页 */
 
+.more-container {
+    text-align: center;
+    width: 80%;
+    height: 50px;
+    margin: 0px auto;
+    padding-top: 30px;
+    padding: 30px 11% 0 11%; 
+    border-top: 1px solid #17131780;
+}   
+.more-button {
+    height: 100%;
+    width: 100%;
+    color: #fff;
+    background: transparent;
+    background-color: #0cf;
+}
+.more-button:hover {
+    background-color: #dfc0d9;
+}
 

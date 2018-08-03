@@ -3,9 +3,10 @@ body {
     
 }
 .root {
-    height: 2000px;
+    height: auto;
     width: 100%;
-
+    background: url(../images/searchbg.jpg) no-repeat;
+    background-size: cover;
 }
 
 /* 底部栏 */

@@ -230,11 +230,11 @@ function lazyLoad($targetArray) {
  * @param {*} num  要创建的数量
  */
 
-function createModel(model, tag, parentNode, num) {
+function createModelNode(model, tag, parentNode, num) {
     for(var i = 0; i < num; i++) {
         var newNode = document.createElement(tag);
         newNode.innerHTML = model;
-        parentNode.appendChild(newNode);
+        parentNode.insertBefore(newNode, parentNode.childNodes[0]);
     }
 }
 
@@ -259,6 +259,7 @@ function addDetail(el, detail) {
 function showPop(text, commitCallback) {
     var popContainer = document.getElementsByClassName('pop-container')[0],
         popContent = document.getElementsByClassName('pop-content')[0];
+        arLength = arguments.length;    
 
     popContent.innerHTML = text;
     addClass(popContainer, 'active-pop');
@@ -271,9 +272,22 @@ function showPop(text, commitCallback) {
     
     EventUtil.addHandler(popButton[1], 'click', function() {
         removeClass(popContainer, 'active-pop');
-        if (arguments.length != 1) {
+        console.log(arLength);
+        if (arLength > 1) {
             commitCallback();
         } 
     })
+}
+
+/**
+ * 点击返回主页
+ */
+window.onload = function () {
+    var logo = document.getElementById('header-logo');
+
+    logo.onclick = function () {
+        window.location.href = 'index.html';
+    }
+
 }
 

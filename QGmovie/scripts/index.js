@@ -10,6 +10,11 @@ function userMode() {
     var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
         secondMenu = document.getElementsByClassName('second-menu')[0]; //二级菜单
 
+    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
+
+    userHead.innerHTML = '<div id="user-head">'
+                       + '<img src="../images/head.png" id="head-pic"></div>';
+    
     userHead.onmouseover = function() {
         addClass(header, 'active-header');
         secondMenu.onmouseleave = function() {
@@ -27,7 +32,7 @@ function userMode() {
 function touristMode() {
     var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
 
-    userHead.innerHTML = '<p class="touristMode">登陆</p>';
+    //userHead.innerHTML = '<p class="touristMode">登陆</p>';
     
     userHead.onclick = function() {
         window.location.href = 'login.html';
@@ -62,8 +67,11 @@ function touristMode() {
             showPop('出现未知错误');
         } else {
 
-            if (number == 2) {
-                $('#head-pic')[0].setAttribute('src', xhr.headPic);
+            if (number == 1) {
+                if (xhr.headPic != '') {
+                    //头像不为空再设置，否则是默认头像
+                    $('#head-pic')[0].setAttribute('src', xhr.headPic);
+                }
                 $('#username')[0].innerText = xhr.userName;     
                 userMode(); 
             } else {
@@ -81,7 +89,6 @@ function touristMode() {
 
             // 图片预加载
             imgPreLoad(imgArray);
-
                 createLi($('.hot-movie ul')[0], xhr.hotMovies, 6);
                 createLi($('.new-movie ul')[0], xhr.newMovies, 6);
                 createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 6);
@@ -91,7 +98,7 @@ function touristMode() {
     },
     error: function() {
         /* 请求失败 */
-        showPop('请求失败');
+        console.log('服务器没开');
     }
     });
 })();
