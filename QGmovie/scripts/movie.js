@@ -1,43 +1,125 @@
-// var movieData = json.data.movie; //请求得到的数据
-//     commentData = json.data.comment;
 
-
-
-// /**
-//  * 填充用户名
-//  */
-
-// (function() {
-//     var movieName = document.getElementsByClassName('movie-name-container');
-//         for (var i = 0; i < movieName.length; i++) {
-//             addDetail(movieName[i], movieData.moviename);
-//         };
-// })();
-
-// /**
-//  * 填充电影详细信息
-//  */
-
-// (function() {
-//     var movieDetailUl = document.getElementsByClassName('movie-detail')[0],
-//         moviePic = document.getElementById('movie-pic'),
-//         detail = movieDetailUl.getElementsByTagName('span'),
-//         tag = movieData.type1 + '|' +  movieData.type2 + '|' + movieData.type3,
-//         descrition = document.getElementById('movie-descrition');
+/**
+ * 页面初始化，先从url拿到电影的id，打包并发送请求。
+ */
+(function() {
+    var movieID = window.location.search.split('=')[1] || '',
+        jsonObj = {};
     
-//     addDetail(li[0], movieData.director); //导演
-//     addDetail(li[1], star); //主演
-//     addDetail(li[2], tag); //标签
-//     addDetail(li[3], movieData.place); //地区
-//     addDetail(li[4], movieData.longtime); //时长
-//     addDetail(li[5], movieData.score); //评分
-//     addDetail(descrition, movieData.descrition); //电影简介
-//     addDetail(moviePic, movieData.picture); //电影海报
-// })();
+    /* 当没有搜索内容的时候 */
+    if (movieID === '') {
+        setTimout(function() {
+            window.location.href = 'index.html';
+        }, 1000);
+    }
 
+    jsonObj.movieID = movieID;
 
+    $.ajax({
+    	url: 'http://'+ window.ip +':8080/qgmovie/movie/detail',
+    	type: 'post',
+        data: JSON.stringify(jsonObj),
+        dataType: 'json',
+    	processData: false,
+        success: function(xhr) {
+            switch(xhr.state) {
+                case '0': {
 
+                    /* 访问出错 */
+                    alert('访问失败，退回首页面');
+                    window.location.href = 'index.html';
+                    break;
+                }
 
+                case '1': {
+                    /* 访问成功并放回 */
+                    pageInit(xhr);
+                    console.log(xhr.data);
+                    break;
+                }
+            }
+        },
+
+        error: function() {
+            alert('连接失败');
+        }
+    	});
+})();
+
+/**
+ * 对电影详情页进行页面初始化
+ * @param {Object} jsonObj 传回电影数据的data对象部分
+ */
+function pageInit(jsonObj) {
+    var movieData = jsonObj.data.movie; //请求得到的数据
+    // console.log(jsonObj.data);
+
+    /**
+     * 填充用户名
+     */
+    (function() {
+        var movieName = document.getElementsByClassName('movie-name-container');
+            for (var i = 0; i < movieName.length; i++) {
+                addDetail(movieName[i], movieData.moviename);
+            };
+    })();
+
+    /**
+     * 填充电影详细信息
+     */ 
+    (function() {
+        var movieDetailUl = document.getElementsByClassName('movie-detail')[0],
+            moviePic = document.getElementById('movie-pic'),
+            detail = movieDetailUl.getElementsByTagName('span'),
+            descrition = document.getElementById('movie-descrition'),
+            i,
+            tag = '',
+            timelong = '';
+
+            /* 对标签进行显示 */
+            switch('None') {
+                case movieData.type1: {
+                    tag = '无';
+                    break;
+                }
+
+                case movieData.type2: {
+                    tag += movieData.type1;
+                    break;
+                }
+
+                case movieData.type3: {
+                    tag += movieData.type1 + '|';
+                    tag += movieData.type2;
+                    break;
+                }
+
+                default: {
+                    tag += movieData.type1 + '|';
+                    tag += movieData.type2 + '|';
+                    tag += movieData.type3 ;
+                }
+            }
+
+        /* 对电影部分进行初始化 */
+        addDetail(detail[0], movieData.director); //导演
+        addDetail(detail[1], movieData.star); //主演
+        addDetail(detail[2], tag); //标签
+        addDetail(detail[3], movieData.place); //地区
+        addDetail(detail[4], movieData.year || '无');  // 上映时间
+        addDetail(detail[5], movieData.timelong + '分钟'); //时长
+        addDetail(detail[6], movieData.score.toString().slice(0,3)); //评分
+        addDetail(descrition, movieData.introduction); //电影简介
+        addDetail(moviePic, movieData.picture); //电影海报
+        $('.movie-pic-container img')[0].setAttribute('src', 'http://'+ window.ip +':8080/qgmovie/img/' + movieData.picture);
+
+        function commitInit() {
+
+        }
+
+    })();
+
+}
 
 
 
@@ -48,47 +130,10 @@ var commentUl = document.getElementsByClassName('comment-list-container')[0],
     commentCreatTime = document.getElementsByClassName('create-time'),
     commentContent = document.getElementsByClassName('comment-content'); //评论内容
     
+// var commentData = jsonObj.data.comment;
+
     
     
-        var json = {
-            "comment": [
-                {
-                    "commentID": "评论ID",
-                    "content": "评论内容",
-                    "commentTime": "评论时间",
-                    "userID": "评论者的ID",
-                    "userName": "评论者的名字"
-                },
-                {
-                    "commentID": "评论ID",
-                    "content": "评论内容",
-                    "commentTime": "评论时间",
-                    "userID": "评论者的ID",
-                    "userName": "评论者的名字"
-                },
-                {
-                    "commentID": "评论ID",
-                    "content": "评论内容",
-                    "commentTime": "评论时间",
-                    "userID": "评论者的ID",
-                    "userName": "评论者的名字"
-                },
-                {
-                    "commentID": "评论ID",
-                    "content": "评论内容",
-                    "commentTime": "评论时间",
-                    "userID": "评论者的ID",
-                    "userName": "评论者的名字"
-                },
-                {
-                    "commentID": "评论ID",
-                    "content": "评论内容",
-                    "commentTime": "评论时间",
-                    "userID": "评论者的ID",
-                    "userName": "评论者的名字"
-                },
-            ]
-        };
 
 //评论模板
 var commentModel = '<div class="comment-header">'

@@ -44,5 +44,47 @@ button {
     display: block !important;
 }
 .hide {
-    display: none !important;
+    display: none;
+}
+
+/* 显示弹出层 */
+
+.active-pop {
+    opacity: 1;
+    z-index: 200;
+    background-color: rgba(0, 0, 0, .8);
+}
+.active-pop .pop {
+    transform: translateY(20px);
+}
+.pop {
+    width: 450px;
+    min-height: 200px;
+    height: auto;
+    border-radius: 5px;
+    z-index: 200;
+    background-color: #fff;
+    display: inline-block;
+    margin-top: 35vh;   
+    transition: transform .5s;
+}
+.pop-content {
+    font-size: 22px;
+    height: auto;
+    padding: 50px;
+}
+.pop-button-container {
+    height: auto;
+    width: 100%;
+}
+.pop-button {
+    height: 35px;
+    width: 90px;
+    background-color: #0cf;
+    color: #fff;
+    border-radius: 4px;
+    margin:  30px;
+}
+#pop-button-1 {
+    background: rgb(209, 13, 13);
 }

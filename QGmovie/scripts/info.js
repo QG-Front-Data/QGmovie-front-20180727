@@ -50,7 +50,7 @@ function addUserDetail(userData) {
  */
 function start() {
     $.ajax({
-        url: 'http://192.168.1.102:8080/qgmovie/user/info',
+        url: 'http://ip:8080/qgmovie/user/info',
     	type: 'POST',
         data: null,
         dataType: 'application/json',
@@ -62,7 +62,7 @@ function start() {
     function successCallback(xhr) {
         if (xhr.state == 5) {
             alert('请先登陆');
-            window.location = 'http://192.168.1.102:8080/qgmovie/login' //跳转到登陆页面
+            window.location = '' //跳转到登陆页面
         } else if (state == 1) {
             addUserDetail(xhr.data); //填充个人信息
         } 
@@ -85,7 +85,7 @@ var sendData = {
 	"job": userDetail[5].value,
 	"school": userDetail[4].value
 };
-var editURL = 'http://192.168.1.102:8080/qgmovie/user/edit';
+var editURL = 'http://ip:8080/qgmovie/user/edit';
 
 (function() {
     for (var i = 0; i < editP.length; i++) {
@@ -99,24 +99,25 @@ var editURL = 'http://192.168.1.102:8080/qgmovie/user/edit';
         })(i);
     }
     commitButton.onclick = function() {
-        //发请求
-        $.ajax({
-            url: editURL,
-            type: 'POST',
-            data: sendData,
-            dataType: 'json',
-            processData: false,
-            complete: callback,
-            //contentType: contentType,
-            success: successCallback,
-            error: errorCallback
-        });
-        function successCallback() {
-
-        };
-        function errorCallback() {
-
-        };
+        showPop('确认修改个人信息？', function() {
+            //发请求
+            $.ajax({
+                url: editURL,
+                type: 'POST',
+                data: sendData,
+                dataType: 'json',
+                processData: false,
+                //contentType: contentType,
+                success: successCallback,
+                error: errorCallback
+            });
+            function successCallback() {
+                showPop('修改成功！');
+            };
+            function errorCallback() {
+               
+            };
+        })
     }
 })();
 
@@ -136,12 +137,12 @@ var commentList = commentContainer.getElementsByTagName('li'),
  * @param {string} model 模板
  * @param {Element} parent 要追加到的父节点
  */ 
-function createModelNode(num, model, parent) {
+(function createModelNode(num, model, parent) {
     var node = document.createElement('li');
     node.innerHTML = model;
     parent.appendChild(node);
     createModel(model, 'li',parent, num);
-}
+})(5, commentModel, commentContainer);
 
 /**
  * 填充评论函数
@@ -200,23 +201,25 @@ var deleteCommentButton = document.getElementsByClassName('delete-button');
     for (var i = 0; i < deleteCommentButton.length; i++) {
         (function(i) {
             deleteCommentButton[i].onclick = function() {
-                $.ajax({
-                    url: '',
-                    type: 'POST',
-                    data: deleteData,
-                    dataType: 'json',
-                    processData: false,
-                    complete: callback,
-                    //contentType: contentType,
-                    success: successCallback,
-                    error: errorCallback
+                showPop('确认删除？', function(){
+                //     $.ajax({
+                //     url: '',
+                //     type: 'POST',
+                //     data: deleteData,
+                //     dataType: 'json',
+                //     processData: false,
+                //     complete: callback,
+                //     //contentType: contentType,
+                //     success: successCallback,
+                //     error: errorCallback
+                // });
+                // function successCallback() {
+                //     commentList[i].style.display = 'none';
+                // }
+                // function errorCallback() {
+                //     alert('请求失败');
+                // }
                 });
-                function successCallback() {
-                    commentList[i].style.display = 'none';
-                }
-                function errorCallback() {
-                    alert('请求失败');
-                }
             }
         })(i)
     }
@@ -225,7 +228,7 @@ var deleteCommentButton = document.getElementsByClassName('delete-button');
 /**
  * 创建历史记录
  */
-var historyModel =  '<a href="javascr192.168.1.102t:">'
+var historyModel =  '<a href="javascript:">'
                  +  '<img src="" class="history-movie-pic">'
                  +  '<span class="history-movie-name" data-h=""></span>'
                  +  '<span class="view-time"></span>'
@@ -267,7 +270,7 @@ EventUtil.addHandler(switchButton[2], 'click', function() {
     }
 });
 
-var collectionModel = '<a href="javascr192.168.1.102t:">'
+var collectionModel = '<a href="javascript:">'
                     + '<img src="" class="collect-movie-pic">'
                     + '<span class="collect-movie-name" data-o=""></span>'
                     + '<span class="collect-time"></span>'
@@ -309,12 +312,12 @@ EventUtil.addHandler(switchButton[2], 'click', function() {
 
     }
 });                   
-var t192.168.1.102sContainer = document.getElementsByClassName('t192.168.1.102s-container');
+var tipsContainer = document.getElementsByClassName('tips-container');
 
 /**
  * 如果传回来的数据是空的就显示
  */
 
-function showT192.168.1.102s(index) {
-    addClass(t192.168.1.102sContainer[index], 'show');
+function showTips(index) {
+    addClass(tipsContainer[index], 'show');
 }

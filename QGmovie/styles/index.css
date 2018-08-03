@@ -354,6 +354,7 @@ body {
 /* 返回顶部 */
 .toTop-button {
     position: fixed;
+    z-index: 1;
     right: 50px;
     bottom: 20px;
     height: 50px;
@@ -361,4 +362,153 @@ body {
     background: url(../images/back.png) no-repeat center;
     background-size: contain;
 }
+.recommend-rank-contianer {
+    padding-top: 50px;
+    width: 90%;
+    min-width: 1367px;
+    margin: 0 auto;
+}
+.recommend-rank-contianer::after {
+    content: " ";
+	height:0;
+	line-height:0;
+	display:block;
+	visibility:hidden;
+	clear:both;
+}
+.recommend-container {
+    float: left;
+    width:75%;
+}
+.recommend-container>div {
+    position: relative;
+    margin-top: 40px;
+    width: 991.9px;
+    height: 350px;
+    margin: 0 auto;
+}
+.recommend-container>span {
+    display: block;
+}
+.recommend-head {
+    width: 991.9px;
+    height: 80px;
+}
+.recommend-head>img {
+    float: left;
+    width: 30px;
+    height: 30px;
+    margin: 20px 30px;
+}
+.recommend-head>span {
+    margin-top: 21px;
+    font-size: 20px;
+    float: left;
+}
+.movie-item-container {
+    position: relative;
+    width: 991.9px;
+    height: 232.4px;
+    overflow: hidden;
+}
+.movie-item-container>ul {
+    position: absolute;
+    left: 0;
+    width: 4000px;
+}
+.movie-item-container li {
+    cursor: pointer;
+    float: left;
+    margin-left: 30px;
+    width: 130.3px;
+    height: 182.4px;
+}
+.movie-bottom {
+    margin-top: 15px;
+    width: 100%;
+    font-size: 13px;
+    text-align: center;
+}
+.movie-bottom span {
+    float: left;
+    width: 100px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.movie-bottom b {
+    display: block;
+    float: left;
+    width: 30px;
+    color: orange;
+}
+.movie-image {
+    position: relative;
+    height: 182.4px;
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.arrows {
+    position: absolute;
+    cursor: pointer;
+    width: 30px;
+    height: 182.4px;
+    top: 80px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 40%;
+    border-radius: 4px;
+}
+.arrows:hover {
+    background-color: rgba(0, 0, 0, .1);
+}
+.left-arrows {
+    display: none;
+    background-image: url(../images/leftarrow.png);
+    left: -30px;
+}
+.right-arrows {
+    background-image: url(../images/rightarrow.png);
+    right: -30px;
+}
+.rank-container {
+    position: relative;
+    float: left;
+    margin: 80px auto;
+    width: 25%;
+    /* height: 647px; */
+}
+.rank-container ul {
+    width: 90%;
+    min-height: 400px;
+    /* height: 647px; */
+    padding-top: 10px;
+    background-color: #F1F7FE;
+    margin: 0 auto;
+}
+.rank-container span {
+    display: block;
+    margin-left: 30px;
+    height: 40px;
+    font-size: 18px;
+}
+.rank-container li {
+    width: 80%;
+    height: 30px;
+    margin: 20px auto;
+    border-bottom: 0.5px solid rgba(0, 0, 0, .05);
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+/* 游客模式 */
 
+.touristMode {
+    font-size: 22px;
+    color: #fff;
+    line-height: 80px;
+    cursor: pointer;
+}

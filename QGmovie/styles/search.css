@@ -68,6 +68,18 @@
     width: 960px;
     margin: 0 auto;
 }
+/* 将树状图下拉 */
+.put-down {
+    display: none;
+    width: 47px;
+    height: 36px;
+    margin: 0 auto;
+    cursor: pointer;
+    background-image: url(../images/showtree.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
 /* 标签 */
 .tag-container {
     width: 100%;
@@ -90,6 +102,21 @@
     background: url(../images/close.png) no-repeat;
     background-size: contain;
 }
+
+.tag-container::after {
+    content:'';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+/* 分类的确定框 */
+.confirm-type {
+    float: right;
+    cursor: pointer;
+    color: purple;
+    border: 2px solid purple!important;
+}
+
 .movie-container {
     height: auto;
     width: 100%;

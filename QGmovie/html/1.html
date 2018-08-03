@@ -17,6 +17,7 @@
     .recommend-rank-contianer {
         background-color: '#F5EEF5';
         width: 90%;
+        min-width: 1367px;
         margin: 0 auto;
     }
     .recommend-container {
@@ -117,18 +118,35 @@
         right: -30px;
     }
     .rank-container {
+        position: relative;
         float: left;
-        margin: 100px auto;
+        margin: 80px auto;
         width: 25%;
-        height: 500px;
+        /* height: 647px; */
     }
     .rank-container ul {
-        width: 120px;
+        width: 90%;
+        min-height: 400px;
+        /* height: 647px; */
+        padding-top: 10px;
+        background-color: #F1F7FE;
         margin: 0 auto;
     }
+    .rank-container span {
+        display: block;
+        margin-left: 30px;
+        height: 40px;
+        font-size: 18px;
+    }
     .rank-container li {
-        width: 117.3px;
-        height: 164.1px;
+        width: 80%;
+        height: 30px;
+        margin: 20px auto;
+        border-bottom: 0.5px solid rgba(0, 0, 0, .05);
+        cursor: pointer;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
     }
     </style>
 
@@ -143,54 +161,6 @@
             </div>
             <div class="movie-item-container">
             <ul >
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
-                <li>
-                    <div class="movie-image" style="background-image: url(../1.jpg)" ></div>
-                    <div class="movie-bottom"><span>111231231231231231231211</span><b>9.8</b></div>
-                </li>
             </ul>
             </div>
             <span class="arrows left-arrows" ></span>
@@ -235,11 +205,7 @@
     </div>
     <div class="rank-container">
         <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
+            <span>浏览排行榜</span>
         </ul>
     </div>
     </div>
@@ -290,18 +256,73 @@
     });
     
     function createLi(recommendArea, json) {
-        recommendArea.innerHTML += '<li movie-id='+ json.movieID +'><div class="movie-image" style="background-image: url(' + json.picture + ')" ></div><div class="movie-bottom"><span>' + json.moviename + '</span><b>' + json.score + '</b></div></li>'
+        recommendArea.innerHTML += '<li movie-id='+ json.movieID +'><div class="movie-image" style="background-image: url(' + json.picture + ')" ></div><div class="movie-bottom"><span>' + json.movieName + '</span><b>' + json.score + '</b></div></li>'
+    }
+
+    function createRank(rankContainer, json) {
+        reankContainer.innerHTML += '<li movie-id='+ json.movieID +'>'+ json.movieName +'</li>';
     }
 
     function recommendInit() {
+        var i;
+
         $.ajax({
+    	url: 'http://'+ ip +':8080/qgmovie/',
+    	type: 'post',
+    	processData: false,
+    	contentType: contentType,
+    	//contentType: contentTypes,
+        success: function(xhr) {
+            var jsonObj = JSON.parse(xhr.responseText);
 
-        })
+            switch(xhr.state) {
+                case '0': {
+                    
+                    break;
+                }
+
+                case '1'||'2': {
+                    for (i = 0; i < 24; i++) {
+                        createLi($('.hot-movie ul')[0], jsonObj.hotMovies[i]);
+                        createLi($('.new-movie ul')[0], jsonObj.newMovies[i]);
+                        createLi($('.high-commit-movie ul')[0], jsonObj.goodMovies[i]);
+                        createLi($('.person-recommend-movie ul')[0], jsonObj.recMovies[i]);
+                        if (i <= 12) {
+                            createRank($('.rank-container ul')[0], jsonObj.)
+                        }
+                    }
+                }
+
+                case '2': {
+                    /* 初始化个人头像 */
+                    break;
+                }
+            }
+        },
+        error: function() {
+            /* 请求失败 */
+        }
+    	});
     }
+     
+    function pageJump(target) {
+        var jsonObj = {};
 
+        jsonObj.movieID = target.movie-id;
 
-
-
+        $.ajax({
+    	url: 'http://'+ ip +':8080/qgmovie/movie/detail',
+    	type: 'post',
+        data: JSON.stringify(jsonObj),
+        dataType: 'json',
+    	processData: false,
+    	//contentType: contentTypes,
+        success: successCallback,
+        error: function() {
+            // 请求超时
+        }
+    	});
+    }
     </script>
 </body>
 </html>

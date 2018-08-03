@@ -1,3 +1,7 @@
+window.ip = '192.168.1.112';
+
+
+
 /**
  * 对表单的输入字符个数进行限制，超出的话截取前number个字符作为这个表单的值
  * @func
@@ -18,7 +22,7 @@ function inputLimit(input, number) {
  * @param {String} method 请求方式
  * @param {String} sendData 要发送的数据
  * @param {String} sendDataType 数据类型
- * @param {String} contentType 请求头
+ * @param {String} contentTypes 请求头
  * @param {Function} successCallback 请求成功后的执行函数。两个函数的第一个参数都是请求对象，第二个参数都是状态码
  * @param {Function} errorCallback 请求失败时候的执行函数。
  */
@@ -29,8 +33,7 @@ function ajaxRequest(serverAddress, method, sendData, sendDataType, contentType 
         data: sendData,
         dataType: sendDataType,
     	processData: false,
-        complete: callback,
-    	contentType: contentType,
+    	//contentType: contentTypes,
         success: successCallback,
         error: errorCallback
     	});
@@ -149,6 +152,21 @@ function toogleClass(elements, cName) {
 }
 
 /**
+ * 函数节流，提高体验
+ */
+function throttle(method, context) {
+    clearTimeout(method.tId);
+    method.tId = setTimeout(function() {
+        method.call(context);
+    }, 100);
+}
+
+function searchCommit() {
+    var key = encodeURI($('#search-input')[0].value);
+    // var ncodeURI(key);
+    window.location.href = 'search.html?key=' + key;
+}
+/*
  * 采用懒加载检测requestAnimationFrame兼容性
  * DATE 20180801
  * @author czf
@@ -162,6 +180,46 @@ var requestAnimation = function (fun, time) {
         return setTimeout(fun, time);
     }
 }
+
+/**
+ * 将图片预先缓存到网页中，需要的时候再将其读取。
+ * @param {Array} imgArray 图片的数组
+ * @param {Function} callback 回调函数
+ */
+function imgPreLoad(imgArray) {
+    var i = 0,
+        img = new Image();
+
+        function load() {
+            img.src = 'http://'+ window.ip +':8080/qgmovie/img/' + imgArray[i];
+            i++;
+            img.onload = function() {
+                if (i < imgArray.length) {
+                    load();
+                }
+            }
+        }
+        load();
+}
+ 
+/**
+ * 对图片进行懒加载
+ * @param {Object} $targetArray 图片加载对象
+ */
+function lazyLoad($targetArray) {
+    var i;
+    for (i = 0; i < $targetArray.length; i++) {
+        if ($(document).scrollTop() >= $targetArray[i].scrollTop) {
+            if ($targetArray[i].tagName == 'IMG') {
+                $targetArray[i].setAttribute('src', 'http://'+ window.ip +':8080/qgmovie/img/' + $targetArray[i].getAttribute('data-src'));
+            } else {
+                $targetArray.get(i).css('background-image', 'url('+ 'http://'+ window.ip +':8080/qgmovie/img/' +')')
+            }
+        }
+    }
+}
+
+
 /** 
  * 根据模板创建函数
  * DATE 20180802
@@ -184,9 +242,38 @@ function createModel(model, tag, parentNode, num) {
  * 填充数据函数
  * DATE 20180802
  * @author czf
- * @param {*} el 要填入数据的元素
- * @param {*} detail 要填入的数据
+ * @param {element} el 要填入数据的元素
+ * @param {string} detail 要填入的数据
  */
 function addDetail(el, detail) {
     el.innerHTML = detail;
 }
+
+/**
+ * 弹出提示层
+ * DATE 20180803
+ * @author czf
+ * @param {string} text 要显示的提示信息
+ * @param {function} commiitCallback 点击确认的时候执行的函数
+ */
+function showPop(text, commitCallback) {
+    var popContainer = document.getElementsByClassName('pop-container')[0],
+        popContent = document.getElementsByClassName('pop-content')[0];
+
+    popContent.innerHTML = text;
+    addClass(popContainer, 'active-pop');
+
+    var popButton = document.getElementsByClassName('pop-button');
+
+    EventUtil.addHandler(popButton[0], 'click', function() {
+        removeClass(popContainer, 'active-pop');
+    })
+    
+    EventUtil.addHandler(popButton[1], 'click', function() {
+        removeClass(popContainer, 'active-pop');
+        if (arguments.length != 1) {
+            commitCallback();
+        } 
+    })
+}
+

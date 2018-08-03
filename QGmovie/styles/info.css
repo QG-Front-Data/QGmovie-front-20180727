@@ -247,39 +247,15 @@ body {
 
 /* 弹出层 */
 .pop-container {
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 100%;
-    background-color: rgba(0, 0, 0, .8);
-    z-index: 200;
+    z-index: -12;
     top: 0;
-    -display: none;
+    bottom: 0;
     text-align: center;
-    display: none;
+    transition: opacity .5s;
+    background: transparent;
+    opacity: 0;
 }
-.pop {
-    width: 450px;
-    height: 200px;
-    border-radius: 5px;
-    z-index: 200;
-    background-color: #fff;
-    display: inline-block;
-    margin-top: 20px;
-    
-}
-.pop-content {
-    height: 70%;
-}
-.pop-button-container {
-    height: auto;
-    width: 100%;
 
-}
-.pop-button {
-    height: 35px;
-    width: 80px;
-    background-color: #0cf;
-    color: #fff;
-    border-radius: 4px;
-    margin: 0 30px;
-}
