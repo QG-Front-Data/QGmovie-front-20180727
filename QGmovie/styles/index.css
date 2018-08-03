@@ -5,7 +5,7 @@ body {
 .root {
     height: 2000px;
     width: 100%;
-    
+
 }
 
 /* 底部栏 */
@@ -503,4 +503,12 @@ body {
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
+}
+/* 游客模式 */
+
+.touristMode {
+    font-size: 22px;
+    color: #fff;
+    line-height: 80px;
+    cursor: pointer;
 }

@@ -141,6 +141,11 @@ function pageInit(jsonObj) {
     
 // var commentData = jsonObj.data.comment;
 
+<<<<<<< HEAD
+=======
+    
+    
+>>>>>>> 4d337992012374c165b60fc9ab758f1e00c1a169
 
 //评论模板
 var commentModel = '<div class="comment-header">'

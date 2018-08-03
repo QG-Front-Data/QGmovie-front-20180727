@@ -56,37 +56,6 @@ var searchBar = document.getElementById('search-input');
     }
 })();
 
-/**
- * 二级菜单,有游客模式和用户模式，游客模式则没有二级菜单，用户模式则有二级菜单，游客模式点击客户头像是转到登陆界面，用户模式点击头像则是转到个人主页
- */
-
-function userMode() {
-    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
-        secondMenu = document.getElementsByClassName('second-menu')[0]; //二级菜单
-
-    userHead.onmouseover = function() {
-        addClass(header, 'active-header');
-        secondMenu.onmouseleave = function() {
-            removeClass(header, 'active-header');
-        }
-    };
-    $('#head-pic')[0].onclick = function() {
-        window.location.href = '个人主页地址';
-    }
-};
-
-(function touristMode() {
-    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
-
-    $('#head-pic')[0].setAttribute('src', '../images/head.png');
-    $('#username')[0].innerText = 'QGStudio';
-
-    userHead.onmouseover = null;
-    userHead.onmouseleave = null;
-    userHead.onclick = function() {
-        window.location.href = 'login.html';
-    }
-})();
 
 
 /**
@@ -261,14 +230,6 @@ function createLi(recommendArea, jsonArray, number) {
     recommendArea.appendChild(createFram);
 }
 
-
-
-
-
-
-
-
-
 // /**
 //  * 创建推荐的片li
 //  * @param {Object} recommendArea 点击区域的对象
@@ -287,9 +248,44 @@ function createRank(rankContainer, json) {
     rankContainer.innerHTML += '<li movie-id='+ json.movieID +'>'+ json.movieName +'</li>';
 }
 
+
+/**
+ * 二级菜单,有游客模式和用户模式，游客模式则没有二级菜单，用户模式则有二级菜单，游客模式点击客户头像是转到登陆界面，用户模式点击头像则是转到个人主页
+ */
+
+function userMode() {
+    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
+        secondMenu = document.getElementsByClassName('second-menu')[0]; //二级菜单
+
+    userHead.onmouseover = function() {
+        addClass(header, 'active-header');
+        secondMenu.onmouseleave = function() {
+            removeClass(header, 'active-header');
+        }
+    };
+    $('#head-pic')[0].onclick = function() {
+        window.location.href = 'http://' + window.ip + ':8080/qgmovie/user/info';
+    }
+};
+
+/**
+ * 游客模式只显示登陆
+ */
+
+function touristMode() {
+    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
+
+    userHead.innerHTML = '<p class="touristMode">登陆</p>';
+    
+    userHead.onclick = function() {
+        window.location.href = 'login.html';
+    }
+};
+
 /**
  * 发送请求初始化主页面
  */
+
 (function mainPageInit() {
     var i;
 
@@ -311,7 +307,10 @@ function createRank(rankContainer, json) {
             if (number == 2) {
                 $('#head-pic')[0].setAttribute('src', xhr.headPic);
                 $('#username')[0].innerText = xhr.userName;     
-                userMode();
+                userMode(); 
+            } else {
+                //游客模式
+                touristMode();
             }
 
             // 图片预加载
@@ -383,8 +382,8 @@ function mainPageClick(event) {
     /**
      * 缺少跳转到详情页面的功能
      */
-    switch(true) { 
-        
+    switch (true) {
+
         /**
          * 这两个都是判断点击的是不是电影
          */
@@ -409,9 +408,11 @@ function mainPageClick(event) {
             logout();
             break;
         }
-            
-        }
     }
+    // case ($('.search-button')[0]): {
+    //     searchCommit();
+    // }
+}
 
 /**
  * 用url传参进行进行页面的跳转

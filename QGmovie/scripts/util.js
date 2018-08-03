@@ -26,7 +26,7 @@ function inputLimit(input, number) {
  * @param {Function} successCallback 请求成功后的执行函数。两个函数的第一个参数都是请求对象，第二个参数都是状态码
  * @param {Function} errorCallback 请求失败时候的执行函数。
  */
-function ajaxRequest(serverAddress, method, sendData, sendDataType, contentTypes , successCallback, errorCallback) {
+function ajaxRequest(serverAddress, method, sendData, sendDataType, contentType , successCallback, errorCallback) {
     $.ajax({
     	url: serverAddress,
     	type: method,
@@ -237,12 +237,13 @@ function createModel(model, tag, parentNode, num) {
         parentNode.appendChild(newNode);
     }
 }
+
 /**
  * 填充数据函数
  * DATE 20180802
  * @author czf
- * @param {*} el 要填入数据的元素
- * @param {*} detail 要填入的数据
+ * @param {element} el 要填入数据的元素
+ * @param {string} detail 要填入的数据
  */
 function addDetail(el, detail) {
     el.innerHTML = detail;
@@ -259,3 +260,31 @@ function getNowTime() {
     day = (time.getDate).toString();
     return (year + '-' + month + '-' + day);
 }
+/**
+ * 弹出提示层
+ * DATE 20180803
+ * @author czf
+ * @param {string} text 要显示的提示信息
+ * @param {function} commiitCallback 点击确认的时候执行的函数
+ */
+function showPop(text, commitCallback) {
+    var popContainer = document.getElementsByClassName('pop-container')[0],
+        popContent = document.getElementsByClassName('pop-content')[0];
+
+    popContent.innerHTML = text;
+    addClass(popContainer, 'active-pop');
+
+    var popButton = document.getElementsByClassName('pop-button');
+
+    EventUtil.addHandler(popButton[0], 'click', function() {
+        removeClass(popContainer, 'active-pop');
+    })
+    
+    EventUtil.addHandler(popButton[1], 'click', function() {
+        removeClass(popContainer, 'active-pop');
+        if (arguments.length != 1) {
+            commitCallback();
+        } 
+    })
+}
+

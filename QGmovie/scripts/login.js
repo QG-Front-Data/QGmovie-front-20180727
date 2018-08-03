@@ -41,6 +41,9 @@ function loginModel() {
                     type: 'post',
                     data: JSON.stringify(jsonObj),
                                 dataType: 'json',
+                                xhrFields: {
+                                    withCredentials: true
+                                },                        
                                 processData: false,
                                 //contentType: 'application/json',
                                 success:function(xhr) {
