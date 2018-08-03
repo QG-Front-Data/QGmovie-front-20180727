@@ -50,7 +50,7 @@ function addUserDetail(userData) {
  */
 function start() {
     $.ajax({
-        url: 'http://ip:8080/qgmovie/user/info',
+        url: 'http://192.168.1.102:8080/qgmovie/user/info',
     	type: 'POST',
         data: null,
         dataType: 'application/json',
@@ -62,7 +62,7 @@ function start() {
     function successCallback(xhr) {
         if (xhr.state == 5) {
             alert('请先登陆');
-            window.location = '' //跳转到登陆页面
+            window.location = 'http://192.168.1.102:8080/qgmovie/login' //跳转到登陆页面
         } else if (state == 1) {
             addUserDetail(xhr.data); //填充个人信息
         } 
@@ -85,7 +85,7 @@ var sendData = {
 	"job": userDetail[5].value,
 	"school": userDetail[4].value
 };
-var editURL = 'http://ip:8080/qgmovie/user/edit';
+var editURL = 'http://192.168.1.102:8080/qgmovie/user/edit';
 
 (function() {
     for (var i = 0; i < editP.length; i++) {
@@ -225,7 +225,7 @@ var deleteCommentButton = document.getElementsByClassName('delete-button');
 /**
  * 创建历史记录
  */
-var historyModel =  '<a href="javascript:">'
+var historyModel =  '<a href="javascr192.168.1.102t:">'
                  +  '<img src="" class="history-movie-pic">'
                  +  '<span class="history-movie-name" data-h=""></span>'
                  +  '<span class="view-time"></span>'
@@ -267,7 +267,7 @@ EventUtil.addHandler(switchButton[2], 'click', function() {
     }
 });
 
-var collectionModel = '<a href="javascript:">'
+var collectionModel = '<a href="javascr192.168.1.102t:">'
                     + '<img src="" class="collect-movie-pic">'
                     + '<span class="collect-movie-name" data-o=""></span>'
                     + '<span class="collect-time"></span>'
@@ -309,12 +309,12 @@ EventUtil.addHandler(switchButton[2], 'click', function() {
 
     }
 });                   
-var tipsContainer = document.getElementsByClassName('tips-container');
+var t192.168.1.102sContainer = document.getElementsByClassName('t192.168.1.102s-container');
 
 /**
  * 如果传回来的数据是空的就显示
  */
 
-function showTips(index) {
-    addClass(tipsContainer[index], 'show');
+function showT192.168.1.102s(index) {
+    addClass(t192.168.1.102sContainer[index], 'show');
 }

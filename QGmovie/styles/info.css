@@ -1,9 +1,11 @@
 body {
     height: auto;
+    position: relative;
 }
 .root {
     height: auto;
     width: 100%;
+    
 }
 .header {
     height: 80px;
@@ -243,3 +245,41 @@ body {
     display: none;
 }
 
+/* 弹出层 */
+.pop-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .8);
+    z-index: 200;
+    top: 0;
+    -display: none;
+    text-align: center;
+    display: none;
+}
+.pop {
+    width: 450px;
+    height: 200px;
+    border-radius: 5px;
+    z-index: 200;
+    background-color: #fff;
+    display: inline-block;
+    margin-top: 20px;
+    
+}
+.pop-content {
+    height: 70%;
+}
+.pop-button-container {
+    height: auto;
+    width: 100%;
+
+}
+.pop-button {
+    height: 35px;
+    width: 80px;
+    background-color: #0cf;
+    color: #fff;
+    border-radius: 4px;
+    margin: 0 30px;
+}
