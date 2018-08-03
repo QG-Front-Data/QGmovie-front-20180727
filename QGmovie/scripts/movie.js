@@ -22,6 +22,7 @@ window.userID = window.location.search.split('&')[1].split('=')[1]||'0';
     }
 
     jsonObj.movieID = movieID;
+    jsonObj.userID = window.userID;
 
     $.ajax({
     	url: 'http://'+ window.ip +':8080/qgmovie/movie/detail',
