@@ -44,7 +44,7 @@ function touristMode() {
  */
 (function mainPageInit() {
     var i;
-    var userID = '3'
+    var userID = window.userID;
     var json = JSON.stringify({
         "userID":  userID //传USERID
     });
@@ -440,6 +440,12 @@ function mainPageClick(event) {
             logout();
             break;
         }
+
+        case ($('#search-button')[0]==event.target): {
+
+            window.location.href = 'search.html?key='+ $('#search-input')[0].value +'&userID=' + window.userID;
+            break;
+        }
     }
 }
 
@@ -452,6 +458,11 @@ function pageJump(movieID) {
     window.location.href = target;
 }
 EventUtil.addHandler(document, 'click', mainPageClick);
+EventUtil.addHandler($('#search-input')[0], 'keypress', function() {
+    if (event.keyCode == 13) {
+        window.location.href = 'search.html?key=' + $('#search-input')[0].value + '&userID=' + window.userID;
+    }
+})
 window.onmousewheel = mainPageLazy;
 function mainPageLazy() {
     lazyLoad($('.hot-movie ul li div'));
