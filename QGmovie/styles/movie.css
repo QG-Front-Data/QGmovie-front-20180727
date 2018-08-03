@@ -111,24 +111,43 @@
     display: inline-block;
     margin: 30px 0;
 }
-.info-container span {
-    height: 110px;
-    width: 110px;
-    line-height: 110px;
+.movie-info {
+    height: 90px;
+    width: 90px;
+    line-height: 90px;
     border-radius: 50%;
-    background-color: #000;
     display: inline-block;
     margin: 10px 40px; 
     position: relative;
     color: #fff;
-    font-size: 20px;
+    font-size:24px; 
+    transition: background .5s;
+}
+#movie-info-1 {
+    background: #0cf;
+}
+#movie-info-1:hover {
+    background: #2196f3;
+}
+#movie-info-2 {
+    background: #f11e64;
+}
+#movie-info-2:hover {
+    background: #a51445;
+}
+#movie-info-3 {
+    background: #4caf50;
+}
+#movie-info-3:hover {
+    background: #3c8b3f;
 }
 .info-container p {
     text-align: center;
-    font-size: 22px;
+    font-size: 16px;
 }
 
 /* 评论模块 */
+
 .comment-cotainer {
     width: 100%;
     height: auto;
