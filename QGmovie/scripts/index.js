@@ -40,7 +40,7 @@ function touristMode() {
  */
 (function mainPageInit() {
     var i;
-    var userID = parseInt(window.location.search.substring(1));
+    var userID = '3'
     var json = JSON.stringify({
         "userID":  userID //传USERID
     });
@@ -53,8 +53,8 @@ function touristMode() {
     success: function(xhr) {
         var number,
             imgArray = new Array();
-
-        console.log(xhr)
+            /* 将返回的对象的地址赋给全局变量 */
+            window.jsonObj = xhr;
 
         number = parseInt(xhr.state);
 
@@ -65,7 +65,7 @@ function touristMode() {
             if (number == 2) {
                 $('#head-pic')[0].setAttribute('src', xhr.headPic);
                 $('#username')[0].innerText = xhr.userName;     
-                userMode(); 
+                userMode();
             } else {
                 //游客模式
                 touristMode();
@@ -82,11 +82,12 @@ function touristMode() {
             // 图片预加载
             imgPreLoad(imgArray);
 
-                createLi($('.hot-movie ul')[0], xhr.hotMovies, 6);
-                createLi($('.new-movie ul')[0], xhr.newMovies, 6);
-                createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 6);
-                createLi($('.person-recommend-movie ul')[0], xhr.recMovies, 6);
-                // createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
+            createLi($('.hot-movie ul')[0], xhr.hotMovies, 0);
+            createLi($('.new-movie ul')[0], xhr.newMovies, 0);
+            createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 0);
+            createLi($('.person-recommend-movie ul')[0], xhr.recMovies, 0);
+            // createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
+            mainPageLazy();
         }
     },
     error: function() {
@@ -95,6 +96,22 @@ function touristMode() {
     }
     });
 })();
+
+(function() {
+    $.ajax({
+    	url: 'http://'+ window.ip +':8080/qgmovie/movie/chart',
+    	type: 'post',
+    	processData: false,
+        success: function(xhr) {
+            for (var i = 0; i < 12; i++) {
+                createRank(xhr.data[i], json);
+            }
+        }
+    	});
+})();
+
+
+
 
 var header = document.getElementsByClassName('header')[0]; //顶部栏
 
@@ -169,15 +186,9 @@ function activeAnimate() {
     timer = setTimeout(autoPlay, 4000);
  }
 
-<<<<<<< HEAD
  /**
   * 点击小圆点切换
   */
-=======
-/**
- * 点击小圆点切换图片
- */
->>>>>>> fdce8c88f658b4b7193d6f824e12d07dd6ae0b45
 (function clickDotted() {
     for (var i = 0; i < dotted.length; i++) {
         (function(i) {
@@ -293,7 +304,7 @@ function arrowsVisibility($arrow) {
         }
     }
 
-    if ($arrow.parent('div').children(':eq(1)').children('ul').css('left') == '-3847.2px') {
+    if ($arrow.parent('div').children(':eq(1)').children('ul').css('left') == '-2885.4px') {
         $arrow.css('display', 'none');
     } else {
         if ($arrow.hasClass('right-arrows') == true) {
@@ -310,28 +321,20 @@ function arrowsVisibility($arrow) {
  * @param {Object-Array} jsonArray 
  * @param {Number} number 
  */
-function createLi(recommendArea, jsonArray, number) {
+function createLi(recommendArea, jsonArray, index) {
     var createFram = document.createDocumentFragment(),
         i,
         children;
 
-    for (i = 0; i < number; i++) {
+    for (i = index; i < index + 20; i++) {
         children = document.createElement('li');
         children.setAttribute('movie-id', jsonArray[i].movieID);
-        children.innerHTML = '<div class="movie-image"  movie-picture="url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score.toString().slice(0,3) + '</b></div>';
+        children.innerHTML = '<div class="movie-image" movie-picture="url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score.toString().slice(0,3) + '</b></div>';
         createFram.appendChild(children);
     }
     recommendArea.appendChild(createFram);
 }
 
-// /**
-//  * 创建推荐的片li
-//  * @param {Object} recommendArea 点击区域的对象
-//  * @param {Object} json json对象 
-//  */
-// function createLi(recommendArea, json) {
-//     recommendArea.innerHTML += '<li movie-id='+ json.movieID +'><div class="movie-image" style="background-image: url(http://'+ window.ip +':8080/qgmovie/img/)" ></div><div class="movie-bottom"><span>' + json.movieName + '</span><b>' + json.score + '</b></div></li>'
-// }
 
 /**
  * 创建排行榜
@@ -339,7 +342,7 @@ function createLi(recommendArea, jsonArray, number) {
  * @param {Object} json json对象
  */
 function createRank(rankContainer, json) {
-    rankContainer.innerHTML += '<li movie-id='+ json.movieID +'>'+ json.movieName +'</li>';
+    rankContainer.innerHTML += '<a href="movie.html?movieID='+ json.id +'"><li >'+ json.movieName +'</li></a>';
 }
 
 
@@ -376,60 +379,19 @@ function touristMode() {
     }
 };
 
+
+
 /**
- * 发送请求初始化主页面
+ * 点击向右的话，进行节点的添加并
+ * @param {*} target 
+ * @param {*} jsonObj 
+ * @param {*} index 
  */
+function addMovie(target, jsonObj, index) {
+    createLi(target, jsonObj, index);
+    mainPageLazy();
+}
 
-(function mainPageInit() {
-    var i;
-
-    $.ajax({
-    url: 'http://'+ window.ip +':8080/qgmovie/index',
-    type: 'post',
-    dataType:'json',
-    processData: false,
-    success: function(xhr) {
-        var number,
-            imgArray = new Array();
-
-        number = parseInt(xhr.state);
-
-        if (number == 0) {
-            alert('出现未知错误');
-        } else {
-
-            if (number == 2) {
-                $('#head-pic')[0].setAttribute('src', xhr.headPic);
-                $('#username')[0].innerText = xhr.userName;     
-                userMode(); 
-            } else {
-                //游客模式
-                touristMode();
-            }
-
-            // 图片预加载
-            for (i = 0; i < xhr.hotMovies.length; i++) {
-                imgArray[4 * i] = xhr.hotMovies[i].moviePic;
-                imgArray[4 * i + 1] = xhr.newMovies[i].moviePic;
-                imgArray[4 * i + 2] = xhr.goodMovies[i].moviePic;
-                imgArray[4 * i + 3] = xhr.recMovies[i].moviePic;
-            }
-
-            // 将所有的图片进行图片预加载
-            imgPreLoad(imgArray);
-            createLi($('.hot-movie ul')[0], xhr.hotMovies, 20);
-            createLi($('.new-movie ul')[0], xhr.newMovies, 20);
-            createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 20);
-            createLi($('.person-recommend-movie ul')[0], xhr.recMovies, 20);
-            // createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
-        }
-    },
-    error: function() {
-        /* 请求失败 */
-        alert('请求失败');
-    }
-    });
-})();
 
 /**
  * 注销函数
@@ -480,12 +442,12 @@ function mainPageClick(event) {
          * 这两个都是判断点击的是不是电影
          */
         case ($(event.target).parent()[0].tagName === 'LI'): {
-            pageJump(movieID)
+            pageJump($(event.target).parent()[0].getAttribute('movie-id'))
             // pageJump(event.getAttribute('movie-id'));
             break;
         }
         case ($(event.target).parents()[1].tagName === 'LI'): {
-            pageJump(movieID)
+            pageJump($(event.target).parent()[1].getAttribute('movie-id'))
             break;
         }
         /**
@@ -501,9 +463,6 @@ function mainPageClick(event) {
             break;
         }
     }
-    // case ($('.search-button')[0]): {
-    //     searchCommit();
-    // }
 }
 
 /**
@@ -511,13 +470,14 @@ function mainPageClick(event) {
  * @param {string} movieID 电影的ID
  */
 function pageJump(movieID) {
-    var target = 'login.html?movie=' + movieID;
+    var target = 'movie.html?movie=' + movieID;
     window.location.href = target;
 }
 EventUtil.addHandler(document, 'click', mainPageClick);
-window.onmousewheel = function() {
-    lazyLoad($('.hot-movie ul li'));
-    lazyLoad($('.new-movie ul li'));
-    lazyLoad($('.person-recommend-movie ul li'));
-    lazyLoad($('.high-commit-movie ul li'));
+window.onmousewheel = mainPageLazy;
+function mainPageLazy() {
+    lazyLoad($('.hot-movie ul li div'));
+    lazyLoad($('.new-movie ul li div'));
+    lazyLoad($('.person-recommend-movie ul li div'));
+    lazyLoad($('.high-commit-movie ul li div'));
 }

@@ -298,11 +298,6 @@ function searchPageClick(event) {
             break;
         }
 
-        case $('.show-more-button a')[0]: {
-            pageMore();
-            break;
-        }
-
         case $('.confirm-type')[0]: {
             // 清除节点并将页数还原为1
             cleanTags();
@@ -341,9 +336,6 @@ function searchRequest() {
     jsonObj = {};
     jsonObj.key = window.key;
     jsonObj.page = window.page;
-
-    /* 请求翻页+1 */
-    window.page++;
 
     $.ajax({
     	url: 'http://'+ window.ip +':8080/qgmovie/search/key',
@@ -432,11 +424,11 @@ function mousemoveLoad(event) {
     
     if (($(document).scrollTop()+10 >= $(document).height()-$(window).height()) && (event.deltaY > 0) && $('.show-more-button a')[0].innerText !== '加载更多') {
         // 当在加载模式中,滚动到底的时候
-        pageMore();
         window.onmousewheel = null;
         setTimeout(function() {
             window.onmousewheel = mousemoveLoad;
         }, 500);
+        pageMore();
     }
 }
 
@@ -463,20 +455,16 @@ function searchCreateImg(xhrRsponse) {
         }
         
         for (i = 0; i < jsonObj.length; i++) {
-            $('.movie-container')[0].innerHTML += '<li><a href="http://ip:8080/qgmovie/movie/detail?movieID='+ jsonObj[i].id +'"><img src="" data-src='+ imgArray[i] +'><p>'+ jsonObj[i].moviename +'<span>'+ jsonObj[i].score.toString().slice(0,3) +'</span></p></a></li>'
+            $('.movie-container')[0].innerHTML += '<li><a href="http://'+ window.ip +':8080/qgmovie/movie/detail?movieID='+ jsonObj[i].id +'"><img src="" data-src='+ imgArray[i] +'><p>'+ jsonObj[i].moviename +'<span>'+ jsonObj[i].score.toString().slice(0,3) +'</span></p></a></li>'
         }
 
         // 预加载图片
         imgPreLoad(imgArray);
 
-        function loadImg() {
-            /**
-             * 先进行判断，是否在某一点出刷新
-             */
-            lazyLoad($('.movie-container li img'));
-        };
-        loadImg();
+        lazyLoad($('.movie-container li img'));
         // 标记已经加载的图片数量,已经加载完毕，页数加一
+        /* 请求翻页+1 */
+        window.page++;
         window.onLoadImg +=14;
 }
 
@@ -499,3 +487,7 @@ EventUtil.addHandler($('#search-input')[0], 'keypress', function() {
 EventUtil.addHandler(document, 'click', searchPageClick);
 searchRequest();
 window.onmousewheel = mousemoveLoad;
+$('.show-more-button a')[0].onclick = function() {
+    $('.show-more-button a')[0].onclick = null;
+    pageMore();
+}

@@ -320,37 +320,6 @@ EventUtil.addHandler(document, 'click', pageClick);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // var pageButton = document.getElementsByClassName('page-button'),
 //     pageUl = document.getElementsByClassName('page-ul')[0],
 //     pageList = pageUl.getElementsByTagName('li'),
