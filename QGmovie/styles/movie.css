@@ -4,7 +4,7 @@ body {
 .root {
     height: auto;
     background: url(../images/searchbg.jpg) no-repeat;
-    background-position: 0 -130px;
+    background-position: 0 -180px;
     background-size: cover;
 }
 .header {

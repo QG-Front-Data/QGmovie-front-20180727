@@ -1,19 +1,28 @@
+/**
+ * @param {Number} window.page 当前的评论页数
+ * @param {Number} window.commentNumber 当前的评论数量
+ * @param {Number} window.maxPage 最大的评论页数
+ * @param {Number} window.movieID 当前详情页的电影ID
+ */
+window.movieID = window.location.search.split('&')[0].split('=')[1];
+window.userID = window.location.search.split('&')[1].split('=')[1]||'0';
 
 /**
  * 页面初始化，先从url拿到电影的id，打包并发送请求。
  */
 (function() {
-    var movieID = window.location.search.split('=')[1] || '',
+    var movieID = window.location.search.split('&')[0].split('=')[1] || '',
         jsonObj = {};
     
     /* 当没有搜索内容的时候 */
     if (movieID === '') {
-        setTimout(function() {
+        setTimeout(function() {
             window.location.href = 'index.html';
         }, 1000);
     }
 
     jsonObj.movieID = movieID;
+    jsonObj.userID = window.userID;
 
     $.ajax({
     	url: 'http://'+ window.ip +':8080/qgmovie/movie/detail',
@@ -26,14 +35,22 @@
                 case '0': {
 
                     /* 访问出错 */
-                    alert('访问失败，退回首页面');
-                    window.location.href = 'index.html';
+                    showPop('访问失败，退回首页面', function() {
+                        window.location.href = 'index.html';
+                    });
+                    
                     break;
                 }
 
                 case '1': {
                     /* 访问成功并放回 */
+                    $('#movie-info-2')[0].innerHTML = xhr.data.movie.collectCount;
+                    $('#movie-info-1')[0].innerHTML = xhr.data.movie.greatCount;
+                    $('#movie-info-3')[0].innerHTML = xhr.data.movie.clickCount;
+                    $('#comment-number')[0].innerHTML = xhr.data.commentCount;
                     pageInit(xhr);
+                    window.maxPage = Math.ceil(xhr.data.commentCount / 5);
+                    window.page = 1;
                     console.log(xhr.data);
                     break;
                 }
@@ -41,7 +58,9 @@
         },
 
         error: function() {
-            alert('连接失败');
+            showPop('请求失败，退回首页面', function() {
+                window.location.href = 'index.html';
+            })
         }
     	});
 })();
@@ -113,27 +132,22 @@ function pageInit(jsonObj) {
         addDetail(moviePic, movieData.picture); //电影海报
         $('.movie-pic-container img')[0].setAttribute('src', 'http://'+ window.ip +':8080/qgmovie/img/' + movieData.picture);
 
-        function commitInit() {
-
-        }
-
+        commentInit(jsonObj.data.comment);
     })();
 
 }
 
 
 
-var commentUl = document.getElementsByClassName('comment-list-container')[0],
-    commentList = commentUl.getElementsByTagName('li'),
-    commentUserPic = document.getElementsByClassName('user-pic'),
-    commentUserName = document.getElementsByClassName('user-name'),
-    commentCreatTime = document.getElementsByClassName('create-time'),
-    commentContent = document.getElementsByClassName('comment-content'); //评论内容
+// var commentUl = document.getElementsByClassName('comment-list-container')[0],
+//     commentList = commentUl.getElementsByTagName('li'),
+//     commentUserPic = document.getElementsByClassName('user-pic'),
+//     commentUserName = document.getElementsByClassName('user-name'),
+//     commentCreatTime = document.getElementsByClassName('create-time'),
+//     commentContent = document.getElementsByClassName('comment-content'); //评论内容
     
 // var commentData = jsonObj.data.comment;
 
-    
-    
 
 //评论模板
 var commentModel = '<div class="comment-header">'
@@ -141,108 +155,273 @@ var commentModel = '<div class="comment-header">'
                  + '<span class="user-name"></span>'          
                  + '<i class="create-time"></i>'          
                  + ' </div>'     
-                 + '<div class="comment-content"></div>';      
+                 + '<div class="comment-content"></div>';   
 //评论总数                    
-addDetail(document.getElementById('comment-number'), json.commentNum);
-
-(function createComment(num) {
-        createModel(commentModel, 'li', commentUl, num);
-
-        for (var i = 0; i < num; i++) {
-            addDetail(commentContent[i], json.comment[i].content);
-            addDetail(commentUserName[i], json.comment[i].userName); //用户名
-            addDetail(commentCreatTime[i], json.comment[i].commentTime); //评论时间
-            //commentUserPic[0].setAttribute('src', json.comment[i].userPic)); //设置头像
-        }
-})(5);
-
-var pageButton = document.getElementsByClassName('page-button'),
-    pageUl = document.getElementsByClassName('page-ul')[0],
-    pageList = pageUl.getElementsByTagName('li'),
-    pageModel = pageUl.getElementsByTagName('li')[0],
-    pageA = document.getElementsByClassName('page-a');
+// addDetail(document.getElementById('comment-number'), json.commentNum);
 
 /**
- * 获取页数
+ * 初始化评论
+ * @param {数量} num 评论的数量
  */
-var page = 4;
-//评论总数
-addDetail(document.getElementById('comment-number'), json.commentNum);
-(function() {
-    //如果评论数为0
-    if (json.commentNum === 0) {
-        //不显示翻页
-        pageUl.style.display = 'none';
-    } else if (json.commentNum <= 5) {
-        //评论不足5条
-        page = 1;
-    } else {
-        //向上取整
-        page = Math.ceil(json.commentNum / 5);
+function commentInit(commentObjArr) {
+    var i,
+        container = $('.comment-list-container')[0];
+        /* 容器初始化 */
+        container.innerHTML = '';
+
+    for (i = 0; i < commentObjArr.length; i++) {
+        var newNode = document.createElement('li');
+        newNode.innerHTML = '<div class="comment-header">'
+                            + '<a href="javascript:" class="user-head-container"><img src="" class="user-pic"></a>'   
+                            + '<span class="user-name">'+ commentObjArr[i].userName +'</span>'          
+                            + '<i class="create-time">'+ commentObjArr[i].addTime +'</i>'          
+                            + '</div>'     
+                            + '<div class="comment-content">'+ commentObjArr[i].content +'</div>'; 
+        container.appendChild(newNode);
     }
-})();
-
-(function() {
-    var index = 1;
-
-    if (page <= 5) {
-        for (var i = 1; i < page; i++) {
-            var newPage = pageModel.cloneNode(true);
-            pageA[i-1].innerHTML = i;
-            pageUl.appendChild(newPage);
-            }
-        //最后那个页码
-        pageA[page-1].innerHTML = page;
-    } else {
-        //页数太多的情况
-    }
-    //点击切换页数
-    addClass(pageList[index-1], 'active-page');
-    function swithPage() {
-        for (var i = 0; i < pageList.length; i++) {
-            removeClass(pageList[i], 'active-page');
-        }
-        addClass(pageList[index-1], 'active-page');
-    };
-    //点击发送请求
-    for (var k = 0; k < pageList.length; k++) {
-        (function(k) {
-            pageList[k].onclick =function() {
-                index = k + 1;
-                swithPage();
-                //发送请求
-            }
-        })(k);
-    }
-    //后退
-    pageButton[0].onclick = function() {
-        if (index = 1) {
-            index = 1;
-        } else {
-            index--;
-            //发送请求
-        }
-        swithPage();
-    }
-    //前进
-    pageButton[1].onclick = function() {
-        if (index == page) {
-            index = page;
-        } else {
-            index++;
-            //发请求
-        }
-        swithPage();
-    }   
-
-})();
-
-/**
- * 发表评论
- */
-var commentText = document.getElementById('comment-textarea'),
-    commentButton = document.getElementById('comment-button');
-
-commentButton.onclick = function() {
-    console.log(commentText.innerHTML);
 }
+
+/**
+ * 用户评论的函数，发送到后台
+ */
+function createComment() {
+    var commentValue = $('#comment-textarea')[0].value,
+        movieID = window.movieID,
+        jsonObj = {};
+
+        if (commentValue.length == 0) {
+            alert('评论不能为空');
+            return;
+        }
+        jsonObj.content = commentValue;
+        jsonObj.movieID = movieID;
+        jsonObj.commentTime = getNowTime();
+        jsonObj.userID = window.location.search.split('&')[1].split('=')[1];
+        $.ajax({
+            url: 'http://' + window.ip + ':8080/qgmovie/movie/comment',
+            type: 'post',
+            data: JSON.stringify(jsonObj),
+            dataType: 'json',
+            processData: false,
+            success: function(xhr) {
+                switch(xhr.state) {
+                    case '0': {
+                        showPop('每个用户只能评论一次');
+                        break;
+                    }
+
+                    case '1': {
+                        /* 评论成功后的操作,翻到评论的那一页 */
+                        showPop('评论成功');
+                        window.location.reload();
+                        break;
+                    }
+
+                    case '5': {
+                        showPop('请先登陆');
+                        window.location.href = 'login.html';
+                        break;
+                    }
+                }
+            },
+    
+            error: function() {
+                alert('连接失败');
+            }
+            });
+}
+
+/**
+ * 评论翻页函数
+ */
+function commentTurnPage() {
+    var jsonObj = {};
+    /* 左右标签的消失 */
+    switch(window.page) {
+        case 1 : {
+            $('.page-button:eq(0)').css('display', 'none');
+            break;
+        }
+
+        case 2: {
+            $('.page-button:eq(1)').css('display', 'none');
+            break;
+        }
+    }
+
+    jsonObj.page = window.page;
+    jsonObj.movieID = window.location.search.split('=')[1];
+    $.ajax({
+        url: 'http://' + window.ip + ':8080/qgmovie/movie/commit',
+        type: 'post',
+        data: JSON.stringify(jsonObj),
+        dataType: 'json',
+        processData: false,
+        success: function(xhr) {
+            switch(xhr.state) {
+                case '0': {
+                    showPop('访问出错');
+                    break;
+                }
+
+                case '1': {
+                    commentInit(xhr.data.comment);
+                    break;
+                }
+            }
+        },
+
+        error: function() {
+            alert('连接失败');
+        }
+        });
+
+    /* 更改页数标志 */
+    $('.page-a')[0].innerText = window.page;
+    $('.comment-number')[0].innerHTML = window.commentNumber;
+}
+
+
+/**
+ * 页面的点击事件
+ * @param {*} event 
+ */
+function pageClick(event) {
+    switch(event.target) {
+        case $('.page-button a img ')[0] || $('.page-button a')[0]: {
+            window.page--;
+            if (window.page != window.maxPage) {
+                $('.page-button:eq(1)').css('display', 'block');
+            }
+            commentTurnPage();
+            break;
+        }
+
+        case $('.page-button a img')[1] || $('.page-button a')[1]: {
+            window.page++;
+            if (window.page != 1) {
+                $('.page-button:eq(0)').css('display', 'block');
+            }
+            commentTurnPage();
+            break;
+        }
+
+        case $('#comment-button')[0]: {
+            if (window.userID == '0') {
+                showPop('请先登陆');
+                // return;
+            }
+            createComment();
+            break;
+        }
+
+        case $('#header-logo img')[0] || $('#header-logo')[0]: {
+            window.location.href = 'index.html?userID' + window.location.search.split('=')[1];
+            break;
+        }
+    }
+}
+
+
+
+
+
+EventUtil.addHandler($('#comment-textarea')[0], 'input', function() {
+    $('#comment-textarea')[0] = inputLimit($('#comment-textarea')[0], 80);
+})
+EventUtil.addHandler(document, 'click', pageClick);
+
+
+
+
+
+// var pageButton = document.getElementsByClassName('page-button'),
+//     pageUl = document.getElementsByClassName('page-ul')[0],
+//     pageList = pageUl.getElementsByTagName('li'),
+//     pageModel = pageUl.getElementsByTagName('li')[0],
+//     pageA = document.getElementsByClassName('page-a');
+
+// /**
+//  * 获取页数
+//  */
+// var page = 4;
+// //评论总数
+// // addDetail(document.getElementById('comment-number'), json.commentNum);
+// (function() {
+//     //如果评论数为0
+//     if (window.commandCount === 0) {
+//         //不显示翻页
+//         pageUl.style.display = 'none';
+//     } else if (json.commentNum <= 5) {
+//         //评论不足5条
+//         window.page = 1;
+//     } else {
+//         //向上取整
+//         page = Math.ceil(json.commentNum / 5);
+//     }
+// })();
+
+// (function() {
+//     var index = 1;
+
+//     if (page <= 5) {
+//         for (var i = 1; i < page; i++) {
+//             var newPage = pageModel.cloneNode(true);
+//             pageA[i-1].innerHTML = i;
+//             pageUl.appendChild(newPage);
+//             }
+//         //最后那个页码
+//         pageA[page-1].innerHTML = page;
+//     } else {
+//         //页数太多的情况
+//     }
+//     //点击切换页数
+//     addClass(pageList[index-1], 'active-page');
+//     function swithPage() {
+//         for (var i = 0; i < pageList.length; i++) {
+//             removeClass(pageList[i], 'active-page');
+//         }
+//         addClass(pageList[index-1], 'active-page');
+//     };
+//     //点击发送请求
+//     for (var k = 0; k < pageList.length; k++) {
+//         (function(k) {
+//             pageList[k].onclick =function() {
+//                 index = k + 1;
+//                 swithPage();
+//                 //发送请求
+//             }
+//         })(k);
+//     }
+//     //后退
+//     pageButton[0].onclick = function() {
+//         if (index = 1) {
+//             index = 1;
+//         } else {
+//             index--;
+//             //发送请求
+//         }
+//         swithPage();
+//     }
+//     //前进
+//     pageButton[1].onclick = function() {
+//         if (index == page) {
+//             index = page;
+//         } else {
+//             index++;
+//             //发请求
+//         }
+//         swithPage();
+//     }   
+
+// })();
+
+// /**
+//  * 发表评论
+//  */
+// var commentText = document.getElementById('comment-textarea'),
+//     commentButton = document.getElementById('comment-button');
+
+// commentButton.onclick = function() {
+//     console.log(commentText.innerHTML);
+// }

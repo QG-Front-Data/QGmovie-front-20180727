@@ -58,14 +58,15 @@ function addUserDetail(userData) {
  */
 
 //获取用户ID
-var userID = window.location.search.substring(1) === ''? 0 : parseInt(window.location.search.substring(1));
+var userID = window.location.search.substring(8) === ''? 0 : parseInt(window.location.search.substring(8));
+
 
 (function start() {
     $.ajax({
         url: 'http://' + window.ip + ':8080/qgmovie/user/info',
     	type: 'POST',
         data: JSON.stringify({
-            "userID": 3
+            "userID": userID
         }),
         dataType: 'json',
     	processData: false,
@@ -89,16 +90,7 @@ var userID = window.location.search.substring(1) === ''? 0 : parseInt(window.loc
 /**
  * 修改个人信息
  */
-var sendData = {
-	"userName": userDetail[0].value,
-	"headPic": userPic.getAttribute('src'),
-	"sex": userDetail[1].value, 
-	"qq": userDetail[3].value,
-	"birthday": userDetail[2].value, //根据生日计算
-	"introdution": introdution.value,
-	"job": userDetail[5].value,
-	"school": userDetail[4].value
-};
+
 
 
 (function() {
@@ -113,6 +105,16 @@ var sendData = {
         })(i);
     }
     commitButton.onclick = function() {
+        var sendData = JSON.stringify({
+            "userName": userDetail[0].value + ' ',
+            "headPic": userPic.getAttribute('src') + ' ',
+            "sex": userDetail[1].value + ' ', 
+            "qq": userDetail[3].value + ' ',
+            "birthday": userDetail[2].value + ' ', 
+            "introduction": introdution.value + ' ',
+            "job": userDetail[5].value + ' ',
+            "school": userDetail[4].value + ' '
+        });
         showPop('确认修改个人信息？', function(){
             var editURL = 'http://' + window.ip + ':8080/qgmovie/user/edit';
             //发请求
@@ -173,7 +175,7 @@ function ajaxComment(page) {
     	type: 'POST',
         data:  JSON.stringify({
             "page": page,
-            "userID": 3
+            "userID": userID
         }),
         dataType: 'json',
         processData: false,
@@ -212,7 +214,7 @@ var deleteCommentButton = document.getElementsByClassName('delete-button');
                     url: 'http://' + window.ip + ':8080/qgmovie/user/comment/delete',
                     type: 'POST',
                     data: JSON.stringify({
-                        "userID": 3, //用户ID
+                        "userID": userID, //用户ID
                         "movieID": commentMovieName.getAttribute('data-c')
                     }),
                     dataType: 'json',
@@ -270,7 +272,7 @@ function ajaxHistory(page) {
     	type: 'POST',
         data: JSON.stringify({
             "page": page,
-            "userID": 3
+            "userID": userID
         }),
         dataType: 'json',
         processData: false,
@@ -351,7 +353,7 @@ function ajaxCollect(page) {
     	type: 'POST',
         data: JSON.stringify({
             "page": page,
-            "userID": 3
+            "userID": userID
         }),
         dataType: 'json',
         processData: false,
@@ -381,12 +383,12 @@ function addcollectDetail(collectData) {
 
     for (var i = 0; i < collectData.length; i++) {
         var src = 'http://'+ window.ip +':8080/qgmovie/img/' + collectData[i].moviePic,
-            link =  'movie.html?movieID=' + collectData[i].movieID;
+            link =  'movie.html?movieID=' + collectData[i].movieID + '&userID=' + 3;
 
         addDetail(collectName[i], collectData[i].movieName);
         addDetail(collectTime[i], collectData[i].time);
         collectPic[i].setAttribute('src', src);
-        Clink[i].setAttribute('src', link) //保存评论ID
+        Clink[i].setAttribute('href', link) //保存评论ID
     };
 
 }

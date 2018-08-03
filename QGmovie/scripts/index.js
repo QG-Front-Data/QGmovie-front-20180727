@@ -1,54 +1,66 @@
+if (window.location.search.length == 0) {
+    window.location.search = '?userID=0';
+}
 
+window.userID = window.location.search.split('=')[1];
 /**
  * 二级菜单,有游客模式和用户模式，游客模式则没有二级菜单，用户模式则有二级菜单，游客模式点击客户头像是转到登陆界面，用户模式点击头像则是转到个人主页
  */
-
-/**
- * 用户模式可以看到二级菜单
- */
-function userMode() {
-    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
-        secondMenu = document.getElementsByClassName('second-menu')[0]; //二级菜单
-
-    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
-
-    userHead.innerHTML = '<div id="user-head">'
-                       + '<img src="../images/head.png" id="head-pic"></div>';
-    
-    userHead.onmouseover = function() {
-        addClass(header, 'active-header');
-        secondMenu.onmouseleave = function() {
-            removeClass(header, 'active-header');
-        }
-    };
-    $('#head-pic')[0].onclick = function() {
-        window.location.href = 'http://' + window.ip + ':8080/qgmovie/user/info';
-    }
-};
-
-/**
- * 游客模式只提供登陆入口
- */
-function touristMode() {
-    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
-
-    //userHead.innerHTML = '<p class="touristMode">登陆</p>';
-    
-    userHead.onclick = function() {
-        window.location.href = 'login.html';
-    }
-};
-
 
 /**
  * 发送请求初始化主页面
  */
 (function mainPageInit() {
     var i;
-    var userID = parseInt(window.location.search.substring(1));
+    var userID = window.userID;
     var json = JSON.stringify({
         "userID":  userID //传USERID
     });
+    /**
+     * 用户模式可以看到二级菜单
+     */
+    function userMode() {
+        var userHead = document.getElementsByClassName('user-head-container')[0], //用户头像
+            secondMenu = document.getElementsByClassName('second-menu')[0], //二级菜单
+            secondA = document.getElementsByClassName('second-a');
+
+        secondA[0].onclick = function() {
+            window.location.href = 'info.html?userID=' + window.userID;
+        }
+        secondA[1].onclick = function() {
+            window.location.href = 'info.html?userID=' + window.userID;
+        }
+        secondA[2].onclick = function() {
+            window.location.href = 'info.html?userID=' + window.userID;
+        }
+        secondA[3].onclick = function() {
+            window.location.href = 'login.html';
+        }
+
+
+        userHead.innerHTML = '<div id="user-head">'
+            + '<img src="../images/head.png" id="head-pic"></div>';
+
+        userHead.onmouseover = function () {
+            addClass(header, 'active-header');
+            secondMenu.onmouseleave = function () {
+                removeClass(header, 'active-header');
+            }
+        };
+        $('#head-pic')[0].onclick = function () {
+            window.location.href = 'http://' + window.ip + ':8080/qgmovie/user/info?userID=' + window.userID;
+        }
+    };
+    /**
+     * 游客模式只提供登陆入口
+     */
+    function touristMode() {
+        var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
+        userHead.onclick = function() {
+            window.location.href = 'login.html';
+        }
+    };
+
     $.ajax({
     url: 'http://'+ window.ip +':8080/qgmovie/index',
     type: 'post',
@@ -58,8 +70,8 @@ function touristMode() {
     success: function(xhr) {
         var number,
             imgArray = new Array();
-
-        console.log(xhr)
+            /* 将返回的对象的地址赋给全局变量 */
+            window.jsonObj = xhr;
 
         number = parseInt(xhr.state);
 
@@ -67,13 +79,14 @@ function touristMode() {
             showPop('出现未知错误');
         } else {
 
-            if (number == 1) {
+            if (number == 2) {
+                userMode();
                 if (xhr.headPic != '') {
                     //头像不为空再设置，否则是默认头像
                     $('#head-pic')[0].setAttribute('src', xhr.headPic);
                 }
                 $('#username')[0].innerText = xhr.userName;     
-                userMode(); 
+               
             } else {
                 //游客模式
                 touristMode();
@@ -89,11 +102,13 @@ function touristMode() {
 
             // 图片预加载
             imgPreLoad(imgArray);
-                createLi($('.hot-movie ul')[0], xhr.hotMovies, 6);
-                createLi($('.new-movie ul')[0], xhr.newMovies, 6);
-                createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 6);
-                createLi($('.person-recommend-movie ul')[0], xhr.recMovies, 6);
-                // createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
+
+            createLi($('.hot-movie ul')[0], xhr.hotMovies, 0);
+            createLi($('.new-movie ul')[0], xhr.newMovies, 0);
+            createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 0);
+            createLi($('.person-recommend-movie ul')[0], xhr.recMovies, 0);
+            // createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
+            mainPageLazy();
         }
     },
     error: function() {
@@ -102,6 +117,22 @@ function touristMode() {
     }
     });
 })();
+
+(function() {
+    $.ajax({
+    	url: 'http://'+ window.ip +':8080/qgmovie/movie/chart',
+    	type: 'get',
+    	processData: false,
+        success: function(xhr) {
+            for (var i = 0; i < 12; i++) {
+                createRank($('.rank-container ul')[0], xhr.data[i]);
+            }
+        }
+    	});
+})();
+
+
+
 
 var header = document.getElementsByClassName('header')[0]; //顶部栏
 
@@ -176,9 +207,9 @@ function activeAnimate() {
     timer = setTimeout(autoPlay, 4000);
  }
 
-/**
- * 点击小圆点切换图片
- */
+ /**
+  * 点击小圆点切换
+  */
 (function clickDotted() {
     for (var i = 0; i < dotted.length; i++) {
         (function(i) {
@@ -294,7 +325,7 @@ function arrowsVisibility($arrow) {
         }
     }
 
-    if ($arrow.parent('div').children(':eq(1)').children('ul').css('left') == '-3847.2px') {
+    if ($arrow.parent('div').children(':eq(1)').children('ul').css('left') == '-2885.4px') {
         $arrow.css('display', 'none');
     } else {
         if ($arrow.hasClass('right-arrows') == true) {
@@ -304,35 +335,27 @@ function arrowsVisibility($arrow) {
 }
 
 
+
 /**
  * 创造节点并且将节点输入进去
  * @param {Object} recommendArea 
  * @param {Object-Array} jsonArray 
  * @param {Number} number 
  */
-function createLi(recommendArea, jsonArray, number) {
+function createLi(recommendArea, jsonArray, index) {
     var createFram = document.createDocumentFragment(),
         i,
         children;
 
-        console.log(jsonArray)
-    for (i = 0; i < number; i++) {
+    for (i = index; i < index + 20; i++) {
         children = document.createElement('li');
         children.setAttribute('movie-id', jsonArray[i].movieID);
-        children.innerHTML = '<div class="movie-image" style="background-image: url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score.toString().slice(0,3) + '</b></div>';
+        children.innerHTML = '<div class="movie-image" movie-picture="url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score.toString().slice(0,3) + '</b></div>';
         createFram.appendChild(children);
     }
     recommendArea.appendChild(createFram);
 }
 
-// /**
-//  * 创建推荐的片li
-//  * @param {Object} recommendArea 点击区域的对象
-//  * @param {Object} json json对象 
-//  */
-// function createLi(recommendArea, json) {
-//     recommendArea.innerHTML += '<li movie-id='+ json.movieID +'><div class="movie-image" style="background-image: url(http://'+ window.ip +':8080/qgmovie/img/)" ></div><div class="movie-bottom"><span>' + json.movieName + '</span><b>' + json.score + '</b></div></li>'
-// }
 
 /**
  * 创建排行榜
@@ -340,67 +363,88 @@ function createLi(recommendArea, jsonArray, number) {
  * @param {Object} json json对象
  */
 function createRank(rankContainer, json) {
-    rankContainer.innerHTML += '<li movie-id='+ json.movieID +'>'+ json.movieName +'</li>';
+    rankContainer.innerHTML += '<a href="movie.html?movieID='+ json.id +'&userID='+ window.userID +'"><li >'+ json.moviename +'</li></a>';
 }
 
+
+/**
+ * 二级菜单,有游客模式和用户模式，游客模式则没有二级菜单，用户模式则有二级菜单，游客模式点击客户头像是转到登陆界面，用户模式点击头像则是转到个人主页
+ */
+
+function userMode() {
+    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
+        secondMenu = document.getElementsByClassName('second-menu')[0]; //二级菜单
+
+    userHead.onmouseover = function() {
+        addClass(header, 'active-header');
+        secondMenu.onmouseleave = function() {
+            removeClass(header, 'active-header');
+        }
+    };
+    $('#head-pic')[0].onclick = function() {
+        window.location.href = 'http://' + window.ip + ':8080/qgmovie/user/info';
+    }
+};
+
+/**
+ * 游客模式只显示登陆
+ */
+
+function touristMode() {
+    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
+
+    userHead.innerHTML = '<p class="touristMode">登陆</p>';
+    
+    userHead.onclick = function() {
+        window.location.href = 'login.html';
+    }
+};
+
+
+
+/**
+ * 点击向右的话，进行节点的添加并
+ * @param {*} target 
+ * @param {*} jsonObj 
+ * @param {*} index 
+ */
+function addMovie(target, jsonObj, index) {
+    createLi(target, jsonObj, index);
+    mainPageLazy();
+}
 
 
 /**
  * 注销函数
  */
 function logout() {
-    $.ajax({
-    	url: 'http://'+ window.ip +':8080/qgmovie/logout',
-    	type: 'get',
-        dataType: 'json',
-    	processData: false,
-        success: function(xhr) {
-             switch(xhr.state) {
-                 case '0': {
-                     /**
-                      * 注销失败的操作
-                      */
-                     console.log("注销失败");
-                     break;
-                 }
-                 case '6': {
-                    /* 注销成功的操作 */ 
-                    console.log("注销成功");
-                    break;
-                 }
-             }
-        },
-        error: function() {
-            /**
-             * 请求失败的操作
-             */
-        }
-        });
+    window.location.href = 'index.html?userID=0';
 }
 
 
 
 /**
  * 主页面的点击事件委托主函数
- * @param {Object} event 
+ * @param {Object} event 事件对象
  */
 function mainPageClick(event) {
-    console.log(event.target)
     /**
      * 缺少跳转到详情页面的功能
      */
+    console.log(event.target);
+
     switch (true) {
 
         /**
          * 这两个都是判断点击的是不是电影
          */
         case ($(event.target).parent()[0].tagName === 'LI'): {
-            pageJump(movieID)
+            pageJump($(event.target).parent()[0].getAttribute('movie-id'))
             // pageJump(event.getAttribute('movie-id'));
             break;
         }
         case ($(event.target).parents()[1].tagName === 'LI'): {
-            pageJump(movieID)
+            pageJump($(event.target).parent()[1].getAttribute('movie-id'))
             break;
         }
         /**
@@ -411,15 +455,7 @@ function mainPageClick(event) {
             break;
         }
 
-        case (event.target == $('#logout')[0]): {
-            logout();
-            break;
-        }
-
     }
-    // case ($('.search-button')[0]): {
-    //     searchCommit();
-    // }
 }
 
 /**
@@ -427,7 +463,21 @@ function mainPageClick(event) {
  * @param {string} movieID 电影的ID
  */
 function pageJump(movieID) {
-    var target = 'login.html?movie=' + movieID;
+    var target = 'movie.html?movie=' + movieID + '&userID=' + window.userID;
     window.location.href = target;
 }
-EventUtil.addHandler(document, 'click', mainPageClick);
+EventUtil.addHandler($('.recommend-container')[0], 'click', mainPageClick);
+
+
+
+
+window.onmousewheel = mainPageLazy;
+function mainPageLazy() {
+    lazyLoad($('.hot-movie ul li div'));
+    lazyLoad($('.new-movie ul li div'));
+    lazyLoad($('.person-recommend-movie ul li div'));
+    lazyLoad($('.high-commit-movie ul li div'));
+}
+$('#logout')[0].onclick = function() {
+    logout();
+}

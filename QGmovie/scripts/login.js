@@ -34,8 +34,6 @@ function loginModel() {
                 for (i = 0; i < 2; i++) {
                     jsonObj[loginInput[i].name] = loginInput[i].value;
                 }
-                console.log('登陆账号')
-                console.log(jsonObj);
                 $.ajax({
                     url: 'http://'+ window.ip +':8080/qgmovie/login',
                     type: 'post',
@@ -56,8 +54,7 @@ function loginModel() {
     
                                         case '1': {
                                             submitResultMessage('登陆成功');
-                                            window.location.href = 'index.html?' + xhr.userID;
-
+                                            window.location.href = 'index.html?userID=' + xhr.userID;
                                             break;
                                         }
     
@@ -260,7 +257,7 @@ function registerModel() {
                 return;
             }
 
-            case (password.value.length <= 6): {
+            case (password.value.length < 6): {
                 password.focus();
                 return;
             }
@@ -301,7 +298,7 @@ function registerModel() {
                     case '1': {
                         /* 注册成功 */
                         submitResultMessage('注册成功');
-                        window.location.reload(true);
+                        // window.location.reload(true);
                         break;
                     }
 

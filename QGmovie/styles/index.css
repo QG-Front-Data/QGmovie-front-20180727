@@ -96,8 +96,10 @@ body {
 }
 
 .active-header .second-menu {
+    display: block;
     transform: translateY(90px);
     opacity: 1;
+    
 }
 
 /* 头像以及二级菜单 */
@@ -138,6 +140,8 @@ body {
     text-align: left;
     transition: transform .5s, opacity .5s;
     opacity: 0; 
+    z-index: -20000;
+    display: none;
 }
 
 .second-menu-top {

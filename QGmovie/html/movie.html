@@ -47,21 +47,21 @@
                 <p id="movie-descrition"></p>
             </div>
             <ul class="info-container">
-                <li><span id="movie-info-1" class="movie-info">0</span><p>点赞数</p></li>
-                <li><span id="movie-info-2" class="movie-info">0</span><p>收藏量</p></li>
-                <li><span id="movie-info-3" class="movie-info">0</span><p>点击量</p></li>
+                <li><span id="movie-info-1" class="movie-info"></span><p>点赞数</p></li>
+                <li><span id="movie-info-2" class="movie-info"></span><p>收藏量</p></li>
+                <li><span id="movie-info-3" class="movie-info"></span><p>点击量</p></li>
             </ul>
             <div class="comment-container">
                 <h2 class="movie-header"><span class="movie-name-container">超人总动员2</span> 的最新影评</h2>
                 <ul class="comment-list-container"></ul>
                 <p>共有(<span id="comment-number"></span>)条评论</p>
-                <div class="page-container">
+                <!-- <div class="page-container">
                     <div class="page-button"><a href="javascript:" ><img src="../images/left.png"></a></div>
                        <ul class="page-ul">
                             <li><a href="javascript:" class="page-a">1</a></li>   
                        </ul>
                     <div class="page-button"><a href="javascript:" ><img src="../images/right.png"></a></div>
-                </div>
+                </div> -->
                 <div class="create-comment">
                     <div class="comment-wrap"><textarea id="comment-textarea" placeholder="留下你的评论" ></textarea></div>
                     <button id="comment-button">评论</button>
@@ -71,6 +71,17 @@
         <!-- < 底部栏 > -->
         <div class="bottom">
             <img src="../images/hlogo.png">
+        </div>
+        <div class="pop-container">
+            <div class="pop">
+                <div>
+                    <p class="pop-content">确定修改？</p>
+                </div>
+                <div class="pop-button-container">
+                    <button class="pop-button" id="pop-button-1">取消</button>
+                    <button class="pop-button">确定</button>
+                </div>
+            </div>
         </div>
     </div>
     <script src="../scripts/movie.js"></script>
