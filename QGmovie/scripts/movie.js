@@ -6,9 +6,6 @@
  */
 
 
-
-
-
 /**
  * 页面初始化，先从url拿到电影的id，打包并发送请求。
  */
@@ -141,11 +138,6 @@ function pageInit(jsonObj) {
     
 // var commentData = jsonObj.data.comment;
 
-<<<<<<< HEAD
-=======
-    
-    
->>>>>>> 4d337992012374c165b60fc9ab758f1e00c1a169
 
 //评论模板
 var commentModel = '<div class="comment-header">'
@@ -172,13 +164,16 @@ function commentInit(commentObjArr) {
         newNode.innerHTML = '<div class="comment-header">'
                             + '<a href="javascript:" class="user-head-container"><img src="" class="user-pic"></a>'   
                             + '<span class="user-name">'+ commentObjArr[i].userName +'</span>'          
-                            + '<i class="create-time">'+ commentObjArr[i].commandTime +'</i>'          
+                            + '<i class="create-time">'+ commentObjArr[i].addTime +'</i>'          
                             + '</div>'     
                             + '<div class="comment-content">'+ commentObjArr[i].content +'</div>'; 
         container.appendChild(newNode);
     }
 }
 
+/**
+ * 用户评论的函数，发送到后台
+ */
 function createComment() {
     var commentValue = $('#comment-textarea')[0].value,
         movieID = window.location.search.split('=')[1],
@@ -186,12 +181,12 @@ function createComment() {
 
         if (commentValue.length == 0) {
             alert('评论不能为空');
-            break;
+            return;
         }
         jsonObj.content = commentValue;
         jsonObj.movieID = movieID;
         jsonObj.commentTime = getNowTime();
-
+        jsonObj.userID = '8';
         $.ajax({
             url: 'http://' + window.ip + ':8080/qgmovie/movie/comment',
             type: 'post',
@@ -201,13 +196,14 @@ function createComment() {
             success: function(xhr) {
                 switch(xhr.state) {
                     case '0': {
-                        alert('访问出错');
+                        alert('每个用户只能对每部电影评论一次，请勿重复评论');
                         break;
                     }
 
                     case '1': {
                         /* 评论成功后的操作,翻到评论的那一页 */
                         alert('评论成功');
+                        window.location.reload();
                         break;
                     }
 
@@ -225,10 +221,9 @@ function createComment() {
             });
 }
 
-
-
-
-
+/**
+ * 评论翻页函数
+ */
 function commentTurnPage() {
     var jsonObj = {};
     /* 左右标签的消失 */
@@ -277,12 +272,14 @@ function commentTurnPage() {
 }
 
 
-
+/**
+ * 页面的点击事件
+ * @param {*} event 
+ */
 function pageClick(event) {
-    console.log(event.target);
+    console.log(event.target)
     switch(event.target) {
         case $('.page-button a img ')[0] || $('.page-button a')[0]: {
-            console.log('向前翻页')
             window.page--;
             if (window.page != window.maxPage) {
                 $('.page-button:eq(1)').css('display', 'block');
@@ -291,7 +288,7 @@ function pageClick(event) {
             break;
         }
 
-        case $('.page-button')[1]: {
+        case $('.page-button a img')[1] || $('.page-button a')[1]: {
             window.page++;
             if (window.page != 1) {
                 $('.page-button:eq(0)').css('display', 'block');
@@ -305,10 +302,18 @@ function pageClick(event) {
             break;
         }
 
-        // case 
+        case $('#header-logo img')[0] || $('#header-logo')[0]: {
+            console.log('返回成功')
+            window.location.href = 'index.html?userID' + window.location.search.split('=')[1];
+            break;
+        }
     }
 }
 
+
+EventUtil.addHandler($('#comment-textarea')[0], 'input', function() {
+    $('#comment-textarea')[0] = inputLimit($('#comment-textarea')[0], 80);
+})
 EventUtil.addHandler(document, 'click', pageClick);
 
 

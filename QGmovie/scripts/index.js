@@ -210,6 +210,7 @@ function arrowsVisibility($arrow) {
 }
 
 
+
 /**
  * 创造节点并且将节点输入进去
  * @param {Object} recommendArea 
@@ -224,7 +225,7 @@ function createLi(recommendArea, jsonArray, number) {
     for (i = 0; i < number; i++) {
         children = document.createElement('li');
         children.setAttribute('movie-id', jsonArray[i].movieID);
-        children.innerHTML = '<div class="movie-image"  movie-picture style="background-image: url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score.toString().slice(0,3) + '</b></div>';
+        children.innerHTML = '<div class="movie-image"  movie-picture="url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score.toString().slice(0,3) + '</b></div>';
         createFram.appendChild(children);
     }
     recommendArea.appendChild(createFram);
@@ -323,12 +324,11 @@ function touristMode() {
 
             // 将所有的图片进行图片预加载
             imgPreLoad(imgArray);
-
-                createLi($('.hot-movie ul')[0], xhr.hotMovies, 6);
-                createLi($('.new-movie ul')[0], xhr.newMovies, 6);
-                createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 6);
-                createLi($('.person-recommend-movie ul')[0], xhr.recMovies, 6);
-                // createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
+            createLi($('.hot-movie ul')[0], xhr.hotMovies, 20);
+            createLi($('.new-movie ul')[0], xhr.newMovies, 20);
+            createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 20);
+            createLi($('.person-recommend-movie ul')[0], xhr.recMovies, 20);
+            // createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
         }
     },
     error: function() {
@@ -337,7 +337,6 @@ function touristMode() {
     }
     });
 })();
-
 
 /**
  * 注销函数
@@ -423,3 +422,9 @@ function pageJump(movieID) {
     window.location.href = target;
 }
 EventUtil.addHandler(document, 'click', mainPageClick);
+window.onmousewheel = function() {
+    lazyLoad($('.hot-movie ul li'));
+    lazyLoad($('.new-movie ul li'));
+    lazyLoad($('.person-recommend-movie ul li'));
+    lazyLoad($('.high-commit-movie ul li'));
+}

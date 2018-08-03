@@ -203,17 +203,17 @@ function imgPreLoad(imgArray) {
 }
  
 /**
- * 对图片进行懒加载
- * @param {Object} $targetArray 图片加载对象
+ * 对图片进行预加载
+ * @param {Object} $targetArray 图片加载对象jq数组
  */
 function lazyLoad($targetArray) {
     var i;
     for (i = 0; i < $targetArray.length; i++) {
         if ($(document).scrollTop() >= $targetArray[i].scrollTop) {
-            if ($targetArray[i].tagName == 'IMG') {
+            if ($targetArray[i].tagName == 'IMG') {  // 搜索页面的懒加载
                 $targetArray[i].setAttribute('src', 'http://'+ window.ip +':8080/qgmovie/img/' + $targetArray[i].getAttribute('data-src'));
-            } else {
-                $targetArray.get(i).css('background-image', 'url('+ 'http://'+ window.ip +':8080/qgmovie/img/' +')')
+            } else {  // 首页面的懒加载
+                $targetArray[i].style.backgroundImage = $targetArray[i].getAttribute('movie-picture');
             }
         }
     }
@@ -229,7 +229,6 @@ function lazyLoad($targetArray) {
  * @param {*} parentNode 要追加的父节点
  * @param {*} num  要创建的数量
  */
-
 function createModel(model, tag, parentNode, num) {
     for(var i = 0; i < num; i++) {
         var newNode = document.createElement(tag);
@@ -249,15 +248,18 @@ function addDetail(el, detail) {
     el.innerHTML = detail;
 }
 
+/**
+ * 得到当前时间
+ */
 function getNowTime() {
     var time = new Date(),
         year,
         month,
         day;
 
-    year = (time.getFullYear).toString();
-    month = (time.getMonth + 1).toString();
-    day = (time.getDate).toString();
+    year = (time.getFullYear()).toString();
+    month = (time.getMonth() + 1).toString();
+    day = (time.getDate()).toString();
     return (year + '-' + month + '-' + day);
 }
 /**
