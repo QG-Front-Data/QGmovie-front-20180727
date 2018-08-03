@@ -257,7 +257,7 @@ function createLi(recommendArea, jsonArray, number) {
     for (i = 0; i < number; i++) {
         children = document.createElement('li');
         children.setAttribute('movie-id', jsonArray[i].movieID);
-        children.innerHTML = '<div class="movie-image" style="background-image: url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score + '</b></div>';
+        children.innerHTML = '<div class="movie-image" style="background-image: url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score.toString().slice(0,3) + '</b></div>';
         createFram.appendChild(children);
     }
     recommendArea.appendChild(createFram);

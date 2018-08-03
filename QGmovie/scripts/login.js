@@ -34,7 +34,8 @@ function loginModel() {
                 for (i = 0; i < 2; i++) {
                     jsonObj[loginInput[i].name] = loginInput[i].value;
                 }
-
+                console.log('登陆账号')
+                console.log(jsonObj);
                 $.ajax({
                     url: 'http://'+ window.ip +':8080/qgmovie/login',
                     type: 'post',

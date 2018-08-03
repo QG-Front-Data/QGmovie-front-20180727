@@ -1,7 +1,7 @@
 var pageRequest = searchRequest;
 window.page =1;
 window.onLoadImg = 0;
-window.key = decodeURI(window.location.search).split('=')[1];
+window.key = decodeURI(window.location.search).split('=')[1] ||'';
 
 
 var button = document.getElementById('search-button'); //搜索按钮
@@ -263,6 +263,8 @@ function closeTag(node) {
 })();
 
 function searchPageClick(event) {
+
+    /* 添加标签时候右边×的点击事件，然后清除该标签 */
     if (hasClass(event.target, 'close-tag') == true) {
         $(event.target).parent('LI').remove();
     }
@@ -334,6 +336,10 @@ function searchRequest() {
 
     jsonObj.key = window.key;
     jsonObj.page = window.page;
+
+    /* 请求翻页+1 */
+    window.page++;
+
     $.ajax({
     	url: 'http://'+ window.ip +':8080/qgmovie/search/key',
     	type: 'post',
@@ -363,21 +369,29 @@ function typeRequest() {
         pageRequest = typeRequest;
 
         // 添加属性值
-        for (i = 1; i <= 3; i++) {
-            jsonObj['type' + i] = 'all';
-        }
+        jsonObj.type1 = 'all';
+        jsonObj.type2 = '0';
+        jsonObj.type3 = '10';
         jsonObj.place = 'all';
 
-    for (i = 0; i < $('.tag').length; i++) { 
-        if ($('.tag span')[i].getAttribute('types') === '3') {
-            jsonObj['place'] = $('.tag span')[i].innerText;
-            continue;
+    for (i = 0; i < $('.tag').length; i++) {
+        /* 类型的标签 */
+        if ($('.tag span')[i].getAttribute('types') == '1') {
+            jsonObj.type1 = $('.tag')[i].innerText;
         }
-        // 获取电影标签的值
-        jsonObj['type' + (i + 1).toString()] = $('.tag span')[i].innerText;
-    }
 
-    console.log(jsonObj);
+        /* 评分的标签 */
+        if ($('.tag span')[i].getAttribute('types') == '2') {
+            jsonObj.type2 = $('.tag')[i].innerText.slice(0,1);
+            jsonObj.type3 = $('.tag')[i].innerText.slice(2,3);
+        }
+        
+        /* 地区的标签 */
+        if ($('.tag span')[i].getAttribute('types') == '3') {
+            jsonObj.place = $('.tag')[i].innerText;
+        }
+    }
+    console.log(jsonObj)
     $.ajax({
     	url: 'http://'+ window.ip +':8080/qgmovie/movie/search/type',
     	type: 'post',
@@ -390,12 +404,10 @@ function typeRequest() {
         },
 
         error: function() {
-            alert('连接失败')
+            alert('连接失败');
         }
     	});
 }
-
-// EventUtil.addHandler($('.confirm-type')[0], 'click', typeRequest);
 
 function cleanTags() {
     window.page = 1;
@@ -412,7 +424,7 @@ function mousemoveLoad(event) {
     lazyLoad($('.movie-container li img'));
     
     if (($(document).scrollTop()+10 >= $(document).height()-$(window).height()) && (event.deltaY > 0) && $('.show-more-button a')[0].innerText !== '加载更多') {
-        // 当在加载模式中到底的时候
+        // 当在加载模式中,滚动到底的时候
         pageMore();
         window.onmousewheel = null;
         setTimeout(function() {
@@ -436,6 +448,8 @@ function searchCreateImg(xhrRsponse) {
         if (window.maxPage == window.page) {
             $('.show-more-button a')[0].innerText = '已经到底了'; 
         }
+        
+
 
         for (i = 0; i < jsonObj.length; i++) {
             imgArray[i] = jsonObj[i].picture;
@@ -455,18 +469,16 @@ function searchCreateImg(xhrRsponse) {
             lazyLoad($('.movie-container li img'));
         };
         loadImg();
-
         // 标记已经加载的图片数量,已经加载完毕，页数加一
         window.onLoadImg +=14;
-        window.page++;
 }
 
 function pageMore() {
     if (window.page >= window.maxPage) {
         return;
     }
-    $('.show-more-button a')[0].innerText = '向下滑动继续加载'; 
     pageRequest();
+    $('.show-more-button a')[0].innerText = '向下滑动继续加载'; 
 }
 
 EventUtil.addHandler($('#search-input')[0], 'keypress', function() {
