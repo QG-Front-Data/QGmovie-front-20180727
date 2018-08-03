@@ -1,4 +1,4 @@
-window.ip = '192.168.1.102';
+window.ip = '192.168.1.112';
 
 
 
@@ -246,4 +246,16 @@ function createModel(model, tag, parentNode, num) {
  */
 function addDetail(el, detail) {
     el.innerHTML = detail;
+}
+
+function getNowTime() {
+    var time = new Date(),
+        year,
+        month,
+        day;
+
+    year = (time.getFullYear).toString();
+    month = (time.getMonth + 1).toString();
+    day = (time.getDate).toString();
+    return (year + '-' + month + '-' + day);
 }

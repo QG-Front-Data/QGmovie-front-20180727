@@ -1,3 +1,10 @@
+/**
+ * @param {Number} window.page 当前显示的页数
+ * @param {Number} window.onLoadImg 已经加载的图片的数量
+ * @param {Number} window.key 关键字
+ */
+
+
 var pageRequest = searchRequest;
 window.page =1;
 window.onLoadImg = 0;
@@ -88,7 +95,6 @@ function closeTag(node) {
 /**
  * 点击按钮除删一个标签
  */
-
 (function() {
     for (var i = 0; i < closeTagButton.length; i++) {
         (function(i) {
@@ -103,7 +109,6 @@ function closeTag(node) {
 /**
  * 分类树
  */
-
 (function typeTree() {
     var data = {
         "value": ["root", "根节点"],
@@ -262,21 +267,22 @@ function closeTag(node) {
     });
 })();
 
-function searchPageClick(event) {
 
+/**
+ * 页面的点击事件
+ * @param {object} event 事件对象 
+ */
+function searchPageClick(event) {
     /* 添加标签时候右边×的点击事件，然后清除该标签 */
     if (hasClass(event.target, 'close-tag') == true) {
         $(event.target).parent('LI').remove();
     }
 
     switch(event.target) {
-        case $('.search-button')[0]: {
+        case $('#search-button img')[0]: {
             searchCommit();
-            break;
-        }
-
-        case $('#search-button')[0]: {
             treeRetract();
+            break;
         }
         // 显示树状图
         case $('.put-down')[0]: {
@@ -333,7 +339,6 @@ function searchRequest() {
 
     /* 添加搜索框内容 */
     jsonObj = {};
-
     jsonObj.key = window.key;
     jsonObj.page = window.page;
 
@@ -346,7 +351,6 @@ function searchRequest() {
         data: JSON.stringify(jsonObj),
         dataType: 'json',
     	processData: false,
-    	// contentType: 'application/json',
         success: function(xhr) {
             searchCreateImg(xhr);
         },
@@ -391,7 +395,6 @@ function typeRequest() {
             jsonObj.place = $('.tag')[i].innerText;
         }
     }
-    console.log(jsonObj)
     $.ajax({
     	url: 'http://'+ window.ip +':8080/qgmovie/movie/search/type',
     	type: 'post',
@@ -409,17 +412,21 @@ function typeRequest() {
     	});
 }
 
+/**
+ * 按类型搜索后，将已经显示的电影清空
+ */
 function cleanTags() {
     window.page = 1;
     $('.movie-container')[0].innerHTML = '';
 }
- 
-window.onmousewheel = mousemoveLoad;
-function mousemoveLoad(event) {
-    var height = document.body.clientHeight,
-        scrollHeight = document.body.scrollHeight,
-        len = scrollHeight - height;
 
+/**
+ * 鼠标滚轮滚动事件
+ * @param {object} event 事件对象
+ */
+function mousemoveLoad(event) {
+    // var height = document.body.clientHeight,
+    //     scrollHeight = document.body.scrollHeight,
     // 图片懒加载
     lazyLoad($('.movie-container li img'));
     
@@ -473,6 +480,9 @@ function searchCreateImg(xhrRsponse) {
         window.onLoadImg +=14;
 }
 
+/**
+ * 展示更多页面的函数
+ */
 function pageMore() {
     if (window.page >= window.maxPage) {
         return;
@@ -488,3 +498,4 @@ EventUtil.addHandler($('#search-input')[0], 'keypress', function() {
 })
 EventUtil.addHandler(document, 'click', searchPageClick);
 searchRequest();
+window.onmousewheel = mousemoveLoad;

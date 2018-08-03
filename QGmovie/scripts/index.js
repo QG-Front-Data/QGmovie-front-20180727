@@ -112,7 +112,6 @@ function activeAnimate() {
  /**
   * 点击小圆点切换
   */
-
 (function clickDotted() {
     for (var i = 0; i < dotted.length; i++) {
         (function(i) {
@@ -253,11 +252,10 @@ function createLi(recommendArea, jsonArray, number) {
         i,
         children;
 
-        console.log(jsonArray)
     for (i = 0; i < number; i++) {
         children = document.createElement('li');
         children.setAttribute('movie-id', jsonArray[i].movieID);
-        children.innerHTML = '<div class="movie-image" style="background-image: url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score.toString().slice(0,3) + '</b></div>';
+        children.innerHTML = '<div class="movie-image"  movie-picture style="background-image: url(http://'+ window.ip +':8080/qgmovie/img/'+ jsonArray[i].moviePic +')" ></div><div class="movie-bottom"><span>' + jsonArray[i].movieName + '</span><b>' + jsonArray[i].score.toString().slice(0,3) + '</b></div>';
         createFram.appendChild(children);
     }
     recommendArea.appendChild(createFram);
@@ -304,8 +302,6 @@ function createRank(rankContainer, json) {
         var number,
             imgArray = new Array();
 
-        console.log(xhr)
-
         number = parseInt(xhr.state);
 
         if (number == 0) {
@@ -326,7 +322,7 @@ function createRank(rankContainer, json) {
                 imgArray[4 * i + 3] = xhr.recMovies[i].moviePic;
             }
 
-            // 图片预加载
+            // 将所有的图片进行图片预加载
             imgPreLoad(imgArray);
 
                 createLi($('.hot-movie ul')[0], xhr.hotMovies, 6);
@@ -338,6 +334,7 @@ function createRank(rankContainer, json) {
     },
     error: function() {
         /* 请求失败 */
+        alert('请求失败');
     }
     });
 })();
@@ -380,10 +377,9 @@ function logout() {
 
 /**
  * 主页面的点击事件委托主函数
- * @param {Object} event 
+ * @param {Object} event 事件对象
  */
 function mainPageClick(event) {
-    console.log(event.target)
     /**
      * 缺少跳转到详情页面的功能
      */
@@ -415,9 +411,6 @@ function mainPageClick(event) {
         }
             
         }
-        // case ($('.search-button')[0]): {
-        //     searchCommit();
-        // }
     }
 
 /**
