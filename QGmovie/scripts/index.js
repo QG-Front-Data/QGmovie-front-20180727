@@ -1,4 +1,8 @@
+if (window.location.search.length == 0) {
+    window.location.search = '?userID=0';
+}
 
+window.userID = window.location.search.split('=')[1];
 /**
  * 二级菜单,有游客模式和用户模式，游客模式则没有二级菜单，用户模式则有二级菜单，游客模式点击客户头像是转到登陆界面，用户模式点击头像则是转到个人主页
  */
@@ -17,7 +21,7 @@ function userMode() {
         }
     };
     $('#head-pic')[0].onclick = function() {
-        window.location.href = 'http://' + window.ip + ':8080/qgmovie/user/info';
+        window.location.href = 'http://' + window.ip + ':8080/qgmovie/user/info?userID=' + window.userID;
     }
 };
 
@@ -100,11 +104,11 @@ function touristMode() {
 (function() {
     $.ajax({
     	url: 'http://'+ window.ip +':8080/qgmovie/movie/chart',
-    	type: 'post',
+    	type: 'get',
     	processData: false,
         success: function(xhr) {
             for (var i = 0; i < 12; i++) {
-                createRank(xhr.data[i], json);
+                createRank($('.rank-container ul')[0], xhr.data[i]);
             }
         }
     	});
@@ -342,7 +346,7 @@ function createLi(recommendArea, jsonArray, index) {
  * @param {Object} json json对象
  */
 function createRank(rankContainer, json) {
-    rankContainer.innerHTML += '<a href="movie.html?movieID='+ json.id +'"><li >'+ json.movieName +'</li></a>';
+    rankContainer.innerHTML += '<a href="movie.html?movieID='+ json.id +'&userID='+ window.userID +'"><li >'+ json.moviename +'</li></a>';
 }
 
 
@@ -397,33 +401,7 @@ function addMovie(target, jsonObj, index) {
  * 注销函数
  */
 function logout() {
-    $.ajax({
-    	url: 'http://'+ window.ip +':8080/qgmovie/logout',
-    	type: 'get',
-        dataType: 'json',
-    	processData: false,
-        success: function(xhr) {
-             switch(xhr.state) {
-                 case '0': {
-                     /**
-                      * 注销失败的操作
-                      */
-                     console.log("注销失败");
-                     break;
-                 }
-                 case '6': {
-                    /* 注销成功的操作 */ 
-                    console.log("注销成功");
-                    break;
-                 }
-             }
-        },
-        error: function() {
-            /**
-             * 请求失败的操作
-             */
-        }
-        });
+    window.location.href = 'index.html?userID=0';
 }
 
 
@@ -470,7 +448,7 @@ function mainPageClick(event) {
  * @param {string} movieID 电影的ID
  */
 function pageJump(movieID) {
-    var target = 'movie.html?movie=' + movieID;
+    var target = 'movie.html?movie=' + movieID + '&userID=' + window.userID;
     window.location.href = target;
 }
 EventUtil.addHandler(document, 'click', mainPageClick);

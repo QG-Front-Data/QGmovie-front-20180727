@@ -4,13 +4,14 @@
  * @param {Number} window.maxPage 最大的评论页数
  * @param {Number} window.movieID 当前详情页的电影ID
  */
-
+window.movieID = window.location.search.split('&')[0].split('=')[1];
+window.userID = window.location.search.split('&')[1].split('=')[1]||'0';
 
 /**
  * 页面初始化，先从url拿到电影的id，打包并发送请求。
  */
 (function() {
-    var movieID = window.location.search.split('=')[1] || '',
+    var movieID = window.location.search.split('&')[0].split('=')[1] || '',
         jsonObj = {};
     
     /* 当没有搜索内容的时候 */
@@ -33,15 +34,21 @@
                 case '0': {
 
                     /* 访问出错 */
-                    alert('访问失败，退回首页面');
-                    window.location.href = 'index.html';
+                    showPop('访问失败，退回首页面', function() {
+                        window.location.href = 'index.html';
+                    });
+                    
                     break;
                 }
 
                 case '1': {
                     /* 访问成功并放回 */
+                    $('#movie-info-2')[0].innerHTML = xhr.data.movie.collectCount;
+                    $('#movie-info-1')[0].innerHTML = xhr.data.movie.greatCount;
+                    $('#movie-info-3')[0].innerHTML = xhr.data.movie.clickCount;
+                    $('#comment-number')[0].innerHTML = xhr.data.commentCount;
                     pageInit(xhr);
-                    window.maxPage = Math.ceil(xhr.commandCount / 5);
+                    window.maxPage = Math.ceil(xhr.data.commentCount / 5);
                     window.page = 1;
                     console.log(xhr.data);
                     break;
@@ -50,7 +57,9 @@
         },
 
         error: function() {
-            alert('连接失败');
+            showPop('请求失败，退回首页面', function() {
+                window.location.href = 'index.html';
+            })
         }
     	});
 })();
@@ -176,7 +185,7 @@ function commentInit(commentObjArr) {
  */
 function createComment() {
     var commentValue = $('#comment-textarea')[0].value,
-        movieID = window.location.search.split('=')[1],
+        movieID = window.movieID,
         jsonObj = {};
 
         if (commentValue.length == 0) {
@@ -186,7 +195,7 @@ function createComment() {
         jsonObj.content = commentValue;
         jsonObj.movieID = movieID;
         jsonObj.commentTime = getNowTime();
-        jsonObj.userID = '8';
+        jsonObj.userID = window.location.search.split('&')[1].split('=')[1];
         $.ajax({
             url: 'http://' + window.ip + ':8080/qgmovie/movie/comment',
             type: 'post',
@@ -196,19 +205,19 @@ function createComment() {
             success: function(xhr) {
                 switch(xhr.state) {
                     case '0': {
-                        alert('每个用户只能对每部电影评论一次，请勿重复评论');
+                        showPop('每个用户只能评论一次');
                         break;
                     }
 
                     case '1': {
                         /* 评论成功后的操作,翻到评论的那一页 */
-                        alert('评论成功');
+                        showPop('评论成功');
                         window.location.reload();
                         break;
                     }
 
                     case '5': {
-                        alert('未登录，请先登录');
+                        showPop('请先登陆');
                         window.location.href = 'login.html';
                         break;
                     }
@@ -240,7 +249,7 @@ function commentTurnPage() {
     }
 
     jsonObj.page = window.page;
-    jsonObj.movieID = window.location.search.split('=')[1]
+    jsonObj.movieID = window.location.search.split('=')[1];
     $.ajax({
         url: 'http://' + window.ip + ':8080/qgmovie/movie/commit',
         type: 'post',
@@ -250,7 +259,7 @@ function commentTurnPage() {
         success: function(xhr) {
             switch(xhr.state) {
                 case '0': {
-                    alert('访问出错');
+                    showPop('访问出错');
                     break;
                 }
 
@@ -277,7 +286,6 @@ function commentTurnPage() {
  * @param {*} event 
  */
 function pageClick(event) {
-    console.log(event.target)
     switch(event.target) {
         case $('.page-button a img ')[0] || $('.page-button a')[0]: {
             window.page--;
@@ -298,17 +306,23 @@ function pageClick(event) {
         }
 
         case $('#comment-button')[0]: {
+            if (window.userID == '0') {
+                showPop('请先登陆');
+                // return;
+            }
             createComment();
             break;
         }
 
         case $('#header-logo img')[0] || $('#header-logo')[0]: {
-            console.log('返回成功')
             window.location.href = 'index.html?userID' + window.location.search.split('=')[1];
             break;
         }
     }
 }
+
+
+
 
 
 EventUtil.addHandler($('#comment-textarea')[0], 'input', function() {

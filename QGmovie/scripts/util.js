@@ -1,4 +1,4 @@
-window.ip = '10.21.56.122';
+window.ip = '192.168.1.112';
 
 
 
@@ -164,7 +164,7 @@ function throttle(method, context) {
 function searchCommit() {
     var key = encodeURI($('#search-input')[0].value);
     // var ncodeURI(key);
-    window.location.href = 'search.html?key=' + key;
+    window.location.href = 'search.html?key=' + key + '&userID=' + window.userID;
 }
 /*
  * 采用懒加载检测requestAnimationFrame兼容性
@@ -272,7 +272,7 @@ function getNowTime() {
 function showPop(text, commitCallback) {
     var popContainer = document.getElementsByClassName('pop-container')[0],
         popContent = document.getElementsByClassName('pop-content')[0];
-
+        realLength = arguments.length;
     popContent.innerHTML = text;
     addClass(popContainer, 'active-pop');
 
@@ -284,7 +284,7 @@ function showPop(text, commitCallback) {
     
     EventUtil.addHandler(popButton[1], 'click', function() {
         removeClass(popContainer, 'active-pop');
-        if (arguments.length != 1) {
+        if (realLength > 1) {
             commitCallback();
         } 
     })

@@ -3,12 +3,15 @@
  * @param {Number} window.onLoadImg 已经加载的图片的数量
  * @param {Number} window.key 关键字
  */
-
+if (window.location.search.length == 0) {
+    window.location.search = '?key=&userID=0';
+}
+window.userID = window.location.search.split('&')[1].split('=')[1];
+window.key = decodeURI(window.location.search).split('&')[0].split('=')[1];
 
 var pageRequest = searchRequest;
 window.page =1;
 window.onLoadImg = 0;
-window.key = decodeURI(window.location.search).split('=')[1] ||'';
 
 
 var button = document.getElementById('search-button'); //搜索按钮
@@ -455,7 +458,7 @@ function searchCreateImg(xhrRsponse) {
         }
         
         for (i = 0; i < jsonObj.length; i++) {
-            $('.movie-container')[0].innerHTML += '<li><a href="http://'+ window.ip +':8080/qgmovie/movie/detail?movieID='+ jsonObj[i].id +'"><img src="" data-src='+ imgArray[i] +'><p>'+ jsonObj[i].moviename +'<span>'+ jsonObj[i].score.toString().slice(0,3) +'</span></p></a></li>'
+            $('.movie-container')[0].innerHTML += '<li><a href="movie.html?movieID='+ jsonObj[i].id +'&userID='+ window.userID +'"><img src="" data-src='+ imgArray[i] +'><p>'+ jsonObj[i].moviename +'<span>'+ jsonObj[i].score.toString().slice(0,3) +'</span></p></a></li>'
         }
 
         // 预加载图片
