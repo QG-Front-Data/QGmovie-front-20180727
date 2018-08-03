@@ -24,10 +24,10 @@ var container = document.getElementsByClassName('ajax-container')[0].getElements
 })();
 
 var editP= document.getElementsByClassName('can-edit-user'); //允许修改按钮
-    userName = document.getElementById('user-name-input'); //用户名
-    userDetail = userContainer.getElementsByTagName('input'); //用户表单
-    commitButton = document.getElementsByClassName('commit-button')[0]; //确认修改按钮
-    userPic = document.getElementById('user-pic'); //用户头像
+    userName = document.getElementById('user-name-input'), //用户名
+    userDetail = userContainer.getElementsByTagName('input'), //用户表单
+    commitButton = document.getElementsByClassName('commit-button')[0], //确认修改按钮
+    userPic = document.getElementById('user-pic'), //用户头像
     introdution = document.getElementById('introdution'); //个人简介
 
 /**
@@ -48,9 +48,9 @@ function addUserDetail(userData) {
 /**
  * 初始化个人主页
  */
-function start() {
+(function start() {
     $.ajax({
-        url: 'http://ip:8080/qgmovie/user/info',
+        url: 'http://' + window.ip + ':8080/qgmovie/user/info',
     	type: 'POST',
         data: null,
         dataType: 'application/json',
@@ -62,7 +62,7 @@ function start() {
     function successCallback(xhr) {
         if (xhr.state == 5) {
             alert('请先登陆');
-            window.location = '' //跳转到登陆页面
+            window.location = 'login.html' //跳转到登陆页面
         } else if (state == 1) {
             addUserDetail(xhr.data); //填充个人信息
         } 
@@ -70,7 +70,7 @@ function start() {
     function errorCallback() {
 
     };
-}
+})();
 
 /**
  * 修改个人信息

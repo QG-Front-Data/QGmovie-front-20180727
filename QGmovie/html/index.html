@@ -14,7 +14,6 @@
     <!-- < 引入封装好的工具类 > -->
     <script src="../scripts/util.js"></script>
 </head>
-
 <body>
     <div class="root">
         <!-- < 顶部栏 > -->
@@ -148,66 +147,76 @@
             </div>
         </div>
         <!-- < 主要部分 > -->
-    <div class="recommend-rank-contianer">
-    <div class="recommend-container">
-        <div class="hot-movie">
-            <div class="recommend-head">
-                <img src="../images/hot-movie.png">
-                <span>影院热映</span>
+        <div class="recommend-rank-contianer">
+            <div class="recommend-container">
+                <div class="hot-movie">
+                    <div class="recommend-head">
+                        <img src="../images/hot-movie.png">
+                        <span>影院热映</span>
+                    </div>
+                    <div class="movie-item-container">
+                        <ul ></ul>
+                    </div>
+                    <span class="arrows left-arrows" ></span>
+                    <span class="arrows right-arrows" ></span>
+                </div>
+                <div class="new-movie">
+                    <div class="recommend-head">
+                        <img src="../images/new-movie.png">
+                        <span>新片速递</span>
+                    </div>
+                    <div class="movie-item-container">
+                        <ul ></ul>
+                    </div>
+                    <span class="arrows left-arrows" ></span>
+                    <span class="arrows right-arrows" ></span>
+                </div>
+                <div class="high-commit-movie">
+                    <div class="recommend-head">
+                        <img src="../images/hight-commit.png">
+                        <span>高评好片</span>
+                    </div>
+                    <div class="movie-item-container">
+                        <ul ></ul>
+                    </div>
+                    <span class="arrows left-arrows" ></span>
+                    <span class="arrows right-arrows" ></span>
+                </div>
+                <div class="person-recommend-movie">
+                    <div class="recommend-head">
+                        <img src="../images/person-recommend.png">
+                        <span>个人推荐</span>
+                    </div>
+                    <div class="movie-item-container">
+                        <ul></ul>
+                    </div>
+                    <span class="arrows left-arrows" ></span>
+                    <span class="arrows right-arrows" ></span>
+                </div>
             </div>
-            <div class="movie-item-container">
-            <ul ></ul>
+            <div class="rank-container">
+                <ul>
+                    <span>浏览排行榜</span>
+                </ul>
             </div>
-            <span class="arrows left-arrows" ></span>
-            <span class="arrows right-arrows" ></span>
         </div>
-        <div class="new-movie">
-            <div class="recommend-head">
-                <img src="../images/new-movie.png">
-                <span>新片速递</span>
-            </div>
-            <div class="movie-item-container">
-            <ul ></ul>
-            </div>
-            <span class="arrows left-arrows" ></span>
-            <span class="arrows right-arrows" ></span>
-        </div>
-        <div class="high-commit-movie">
-            <div class="recommend-head">
-                <img src="../images/hight-commit.png">
-                <span>高评好片</span>
-            </div>
-            <div class="movie-item-container">
-            <ul ></ul>
-            </div>
-            <span class="arrows left-arrows" ></span>
-            <span class="arrows right-arrows" ></span>
-        </div>
-        <div class="person-recommend-movie">
-            <div class="recommend-head">
-                <img src="../images/person-recommend.png">
-                <span>个人推荐</span>
-            </div>
-            <div class="movie-item-container">
-            <ul></ul>
-            </div>
-            <span class="arrows left-arrows" ></span>
-            <span class="arrows right-arrows" ></span>
-        </div>
-    </div>
-    <div class="rank-container">
-        <ul>
-            <span>浏览排行榜</span>
-        </ul>
-    </div>
-    </div>
         <!-- < 返回顶部按钮 > -->
         <button class="toTop-button"></button>
         <!-- < 底部栏 > -->
         <div class="bottom-container">
             <img src="../images/hlogo.png">
         </div>
-        
+    </div>
+    <div class="pop-container">
+        <div class="pop">
+            <div>
+                <p class="pop-content">确定修改？</p>
+            </div>
+            <div class="pop-button-container">
+                <button class="pop-button" id="pop-button-1">取消</button>
+                <button class="pop-button">确定</button>
+            </div>
+        </div>
     </div>
     <!-- < 引入首页的JS文件 > -->
     <script src="../scripts/index.js"></script>

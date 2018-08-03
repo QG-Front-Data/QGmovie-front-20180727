@@ -1,6 +1,101 @@
+
 /**
- * 首页的JS文件
+ * 二级菜单,有游客模式和用户模式，游客模式则没有二级菜单，用户模式则有二级菜单，游客模式点击客户头像是转到登陆界面，用户模式点击头像则是转到个人主页
  */
+
+/**
+ * 用户模式可以看到二级菜单
+ */
+function userMode() {
+    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
+        secondMenu = document.getElementsByClassName('second-menu')[0]; //二级菜单
+
+    userHead.onmouseover = function() {
+        addClass(header, 'active-header');
+        secondMenu.onmouseleave = function() {
+            removeClass(header, 'active-header');
+        }
+    };
+    $('#head-pic')[0].onclick = function() {
+        window.location.href = 'http://' + window.ip + ':8080/qgmovie/user/info';
+    }
+};
+
+/**
+ * 游客模式只提供登陆入口
+ */
+function touristMode() {
+    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
+
+    userHead.innerHTML = '<p class="touristMode">登陆</p>';
+    
+    userHead.onclick = function() {
+        window.location.href = 'login.html';
+    }
+};
+
+
+/**
+ * 发送请求初始化主页面
+ */
+(function mainPageInit() {
+    var i;
+    var userID = parseInt(window.location.search.substring(1));
+    var json = JSON.stringify({
+        "userID":  userID //传USERID
+    });
+    $.ajax({
+    url: 'http://'+ window.ip +':8080/qgmovie/index',
+    type: 'post',
+    data: json,
+    dataType:'json',
+    processData: false,
+    success: function(xhr) {
+        var number,
+            imgArray = new Array();
+
+        console.log(xhr)
+
+        number = parseInt(xhr.state);
+
+        if (number == 0) {
+            showPop('出现未知错误');
+        } else {
+
+            if (number == 2) {
+                $('#head-pic')[0].setAttribute('src', xhr.headPic);
+                $('#username')[0].innerText = xhr.userName;     
+                userMode(); 
+            } else {
+                //游客模式
+                touristMode();
+            }
+
+            // 图片预加载
+            for (i = 0; i < xhr.hotMovies.length; i++) {
+                imgArray[4 * i] = xhr.hotMovies[i].moviePic;
+                imgArray[4 * i + 1] = xhr.newMovies[i].moviePic;
+                imgArray[4 * i + 2] = xhr.goodMovies[i].moviePic;
+                imgArray[4 * i + 3] = xhr.recMovies[i].moviePic;
+            }
+
+            // 图片预加载
+            imgPreLoad(imgArray);
+
+                createLi($('.hot-movie ul')[0], xhr.hotMovies, 6);
+                createLi($('.new-movie ul')[0], xhr.newMovies, 6);
+                createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 6);
+                createLi($('.person-recommend-movie ul')[0], xhr.recMovies, 6);
+                // createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
+        }
+    },
+    error: function() {
+        /* 请求失败 */
+        showPop('请求失败');
+    }
+    });
+})();
+
 var header = document.getElementsByClassName('header')[0]; //顶部栏
 
 /**
@@ -18,9 +113,8 @@ var header = document.getElementsByClassName('header')[0]; //顶部栏
 })();
 
 /**
- * 返回顶部
+ * 返回顶部缓冲函数
  */
-
 var backToTopButton = document.getElementsByClassName('toTop-button')[0]; 
 
 function backToTop() {
@@ -56,14 +150,11 @@ var searchBar = document.getElementById('search-input');
     }
 })();
 
-
-
 /**
  * 轮播图JS
  * @author czf
  * Date: 2018-07-30
  */
-
 var slider = document.getElementsByClassName('slider')[0],
     control = document.getElementsByClassName('silder-control'),
     slide = document.getElementsByClassName('slide'),
@@ -78,10 +169,9 @@ function activeAnimate() {
     timer = setTimeout(autoPlay, 4000);
  }
 
- /**
-  * 点击小圆点切换
-  */
-
+/**
+ * 点击小圆点切换图片
+ */
 (function clickDotted() {
     for (var i = 0; i < dotted.length; i++) {
         (function(i) {
@@ -96,7 +186,6 @@ function activeAnimate() {
 /**
  * 切换小圆点的样式
  */
-
 function showDotted() {
     for (var i = 0; i < dotted.length; i++) {
         removeClass(dotted[i], 'dotted-active');
@@ -108,7 +197,6 @@ function showDotted() {
  * 切换动画
  * @param {*} index 
  */
-
 function animate(index) {
     var left = {
         '0': '0%',
@@ -128,7 +216,6 @@ function animate(index) {
 /**
  * 左右切换按钮
  */
-
 control[1].onclick = function () {
     if (index == 3) {
         index = 0;
@@ -149,7 +236,6 @@ control[0].onclick = function () {
 /**
  * 自动播放
  */
-
 function autoPlay() {
     if (index == 3) {
         index = 0;
@@ -160,7 +246,7 @@ function autoPlay() {
 }
 
 /**
- * 根据点击事件，让推荐模块左右移动换一批
+ * 根据点击事件，让推荐模块左右移动换一批电影
  * @param {jQuery Object} $clickTarget 推荐模块的移动模块
  */
 function movieMove($clickTarget) {
@@ -250,97 +336,6 @@ function createRank(rankContainer, json) {
     rankContainer.innerHTML += '<li movie-id='+ json.movieID +'>'+ json.movieName +'</li>';
 }
 
-
-/**
- * 二级菜单,有游客模式和用户模式，游客模式则没有二级菜单，用户模式则有二级菜单，游客模式点击客户头像是转到登陆界面，用户模式点击头像则是转到个人主页
- */
-
-function userMode() {
-    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
-        secondMenu = document.getElementsByClassName('second-menu')[0]; //二级菜单
-
-    userHead.onmouseover = function() {
-        addClass(header, 'active-header');
-        secondMenu.onmouseleave = function() {
-            removeClass(header, 'active-header');
-        }
-    };
-    $('#head-pic')[0].onclick = function() {
-        window.location.href = 'http://' + window.ip + ':8080/qgmovie/user/info';
-    }
-};
-
-/**
- * 游客模式只显示登陆
- */
-
-function touristMode() {
-    var userHead = document.getElementsByClassName('user-head-container')[0]; //用户头像
-
-    userHead.innerHTML = '<p class="touristMode">登陆</p>';
-    
-    userHead.onclick = function() {
-        window.location.href = 'login.html';
-    }
-};
-
-/**
- * 发送请求初始化主页面
- */
-
-(function mainPageInit() {
-    var i;
-
-    $.ajax({
-    url: 'http://'+ window.ip +':8080/qgmovie/index',
-    type: 'post',
-    dataType:'json',
-    processData: false,
-    success: function(xhr) {
-        var number,
-            imgArray = new Array();
-
-        console.log(xhr)
-
-        number = parseInt(xhr.state);
-
-        if (number == 0) {
-            alert('出现未知错误');
-        } else {
-
-            if (number == 2) {
-                $('#head-pic')[0].setAttribute('src', xhr.headPic);
-                $('#username')[0].innerText = xhr.userName;     
-                userMode(); 
-            } else {
-                //游客模式
-                touristMode();
-            }
-
-            // 图片预加载
-            for (i = 0; i < xhr.hotMovies.length; i++) {
-                imgArray[4 * i] = xhr.hotMovies[i].moviePic;
-                imgArray[4 * i + 1] = xhr.newMovies[i].moviePic;
-                imgArray[4 * i + 2] = xhr.goodMovies[i].moviePic;
-                imgArray[4 * i + 3] = xhr.recMovies[i].moviePic;
-            }
-
-            // 图片预加载
-            imgPreLoad(imgArray);
-
-                createLi($('.hot-movie ul')[0], xhr.hotMovies, 6);
-                createLi($('.new-movie ul')[0], xhr.newMovies, 6);
-                createLi($('.high-commit-movie ul')[0], xhr.goodMovies, 6);
-                createLi($('.person-recommend-movie ul')[0], xhr.recMovies, 6);
-                // createRank($('.rank-container ul')[0], xhr.goodMovies[i]);
-        }
-    },
-    error: function() {
-        /* 请求失败 */
-        alert();
-    }
-    });
-})();
 
 
 /**
