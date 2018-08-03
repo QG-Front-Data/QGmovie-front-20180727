@@ -130,8 +130,52 @@ var commentUl = document.getElementsByClassName('comment-list-container')[0],
     commentCreatTime = document.getElementsByClassName('create-time'),
     commentContent = document.getElementsByClassName('comment-content'); //评论内容
     
+<<<<<<< HEAD
 // var commentData = jsonObj.data.comment;
 
+=======
+    
+    
+        var json = {
+            "comment": [
+                {
+                    "commentID": "评论ID",
+                    "content": "评论内容",
+                    "commentTime": "评论时间",
+                    "userID": "评论者的ID",
+                    "userName": "评论者的名字"
+                },
+                {
+                    "commentID": "评论ID",
+                    "content": "评论内容",
+                    "commentTime": "评论时间",
+                    "userID": "评论者的ID",
+                    "userName": "评论者的名字"
+                },
+                {
+                    "commentID": "评论ID",
+                    "content": "评论内容",
+                    "commentTime": "评论时间",
+                    "userID": "评论者的ID",
+                    "userName": "评论者的名字"
+                },
+                {
+                    "commentID": "评论ID",
+                    "content": "评论内容",
+                    "commentTime": "评论时间",
+                    "userID": "评论者的ID",
+                    "userName": "评论者的名字"
+                },
+                {
+                    "commentID": "评论ID",
+                    "content": "评论内容",
+                    "commentTime": "评论时间",
+                    "userID": "评论者的ID",
+                    "userName": "评论者的名字"
+                },
+            ]
+        };
+>>>>>>> ee0ca688fc0deefe414df17b15e6c844e5c72200
 
 //评论模板
 var commentModel = '<div class="comment-header">'
@@ -139,6 +183,7 @@ var commentModel = '<div class="comment-header">'
                  + '<span class="user-name"></span>'          
                  + '<i class="create-time"></i>'          
                  + ' </div>'     
+<<<<<<< HEAD
                  + '<div class="comment-content"></div>';   
 //评论总数                    
 // addDetail(document.getElementById('comment-number'), json.commentNum);
@@ -166,6 +211,22 @@ function createComment(commentModel, commentObjArr) {
     addDetail(commentCreatTime[i], json.comment[i].commentTime); //评论时间
             //commentUserPic[0].setAttribute('src', json.comment[i].userPic)); //设置头像
 }
+=======
+                 + '<div class="comment-content"></div>';      
+//评论总数                    
+addDetail(document.getElementById('comment-number'), json.commentNum);
+
+(function createComment(num) {
+        createModel(commentModel, 'li', commentUl, num);
+
+        for (var i = 0; i < num; i++) {
+            addDetail(commentContent[i], json.comment[i].content);
+            addDetail(commentUserName[i], json.comment[i].userName); //用户名
+            addDetail(commentCreatTime[i], json.comment[i].commentTime); //评论时间
+            //commentUserPic[0].setAttribute('src', json.comment[i].userPic)); //设置头像
+        }
+})(5);
+>>>>>>> ee0ca688fc0deefe414df17b15e6c844e5c72200
 
 var pageButton = document.getElementsByClassName('page-button'),
     pageUl = document.getElementsByClassName('page-ul')[0],
@@ -178,7 +239,11 @@ var pageButton = document.getElementsByClassName('page-button'),
  */
 var page = 4;
 //评论总数
+<<<<<<< HEAD
 // addDetail(document.getElementById('comment-number'), json.commentNum);
+=======
+addDetail(document.getElementById('comment-number'), json.commentNum);
+>>>>>>> ee0ca688fc0deefe414df17b15e6c844e5c72200
 (function() {
     //如果评论数为0
     if (json.commentNum === 0) {

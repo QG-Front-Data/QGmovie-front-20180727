@@ -39,13 +39,10 @@ button {
     outline: none;
     cursor:pointer;             
 }
-<<<<<<< HEAD
 /*显示和隐藏*/
-.active {
-    display: block;
+.show {
+    display: block !important;
 }
 .hide {
     display: none;
 }
-=======
->>>>>>> zwb
