@@ -112,6 +112,11 @@ function loginModel() {
         switch (event.target) {
             case loginAccount : {
                 loginAccount.value = inputLimit(loginAccount, 32);
+                var str = '';
+                for (i = 0; i < loginAccount.value.length; i++) { 
+                    str = str + loginAccount.value.substr(i, 1).replace(filterPattern, ''); 
+                } 
+                loginAccount.value = str;
                 break;
             }
 

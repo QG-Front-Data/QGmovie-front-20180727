@@ -351,7 +351,9 @@ function searchRequest() {
         },
 
         error: function() {
-            alert('连接失败')
+            showPop('连接失败，是否刷新页面', function() {
+                window.location.reload();
+            })
         }
     	});
 }
@@ -402,7 +404,9 @@ function typeRequest() {
         },
 
         error: function() {
-            alert('连接失败');
+            showPop('连接失败，是否刷新页面', function() {
+                window.location.reload();
+            })
         }
     	});
 }
