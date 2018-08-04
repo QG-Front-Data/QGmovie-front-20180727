@@ -126,7 +126,7 @@ body {
     width: 70%;
     margin: 110px auto;
 }
-.user-ul, .comment-ul, .history-ul, .collect-ul {
+.container {
     font-size: 20px;
     margin: 0 auto;
     width: 70%;
@@ -168,7 +168,7 @@ body {
 
 /* 评论 */
 
-.comment-ul li, .history-ul li, .collect-ul li {
+.ul li {
     height: auto;
     border: 1px solid #17131780;
     border-right: 0;
@@ -187,7 +187,7 @@ body {
     padding: 0 8px;
     color: red;
 }
-.comment-container {
+.comment-content {
     font-size: 20px;
 }
 
@@ -215,7 +215,7 @@ body {
 
 /* 历史记录 */
 
-.history-ul a,  .collect-ul a{
+.history-ul a, .collect-ul a{
     display: block;
     height: auto;
     width: 99%;

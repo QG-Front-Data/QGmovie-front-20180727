@@ -1,4 +1,4 @@
-window.ip = '192.168.1.107';
+window.ip = '10.21.56.122';
 
 /**
  * 对表单的输入字符个数进行限制，超出的话截取前number个字符作为这个表单的值
@@ -136,18 +136,6 @@ function hasClass(elements, cName) {
     return !!elements.className.match(new RegExp("(\\s|^)" + cName + "(\\s|$)"));
 }
 
-/**
- * 切换元素的类型
- * @param {*} elements 
- * @param {*} cName 
- */
-function toogleClass(elements, cName) {
-    if (hasClass(elements, cName)) {
-        removeClass(elements, cName);
-    } else {
-        addClass(elements, cName);
-    }
-}
 
 /**
  * 函数节流，提高体验
@@ -164,12 +152,12 @@ function searchCommit() {
     // var ncodeURI(key);
     window.location.href = 'search.html?key=' + key + '&userID=' + window.userID;
 }
-/*
- * 采用懒加载检测requestAnimationFrame兼容性
- * DATE 20180801
+
+/**
+ * 惰性加载动画函数
  * @author czf
- * @param {*} fun 
- * @param {*} time 
+ * @param {Function} fun 
+ * @param {int} time 
  */
 var requestAnimation = function (fun, time) {
     if (window.requestAnimationFrame) {
@@ -222,18 +210,17 @@ function lazyLoad($targetArray) {
  * 根据模板创建函数
  * DATE 20180802
  * @author czf
- * @param {*} model 模板
- * @param {*} tag 要创建的标签名
- * @param {*} parentNode 要追加的父节点
- * @param {*} num  要创建的数量
+ * @param {string} model 模板
+ * @param {element} tag 要创建的标签名
+ * @param {element} parentNode 要追加的父节点
+ * @param {int} num  要创建的数量
  */
-
 function createModelNode(model, tag, parentNode, num) {
     for(var i = 0; i < num; i++) {
         var newNode = document.createElement(tag);
         newNode.innerHTML = model;
-        // parentNode.insertBefore(newNode, parentNode.childNodes[0]);
-        //parentNode.appendChild(newNode);
+        //parentNode.insertBefore(newNode, parentNode.childNodes[0]);
+        parentNode.appendChild(newNode);
     }
 }
 
@@ -262,6 +249,7 @@ function getNowTime() {
     day = (time.getDate()).toString();
     return (year + '-' + month + '-' + day);
 }
+
 /**
  * 弹出提示层
  * DATE 20180803

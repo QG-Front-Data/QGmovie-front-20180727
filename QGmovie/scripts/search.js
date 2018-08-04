@@ -303,6 +303,7 @@ function searchPageClick(event) {
 
         case $('.confirm-type')[0]: {
             // 清除节点并将页数还原为1
+            $('.show-more-button a')[0].innerHTML = '加载更多';
             cleanTags();
             treeRetract();
             typeRequest();
@@ -347,11 +348,17 @@ function searchRequest() {
         dataType: 'json',
     	processData: false,
         success: function(xhr) {
+            if (xhr.data.length == 0) {
+                $('.show-more-button a')[0].innerHTML = '没有搜索结果';
+                return;
+            }
             searchCreateImg(xhr);
         },
 
         error: function() {
-            alert('连接失败')
+            showPop('连接失败，是否刷新页面', function() {
+                window.location.reload();
+            })
         }
     	});
 }
@@ -402,7 +409,9 @@ function typeRequest() {
         },
 
         error: function() {
-            alert('连接失败');
+            showPop('连接失败，是否刷新页面', function() {
+                window.location.reload();
+            })
         }
     	});
 }

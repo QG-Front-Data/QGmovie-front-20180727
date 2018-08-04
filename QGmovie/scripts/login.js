@@ -112,6 +112,11 @@ function loginModel() {
         switch (event.target) {
             case loginAccount : {
                 loginAccount.value = inputLimit(loginAccount, 32);
+                var str = '';
+                for (i = 0; i < loginAccount.value.length; i++) { 
+                    str = str + loginAccount.value.substr(i, 1).replace(filterPattern, ''); 
+                } 
+                loginAccount.value = str;
                 break;
             }
 
@@ -367,6 +372,13 @@ function registerModel() {
 
             case account: {
                 account.value = inputLimit(account, 32);
+
+                var str = '';
+                for (i = 0; i < account.value.length; i++) { 
+                    str = str + account.value.substr(i, 1).replace(filterPattern, ''); 
+                } 
+                account.value = str;
+
                 if (emailPattern.test(account.value) === true||account.value.length == 0) {
                     /* 不符合要求提示 */
                     promptMessage(0, 'none', '');

@@ -330,8 +330,67 @@ EventUtil.addHandler($('#comment-textarea')[0], 'input', function() {
     $('#comment-textarea')[0] = inputLimit($('#comment-textarea')[0], 80);
 })
 EventUtil.addHandler(document, 'click', pageClick);
+EventUtil.addHandler($('#movie-info-2')[0], 'click', function() {
+    if (window.userID == '0') {
+        showPop('请先登录')
+        return;
+    }
+    var jsonObj = {};
+
+        jsonObj.userID = window.userID;
+        jsonObj.movieID = window.movieID;
+    $.ajax({
+    	url: 'http://' + window.ip + ':8080/qgmovie/collect/movie',
+    	type: 'post',
+        data: JSON.stringify(jsonObj),
+        dataType: 'json',
+    	processData: false,
+        success:function(xhr) {
+            switch(xhr.state) {
+                case '0': {
+                    showPop('请勿重复收藏')
+                }
+
+                case '1': {
+                    $('#movie-info-2')[0].innerText = (parseInt($('#movie-info-2')[0].innerText) + 1).toString();
+                    showPop('收藏成功')
+                    break;
+                }
+            }
+        },
+        error: function() {
+            showPop('请求失败');
+        }
+    	});
+})
+EventUtil.addHandler($('#movie-info-1')[0], 'click', function() {
+    var jsonObj = {};
 
 
+    $.ajax({
+    	url: 'http://' + window.ip + ':8080/qgmovie/collect/movie',
+    	type: 'post',
+        data: JSON.stringify(jsonObj),
+        dataType: 'json',
+    	processData: false,
+        success:function(xhr) {
+            switch(xhr.state) {
+                case '0': {
+                    showPop('请勿重复收藏')
+                }
+
+                case '1': {
+                    $('#movie-info-2')[0].innerText = (parseInt($('#movie-info-2')[0].innerText) + 1).toString();
+                    showPop('收藏成功')
+                    break;
+                }
+            }
+        },
+        error: function() {
+            showPop('请求失败');
+        }
+    	});
+})
 
 
 
