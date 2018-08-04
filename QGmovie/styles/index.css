@@ -1,7 +1,4 @@
 /* 首页css */
-body {
-    
-}
 .root {
     height: auto;
     width: 100%;
@@ -96,10 +93,8 @@ body {
 }
 
 .active-header .second-menu {
-    display: block;
-    transform: translateY(90px);
+    transform: translateY(190px);
     opacity: 1;
-    
 }
 
 /* 头像以及二级菜单 */
@@ -134,14 +129,12 @@ body {
     padding: 0px;
     background-color: #fff;
     position: absolute;
-    top: 0;
+    top: -100px;
     right: 20px;
     border-radius: 5px;
     text-align: left;
     transition: transform .5s, opacity .5s;
     opacity: 0; 
-    z-index: -20000;
-    display: none;
 }
 
 .second-menu-top {
@@ -155,7 +148,6 @@ body {
     font-size: 22px;
     width: 80%;
     padding: 30px;
-    
 }
 
 /* 二级菜单用户名 */
@@ -212,7 +204,6 @@ body {
 }
 .slider-container::after {
     display: block;
-    
 }
 .slider {
     position: relative;

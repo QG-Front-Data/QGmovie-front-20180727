@@ -54,6 +54,7 @@ function loginModel() {
     
                                         case '1': {
                                             submitResultMessage('登陆成功');
+                                            console.log(xhr.userID);
                                             window.location.href = 'index.html?userID=' + xhr.userID;
                                             break;
                                         }

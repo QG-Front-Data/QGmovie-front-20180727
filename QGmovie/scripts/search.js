@@ -411,7 +411,7 @@ function typeRequest() {
  * 按类型搜索后，将已经显示的电影清空
  */
 function cleanTags() {
-    window.page = 1;
+    window.page = 2;
     $('.movie-container')[0].innerHTML = '';
 }
 
@@ -420,19 +420,16 @@ function cleanTags() {
  * @param {object} event 事件对象
  */
 function mousemoveLoad(event) {
-    // var height = document.body.clientHeight,
-    //     scrollHeight = document.body.scrollHeight,
-    // 图片懒加载
-    lazyLoad($('.movie-container li img'));
-    
     if (($(document).scrollTop()+10 >= $(document).height()-$(window).height()) && (event.deltaY > 0) && $('.show-more-button a')[0].innerText !== '加载更多') {
         // 当在加载模式中,滚动到底的时候
+        console.log(window.page)
         window.onmousewheel = null;
         setTimeout(function() {
             window.onmousewheel = mousemoveLoad;
-        }, 500);
+        }, 1300);
         pageMore();
     }
+    lazyLoad($('.movie-container li img'));
 }
 
 /**
@@ -469,6 +466,11 @@ function searchCreateImg(xhrRsponse) {
         /* 请求翻页+1 */
         window.page++;
         window.onLoadImg +=14;
+
+        /**
+         * 在加载完毕后才能进行往下的滚轮事件
+         */
+        
 }
 
 /**
@@ -478,8 +480,8 @@ function pageMore() {
     if (window.page >= window.maxPage) {
         return;
     }
-    pageRequest();
     $('.show-more-button a')[0].innerText = '向下滑动继续加载'; 
+    pageRequest();
 }
 
 EventUtil.addHandler($('#search-input')[0], 'keypress', function() {
@@ -489,8 +491,11 @@ EventUtil.addHandler($('#search-input')[0], 'keypress', function() {
 })
 EventUtil.addHandler(document, 'click', searchPageClick);
 searchRequest();
-window.onmousewheel = mousemoveLoad;
+
 $('.show-more-button a')[0].onclick = function() {
     $('.show-more-button a')[0].onclick = null;
     pageMore();
+    setTimeout(function() {
+        window.onmousewheel = mousemoveLoad;
+    }, 1300);
 }

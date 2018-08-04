@@ -81,7 +81,7 @@ window.userID = window.location.search.split('=')[1];
 
             if (number == 2) {
                 userMode();
-                if (xhr.headPic != '') {
+                if (xhr.headPic != ' ') {
                     //头像不为空再设置，否则是默认头像
                     $('#head-pic')[0].setAttribute('src', xhr.headPic);
                 }
@@ -455,6 +455,11 @@ function mainPageClick(event) {
             break;
         }
 
+        case ($('#search-button')[0]==event.target): {
+
+            window.location.href = 'search.html?key='+ $('#search-input')[0].value +'&userID=' + window.userID;
+            break;
+        }
     }
 }
 
@@ -469,8 +474,11 @@ function pageJump(movieID) {
 EventUtil.addHandler($('.recommend-container')[0], 'click', mainPageClick);
 
 
-
-
+EventUtil.addHandler($('#search-input')[0], 'keypress', function() {
+    if (event.keyCode == 13) {
+        window.location.href = 'search.html?key=' + $('#search-input')[0].value + '&userID=' + window.userID;
+    }
+})
 window.onmousewheel = mainPageLazy;
 function mainPageLazy() {
     lazyLoad($('.hot-movie ul li div'));

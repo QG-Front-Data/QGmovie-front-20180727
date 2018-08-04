@@ -1,7 +1,9 @@
+//获取用户ID
+var userID = window.location.search.substring(8) === ''? '0' : window.location.search.substring(8).toString();
+
 /**
  * 切换显示
  */
-
 var container = document.getElementsByClassName('ajax-container')[0].getElementsByTagName('ul'),
     userContainer = document.getElementsByClassName('user-ul')[0],
     commentContainer = document.getElementsByClassName('comment-ul')[0],
@@ -57,10 +59,6 @@ function addUserDetail(userData) {
  * 初始化个人主页
  */
 
-//获取用户ID
-var userID = window.location.search.substring(8) === ''? 0 : parseInt(window.location.search.substring(8));
-
-
 (function start() {
     $.ajax({
         url: 'http://' + window.ip + ':8080/qgmovie/user/info',
@@ -90,9 +88,6 @@ var userID = window.location.search.substring(8) === ''? 0 : parseInt(window.loc
 /**
  * 修改个人信息
  */
-
-
-
 (function() {
     //更换为可以修改的状态
     for (var i = 0; i < editP.length; i++) {
@@ -169,12 +164,11 @@ function addCommentDetail(commentData) {
  * 初始化我的评论模块
  */
 
-function ajaxComment(page) {
+function ajaxComment() {
     $.ajax({
     	url: 'http://' + window.ip + ':8080/qgmovie/user/comment/show',
     	type: 'POST',
         data:  JSON.stringify({
-            "page": page,
             "userID": userID
         }),
         dataType: 'json',
@@ -184,58 +178,64 @@ function ajaxComment(page) {
     });
     function successCallback(xhr) {
         if (xhr.state === '1') {
-            createModelNode(commentModel, 'li', commentContainer, xhr.commentCount);
-            addCommentDetail(xhr.comment);
-            commentPage++;
+            if (xhr.commentCount === 0) {
+                showTips();
+            } else {
+                createModelNode(commentModel, 'li', commentContainer, xhr.commentCount);
+                addCommentDetail(xhr.comment);
+                deleteComment();
+                commentPage++;
+            }
         }
     };
     function errorCallback() {
-
+        
     }
 }
 
 EventUtil.addHandler(switchButton[1], 'click', function() {
     refreshNode(commentContainer, commentList);
-    ajaxComment(commentPage);
+    ajaxComment();
 });
-
-var deleteCommentButton = document.getElementsByClassName('delete-button');
 
 /**
  * 删除评论
  */
+function deleteComment() {
+    var deleteCommentButton = document.getElementsByClassName('delete-button'),
+        commentMovieName = document.getElementsByClassName('comment-movie');
 
-(function() {
+    console.log(deleteCommentButton.length);
     for (var i = 0; i < deleteCommentButton.length; i++) {
         (function(i) {
             deleteCommentButton[i].onclick = function() {
+                alert();
                 showPop('确认删除？', function() {
                     $.ajax({
-                    url: 'http://' + window.ip + ':8080/qgmovie/user/comment/delete',
-                    type: 'POST',
-                    data: JSON.stringify({
-                        "userID": userID, //用户ID
-                        "movieID": commentMovieName.getAttribute('data-c')
+                        url: 'http://' + window.ip + ':8080/qgmovie/comment/delete',
+                        type: 'POST',
+                        data: JSON.stringify({
+                            "userID": userID, //用户ID
+                            "movieID": commentMovieName[i].getAttribute('data-c') //电影ID
+                        }),
+                        dataType: 'json',
+                        processData: false,
+                        success: successCallback,
+                        error: errorCallback
                     }),
-                    dataType: 'json',
-                    processData: false,
-                    complete: callback,
-                    success: successCallback,
-                    error: errorCallback
-                });
-                function successCallback(xhr) {
-                    if (xhr.state === '1') {
-                        commentList[i].style.display = 'none';
-                    }
-                }
-                function errorCallback() {
-                    alert('请求失败');
-                }
+                    function successCallback(xhr) {
+                        if (xhr.state === '1') {
+                            commentList[i].style.display = 'none';
+                        }
+                    };
+                    function errorCallback() {
+                        alert('请求失败');
+                    };
                 });
             }
-        })(i)
+        })(i);
     }
-})(); 
+}; 
 
 /**
  * 创建历史记录
@@ -312,7 +312,6 @@ function refreshNode(parentNode, childNode) {
 EventUtil.addHandler(switchButton[2], 'click', function() {
     refreshNode(historyContainer, historyList);
     ajaxHistory(1);
-    
 });
 
 /**
@@ -328,7 +327,8 @@ var changePage = document.getElementsByClassName('more-container');
     for (var i = 0; i < changePage.length; i++) {
         (function(i) {
             changePage[0].onclick = function() {
-                ajaxComment(commentPage);
+                //ajaxComment(commentPage);
+                showPop('没有更多评论了~');
             }
             changePage[1].onclick = function() {
                 ajaxHistory(historyPage);
@@ -366,6 +366,8 @@ function ajaxCollect(page) {
             if (xhr.data.length === 0) {
                 showTips(); //空就显示提示
             }
+            //var collectContainer = document.getElementById('collect-container');
+
             createModelNode(collectionModel, 'li', collectContainer, xhr.data.length);
             addcollectDetail(xhr.data);
             collectPage++;
@@ -379,7 +381,7 @@ function addcollectDetail(collectData) {
     var collectPic = document.getElementsByClassName('collect-movie-pic'), //收藏电影的图片
         collectName = document.getElementsByClassName('collect-movie-name'), //收藏电影名
         collectTime = document.getElementsByClassName('collect-time'); //收藏时间
-        Clink = document.getElementsByClassName('collect-link');
+        collectLink = document.getElementsByClassName('collect-link');
 
     for (var i = 0; i < collectData.length; i++) {
         var src = 'http://'+ window.ip +':8080/qgmovie/img/' + collectData[i].moviePic,
@@ -388,16 +390,16 @@ function addcollectDetail(collectData) {
         addDetail(collectName[i], collectData[i].movieName);
         addDetail(collectTime[i], collectData[i].time);
         collectPic[i].setAttribute('src', src);
-        Clink[i].setAttribute('href', link) //保存评论ID
+        collectLink[i].setAttribute('href', link);
     };
 
 }
-
 
 EventUtil.addHandler(switchButton[3], 'click', function() {
     refreshNode(collectContainer, collectList);
     ajaxCollect(1);
 });                   
+
 var tipsContainer = document.getElementsByClassName('tips-container');
 
 /**

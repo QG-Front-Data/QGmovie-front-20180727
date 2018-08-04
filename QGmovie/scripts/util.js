@@ -1,4 +1,4 @@
-window.ip = '192.168.1.112';
+window.ip = '192.168.1.107';
 
 /**
  * 对表单的输入字符个数进行限制，超出的话截取前number个字符作为这个表单的值
@@ -232,7 +232,8 @@ function createModelNode(model, tag, parentNode, num) {
     for(var i = 0; i < num; i++) {
         var newNode = document.createElement(tag);
         newNode.innerHTML = model;
-        parentNode.insertBefore(newNode, parentNode.childNodes[0]);
+        // parentNode.insertBefore(newNode, parentNode.childNodes[0]);
+        //parentNode.appendChild(newNode);
     }
 }
 
