@@ -58,12 +58,12 @@ function RegExpTest(pattern, text) {
  */
 var EventUtil = {
     
-    addHandler: (function (element, type, handler) {
-        if (element.addEventListener) {
+    addHandler: (function () {
+        if (window.addEventListener) {
             return function () {
                 arguments[0].addEventListener(arguments[1], arguments[2], false);
             }
-        } else if (element.attachEvent) {
+        } else if (window.attachEvent) {
             return function () {
                 arguments[0].attachEvent("on" + arguments[1], arguments[2]);
             }
@@ -72,14 +72,14 @@ var EventUtil = {
                 arguments[0]["on" + arguments[1]] = arguments[2];
             }
         }
-    })(window),
+    })(),
 
-    removeHandler: (function(element, type, handler) {
-        if (element.addEventListener) {
+    removeHandler: (function() {
+        if (window.addEventListener) {
             return function () {
                 arguments[0].removeEventListener(arguments[1], arguments[2], false);
             }
-        } else if (element.attachEvent) {
+        } else if (window.attachEvent) {
             return function () {
                 arguments[0].detachEvent("on" + arguments[1], arguments[2]);
             }
@@ -88,7 +88,7 @@ var EventUtil = {
                 arguments[0]["on" + arguments[1]] = null;
             }
         }
-    })(window)
+    })()
 }; 
 
 /**
@@ -134,6 +134,20 @@ function findElementNode(node) {
  */
 function hasClass(elements, cName) {
     return !!elements.className.match(new RegExp("(\\s|^)" + cName + "(\\s|$)"));
+}
+
+var classUtil = {
+    
+    addClass: function() {
+
+    },
+    hasClass: function() {
+
+    },
+    removeClass: function() {
+
+    },
+
 }
 
 
@@ -216,12 +230,16 @@ function lazyLoad($targetArray) {
  * @param {int} num  要创建的数量
  */
 function createModelNode(model, tag, parentNode, num) {
+    //创建文档碎片降低性能消耗
+    var fragment = document.createDocumentFragment(),
+        newNode;
+
     for(var i = 0; i < num; i++) {
-        var newNode = document.createElement(tag);
+        newNode = document.createElement(tag);
         newNode.innerHTML = model;
-        //parentNode.insertBefore(newNode, parentNode.childNodes[0]);
-        parentNode.appendChild(newNode);
+        fragment.appendChild(newNode);
     }
+    parentNode.appendChild(fragment);
 }
 
 /**
@@ -261,6 +279,7 @@ function showPop(text, commitCallback) {
     var popContainer = document.getElementsByClassName('pop-container')[0],
         popContent = document.getElementsByClassName('pop-content')[0];
         realLength = arguments.length;
+
     popContent.innerHTML = text;
     addClass(popContainer, 'active-pop');
 
@@ -277,5 +296,62 @@ function showPop(text, commitCallback) {
         } 
     })
 }
+/**
+ * 
+ * @param {Function} fun 函数
+ * @param {context}} context 执行环境
+ */
+function bind(fun, context) {
+    return function() {
+        return fun.apply(context, arguments); //arguments指向的是匿名函数的参数
+    }
+}
 
+/**
+ * cookie工具类
+ * chrome 不支持本地调试cookie
+ */
+var cookieUtil = {
 
+    get: function(name) {
+        var cookieName = encodeURIComponent(name) + '=',
+            cookieStart = document.cookie.indexOf(cookieName),
+            cookieValue = null;
+        
+        if (cookieStart > -1) {
+            var cookieEnd = document.cookie.indexOf(';', cookieName);
+            if (cookieEnd == -1) {
+                cookieEnd = document.cookie.length; //如果没有找到，说明这个是cookie的最后一个字符串
+            }
+            
+            cookieValue = decodeURIComponent(document.cookie.substring(cookieStart
+                        + cookieName.length, cookieEnd));    
+        }
+        return cookieValue; 
+    },
+
+    set: function(name, value, expires, path, domain, secure) {
+        //必须项
+        var cookieText = encodeURIComponent(name) + '=' +
+                         encodeURIComponent(value);
+        //可选项
+        if (expires instanceof Date) {
+            cookieText += '; expires=' + expires.toGMTString();
+        } 
+        if (path) {
+            cookieText += '; path=' + path;
+        }
+        if (domain) {
+            cookieText += '; domain=' + domain;
+        }
+        if (secure) {
+            cookieText += '; secure';
+        }
+        document.cookie = cookieText;
+    },
+    //用于删除cookie
+    unset: function(name, path, domain, secure) {
+        this.set(name, '', new Date(0), path, domain, secure);
+    }
+
+}
