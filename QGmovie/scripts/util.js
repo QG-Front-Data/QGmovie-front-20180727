@@ -35,7 +35,7 @@ function ajaxRequest(serverAddress, method, sendData, sendDataType, contentType 
         success: successCallback,
         error: errorCallback
     	});
-};
+}
 
 /**
  * 当测试结果不为空，则返回true，当测试结果为空的时候，则返回false。
@@ -62,15 +62,15 @@ var EventUtil = {
         if (window.addEventListener) {
             return function () {
                 arguments[0].addEventListener(arguments[1], arguments[2], false);
-            }
+            };
         } else if (window.attachEvent) {
             return function () {
                 arguments[0].attachEvent("on" + arguments[1], arguments[2]);
-            }
+            };
         } else {
             return function () {
                 arguments[0]["on" + arguments[1]] = arguments[2];
-            }
+            };
         }
     })(),
 
@@ -78,15 +78,15 @@ var EventUtil = {
         if (window.addEventListener) {
             return function () {
                 arguments[0].removeEventListener(arguments[1], arguments[2], false);
-            }
+            };
         } else if (window.attachEvent) {
             return function () {
                 arguments[0].detachEvent("on" + arguments[1], arguments[2]);
-            }
+            };
         } else {
             return function () {
                 arguments[0]["on" + arguments[1]] = null;
-            }
+            };
         }
     })()
 }; 
@@ -99,8 +99,8 @@ var EventUtil = {
 function addClass(elements, cName) {
     if (!hasClass(elements, cName)) {
         elements.className += " " + cName;
-    };
-};
+    }
+}
 
 /**
  * 移除元素的一个CSS类 
@@ -110,7 +110,7 @@ function addClass(elements, cName) {
 function removeClass(elements, cName) {
     if (hasClass(elements, cName)) {
         elements.className = elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), " ");
-    };
+    }
 }
 
 /**
@@ -148,7 +148,7 @@ var classUtil = {
 
     },
 
-}
+};
 
 
 /**
@@ -179,7 +179,7 @@ var requestAnimation = function (fun, time) {
     } else {
         return setTimeout(fun, time);
     }
-}
+};
 
 /**
  * 将图片预先缓存到网页中，需要的时候再将其读取。
@@ -197,7 +197,7 @@ function imgPreLoad(imgArray) {
                 if (i < imgArray.length) {
                     load();
                 }
-            }
+            };
         }
         load();
 }
@@ -287,14 +287,14 @@ function showPop(text, commitCallback) {
 
     EventUtil.addHandler(popButton[0], 'click', function() {
         removeClass(popContainer, 'active-pop');
-    })
+    });
     
     EventUtil.addHandler(popButton[1], 'click', function() {
         removeClass(popContainer, 'active-pop');
         if (realLength > 1) {
             commitCallback();
         } 
-    })
+    });
 }
 /**
  * 
@@ -304,7 +304,7 @@ function showPop(text, commitCallback) {
 function bind(fun, context) {
     return function() {
         return fun.apply(context, arguments); //arguments指向的是匿名函数的参数
-    }
+    };
 }
 
 /**
@@ -324,8 +324,7 @@ var cookieUtil = {
                 cookieEnd = document.cookie.length; //如果没有找到，说明这个是cookie的最后一个字符串
             }
             
-            cookieValue = decodeURIComponent(document.cookie.substring(cookieStart
-                        + cookieName.length, cookieEnd));    
+            cookieValue = decodeURIComponent(document.cookie.substring(cookieStart + cookieName.length, cookieEnd));    
         }
         return cookieValue; 
     },
@@ -354,4 +353,4 @@ var cookieUtil = {
         this.set(name, '', new Date(0), path, domain, secure);
     }
 
-}
+};
